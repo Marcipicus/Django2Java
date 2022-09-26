@@ -1,0 +1,36 @@
+Onboarding Documentation of Django2Java
+
+1. Data Model
+1. NoteName
+The first part of the project to learn is the data model
+
+The NoteName enumeration defines all of the notes in music without a particular octave.
+You can use the NoteName methods to find related chords and scales.
+
+2. Interval
+The Interval Enumeration defines all of the intervals needed to 
+define chords, scales, and notes by their relationship to the root note.
+
+3. ChordSignature
+The ChordSignature Enumeration defines all of the main chord signatures that exist
+by the Intervals that the specific signature contains...e.g Major  (Root,Major3,Perfect5)
+
+4. Scale Signature
+The Scale Signature Enumeration defines all of the main ScaleSignatures that exist
+by the Intervals that the specific signature contains....
+e.g. Major Scale(Ionian)(Root,Major2,Major3,Perfect4,Perfect5,Major6,Major7,Perfect8)
+
+5. MIDINote
+The MIDINote class is used to convert a NoteName and a register into a byte value
+that can be used to produce a sound using the Java Midi Interface
+
+4. Chord
+The Chord class represents a Chord with a Root Note and a ChordSignature.
+This class can create a list of MIDI Value ChordTones with the specified RootNote and 
+all of the notes in the chord signature. You must also provide a register value.
+See Chord.getChordTones(int register)
+
+5. UsefulUnicodeCharacters
+The UsefulUnicodeCharacters class is just a place to store characters that you can't type
+on a keyboard(flat,sharp,natural signs etc.)
+

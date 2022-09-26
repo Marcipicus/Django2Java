@@ -1,0 +1,42 @@
+Rating Data Model
+
+The following classes are used to rate consonance of chord changes, chord scale relationships,
+and Interval Chord Relationships. These ratings are stored in files and later used to generate
+chord changes and possibly melodies in the future.
+
+1. ConsonanceRating
+The ConsonanceRating is a simple enumeration to rate the consonance of two entites to each other.
+Ranked from VERY_BAD to VERY_GOOD
+VERY_GOOD: Extremely pleasant
+GOOD: Very Pleasant
+MEDIOCRE: Not very pleasant
+BAD: awful sounding
+VERY_BAD: absolutely no use
+
+2. NoteConsonance
+The NoteConsonance class is used to store the consonance between a ChordSignature
+and all of the intervals within one octave.
+
+3. NoteRating
+The NoteRating class is used to store a single rating between a ChordSignature and
+a specific interval.
+
+4. ScaleConsonance
+The ScaleConsonance class us used to store the consonance between a chordSignature
+and all ScaleSignatures with the same root.
+
+5. ScaleRating
+The ScaleRating class is used to store a single rating between a chordSignature and
+a specific scale/mode Signature with the same root
+
+6. ChordChangeConsonance
+The ChordChangeConsonance class stores the rating between a particular start chordSignature
+and all other ChordSignatures at all intervals between the two chord's root notes.
+
+7. EndChordRatingList
+The EndChordRatingList class stores the rating between a particular end chord signature to
+a start chord signature at all intervals between roots.
+
+8. IntervalRating
+The IntervalRating class stores the consonance rating between a start chordSignature,
+and an end chord signature at specific interval between the root notes.

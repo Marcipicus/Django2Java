@@ -1,0 +1,23 @@
+GUI Documentation
+
+1. MainChordRatingFrame
+This class is used to select a specific chord to rating other musical entities to.
+
+Chord Type: Start Chord
+Consonance Type: type of entity whose consonance will be rated
+
+Chord_Change_Consonance : rate start chord to end chord consonance
+Chord_Scale_Consonance: rate chord to scale consonance
+Chord_Note_Consonance: rate Chord to Note Consonance
+
+2. ChordConsonanceDialog
+This class is used to launch a dialog where you play two chords and you rate
+how good they sound. This is needed because it would take about two hours or so
+to compare 1 chord to all of the possible combinations
+
+3. NoteConsonanceDialog
+This class is used to rate the consonance of a note to a chord based
+on the relationship between the chord's root note and the note played over top
+
+4. ScaleConsonanceDialog
+This class is used to rate the consonance of a scale to a chord.

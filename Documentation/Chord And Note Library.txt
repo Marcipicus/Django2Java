@@ -1,0 +1,26 @@
+This documentation file explains the MIDINoteLibrary and ChordLibrary
+
+Both the MIDINoteLibary and ChordLibrary use the singleton design pattern which is
+basically....
+
+You design a piece of code for which there should only be one instance(File System, Database etc)
+
+
+
+Chord Library
+I created the chordlibrary so that people would not create duplicate instances of
+chords and there would be one consistent data structure for the whole program. 
+
+This allows a programmer to detect cycles in the data structure which would basically be
+a chord progression that returns to a certain chord. 
+
+Had I allowed users of the library to create chords themselves then you run the 
+risk of the programmer not creating them properly or creating duplicates.
+
+In the future I intend to hide the implementation of the chord class completely and
+replace it with an interface that the hidden chord class implements.
+
+
+
+MIDINoteLibrary
+The MIDINoteLibrary was created basically to save memory.

@@ -1,0 +1,19 @@
+MIDIPlayer documentation
+
+The MIDIPlayer is essentially a Facade around the Java MIDI library that
+also uses the singleton design pattern.
+(Look up the Facade and Singleton design patterns in the design patterns book or wikipedia)
+
+This class is currently in an incomplete state. 
+
+Feel free to modify any of the functions.
+
+The functions that already play music use the noteOn method which sends
+a message directly to the MIDI System.
+
+The proper way of doing it is to create a sequence and then send it to
+the Synthesizer/Sequencer.
+
+Here is the page for the Java Sound API
+
+https://docs.oracle.com/javase/tutorial/sound/MIDI-seq-intro.html

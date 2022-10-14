@@ -18,9 +18,9 @@ import javax.xml.bind.Unmarshaller;
 
 import chord.gui.components.CustomGridBagConstraints;
 import chord.ident.ChordSignature;
-import chord.relations.ChordChangeConsonance;
-import chord.relations.NoteConsonance;
-import chord.relations.ScaleConsonance;
+import chord.relations.persist.P_ChordChangeConsonance;
+import chord.relations.persist.P_NoteConsonance;
+import chord.relations.persist.P_ScaleConsonance;
 
 public class MainChordRatingsPopulationFrame extends JFrame implements ActionListener{
 
@@ -159,13 +159,13 @@ public class MainChordRatingsPopulationFrame extends JFrame implements ActionLis
 					//TODO: Create Note ConsonanceDialog
 					//TODO: THIS MIGHT NOT BE NECESSARY SINCE IT TAKES ABOUT 1/2 A MINUTE TO
 					//		POPULATE THE NOTE RATINGS FILE
-					NoteConsonance noteConsonanceModel = (NoteConsonance)openConsonanceFile(NoteConsonance.class, openFileSource);
+					P_NoteConsonance noteConsonanceModel = (P_NoteConsonance)openConsonanceFile(P_NoteConsonance.class, openFileSource);
 				}else if(openFileSource.getName().contains("Scale")){
-					ScaleConsonance scaleConsonanceModel = (ScaleConsonance)openConsonanceFile(ScaleConsonance.class, openFileSource);
+					P_ScaleConsonance scaleConsonanceModel = (P_ScaleConsonance)openConsonanceFile(P_ScaleConsonance.class, openFileSource);
 					new ScaleConsonanceDialog(this, scaleConsonanceModel);
 				}else if(openFileSource.getName().contains("Chord")) {
 					//TODO: Create Chord Consonance dialog
-					ChordChangeConsonance chordConsonanceModel = (ChordChangeConsonance)openConsonanceFile(ChordChangeConsonance.class, openFileSource);
+					P_ChordChangeConsonance chordConsonanceModel = (P_ChordChangeConsonance)openConsonanceFile(P_ChordChangeConsonance.class, openFileSource);
 					ChordConsonanceDialog chordRatingDialog = new ChordConsonanceDialog(this,chordConsonanceModel);
 				}else {
 					JOptionPane.showMessageDialog(this,"Invalid File","ERROR", JOptionPane.ERROR);

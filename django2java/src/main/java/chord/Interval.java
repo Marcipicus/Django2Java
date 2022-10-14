@@ -50,4 +50,19 @@ public enum Interval {
 			return Interval.values()[0];
 		}
 	}
+	
+	/**
+	 * Check to see if the Interval is valid for 
+	 * ratings.
+	 * 
+	 * The intervals of Unison and Perfect8 refer to
+	 * the same note so this method is used to determine
+	 * if the interval is useful for consonance ratings.
+	 * 
+	 * @return true if the interval is valid(Major7 or below,
+	 * false if the interval is invalid (Perfect8 or above)
+	 */
+	public boolean validForRating() {
+		return this.ordinal() < Interval.PERFECT8.ordinal();
+	}
 }

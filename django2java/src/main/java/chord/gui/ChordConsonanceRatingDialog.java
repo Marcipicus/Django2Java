@@ -19,8 +19,8 @@ import chord.gui.components.CustomGridBagConstraints;
 import chord.gui.components.IntervalLabel;
 import chord.gui.components.RatingRadioPanel;
 import chord.ident.ChordSignature;
-import chord.relations.EndChordRatingList;
-import chord.relations.IntervalRating;
+import chord.relations.persist.P_EndChordRatingList;
+import chord.relations.persist.P_IntervalRating;
 
 /**
  * This dialog is used to rate chord changes between a start chord and
@@ -36,7 +36,7 @@ public class ChordConsonanceRatingDialog extends JDialog implements ActionListen
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private List<IntervalRating> intervalRatings;
+	private List<P_IntervalRating> intervalRatings;
 	private boolean lastChordChangeHasBeenRated = false;
 	
 	private ChordLabel startChordLabel, endChordLabel;
@@ -58,7 +58,7 @@ public class ChordConsonanceRatingDialog extends JDialog implements ActionListen
 
 		GridBagConstraints gbc; // temporary holder for GridBagConstraints..reused
 
-		intervalRatings = new LinkedList<IntervalRating>();
+		intervalRatings = new LinkedList<P_IntervalRating>();
 		
 		startChordLabel = new ChordLabel("Start Chord",startChordSig);
 		gbc = new CustomGridBagConstraints(
@@ -133,10 +133,10 @@ public class ChordConsonanceRatingDialog extends JDialog implements ActionListen
 	 * Make the dialog visible and return all ratings to the caller
 	 * @return
 	 */
-	public EndChordRatingList showDialog() {
+	public P_EndChordRatingList showDialog() {
 		setVisible(true);
 		
-		EndChordRatingList endChordList = new EndChordRatingList();
+		P_EndChordRatingList endChordList = new P_EndChordRatingList();
 		endChordList.setEndsignature(endChordLabel.getChordSignature());
 		endChordList.setIntervalRatings(intervalRatings);
 
@@ -163,7 +163,7 @@ public class ChordConsonanceRatingDialog extends JDialog implements ActionListen
 		Interval interval = intervalLabel.getInterval();
 		ConsonanceRating rating = ratingPanel.selectedRating();
 
-		IntervalRating intervalRating = new IntervalRating();
+		P_IntervalRating intervalRating = new P_IntervalRating();
 		intervalRating.setIntervalBetweenRoots(interval);
 		intervalRating.setRating(rating);
 		

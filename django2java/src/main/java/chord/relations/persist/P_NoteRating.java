@@ -1,13 +1,13 @@
-package chord.relations;
+package chord.relations.persist;
 
 import chord.ConsonanceRating;
 import chord.Interval;
 
-public class NoteRating {
+public class P_NoteRating {
 	private Interval noteInterval;
 	private ConsonanceRating rating;
 
-	public NoteRating() {
+	public P_NoteRating() {
 	}
 
 	public Interval getNoteInterval() {
@@ -36,9 +36,9 @@ public class NoteRating {
 	public boolean equals(Object o) {
 	    if (o == this)
 	        return true;
-	    if (!(o instanceof NoteRating))
+	    if (!(o instanceof P_NoteRating))
 	        return false;
-	    NoteRating other = (NoteRating) o;
+	    P_NoteRating other = (P_NoteRating) o;
 	    
 	    boolean noteIntervalsEqual, ratingsEqual;
 	    

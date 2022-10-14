@@ -787,6 +787,14 @@ public enum ScaleSignature {
 			Interval.MAJOR6,
 			Interval.MINOR7);
 	
+	public static ScaleSignature getFirstSignature() {
+		return ScaleSignature.values()[0];
+	}
+	
+	public static ScaleSignature getLastSignature() {
+		return ScaleSignature.values()[getLargestOrdinal()];
+	}
+	
 	/**
 	 * Get the largest possible ordinal value for a note.
 	 * @return

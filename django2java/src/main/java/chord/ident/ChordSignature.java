@@ -793,6 +793,22 @@ public enum ChordSignature {
 		return ChordSignature.values().length-1;
 	}
 	
+	/**
+	 * Return the ChordSignature with the highest ordinal.
+	 * @return
+	 */
+	public static ChordSignature getHighestValue() {
+		return ChordSignature.values()[ChordSignature.values().length -1];
+	}
+	
+	/**
+	 * return the ChordSignature with the lowest value.
+	 * @return
+	 */
+	public static ChordSignature getLowestValue() {
+		return ChordSignature.values()[0];
+	}
+	
 	private final String signatureText;
 	private final List<Interval> intervals;
 	private Set<Interval> consonantIntervals;
@@ -829,6 +845,10 @@ public enum ChordSignature {
 		this.intervals = Collections.unmodifiableList(Arrays.asList(intervals));
 	}
 	
+	
+	//TODO: This method is a semi duplicate of getPreviousSignature.
+	//not fixing it immediately since I don'e know how it will impact
+	//already existing code
 	/**
 	 * Get the previous chord by its order of declaration.
 	 * 
@@ -843,6 +863,10 @@ public enum ChordSignature {
 		}
 	}
 	
+	
+	//TODO: This method is a semi duplicate of getNextSignature.
+	//not fixing it immediately since I don'e know how it will impact
+	//already existing code
 	/**
 	 * Get the next chord signature by its order of declaration.
 	 * 
@@ -891,6 +915,34 @@ public enum ChordSignature {
 
 	public String displayText() {
 		return signatureText;
+	}
+	
+	/**
+	 * Returns the next chordSignature by ordinal.
+	 * @return next ChordSignature by ordinal if not at end.
+	 * null otherwise.
+	 */
+	public ChordSignature getNextSignature() {
+		if(this.isHighestValue()) {
+			return null;
+		}
+		else {
+			return ChordSignature.values()[this.ordinal() + 1];
+		}
+	}
+	
+	/**
+	 * Returns the previous ChordSignature by ordinal.
+	 * @return previous chord signature if the current
+	 * signature greater than 0, null otherwise.
+	 */
+	public ChordSignature getPreviousSignature() {
+		if(this.ordinal() == 0) {
+			return null;
+		}
+		else {
+			return ChordSignature.values()[this.ordinal() -1];
+		}
 	}
 
 	public boolean isHighestValue() {

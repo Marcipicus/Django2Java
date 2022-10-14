@@ -21,8 +21,8 @@ import javax.xml.bind.Marshaller;
 import chord.gui.components.ChordLabel;
 import chord.gui.components.CustomGridBagConstraints;
 import chord.ident.ChordSignature;
-import chord.relations.ChordChangeConsonance;
-import chord.relations.EndChordRatingList;
+import chord.relations.persist.P_ChordChangeConsonance;
+import chord.relations.persist.P_EndChordRatingList;
 
 public class ChordConsonanceDialog extends JDialog implements ActionListener{
 
@@ -33,7 +33,7 @@ public class ChordConsonanceDialog extends JDialog implements ActionListener{
 	
 	private static final String CONSONANCE_DIALOG_TITLE = "Chord Consonance Rating";
 	
-	private List<EndChordRatingList> endChordRatingsList;
+	private List<P_EndChordRatingList> endChordRatingsList;
 	private boolean lastChordChangeHasBeenRated = false;
 
 	private ChordLabel startChordLabel, endChordLabel;
@@ -43,15 +43,15 @@ public class ChordConsonanceDialog extends JDialog implements ActionListener{
 
 	public ChordConsonanceDialog(JFrame parentFrame, ChordSignature chordSig) {
 		super(parentFrame,CONSONANCE_DIALOG_TITLE);
-		initializeDialog(chordSig,ChordSignature.b2,new LinkedList<EndChordRatingList>());
+		initializeDialog(chordSig,ChordSignature.b2,new LinkedList<P_EndChordRatingList>());
 
 		setVisible(true);
 	}
 
-	public ChordConsonanceDialog(JFrame parentFrame, ChordChangeConsonance chordConsonanceModel) {
+	public ChordConsonanceDialog(JFrame parentFrame, P_ChordChangeConsonance chordConsonanceModel) {
 		super(parentFrame,CONSONANCE_DIALOG_TITLE);
 		
-		List<EndChordRatingList> endChordListFromModel;
+		List<P_EndChordRatingList> endChordListFromModel;
 		ChordSignature startChordSig, endChordSig;
 		
 		endChordListFromModel = chordConsonanceModel.getEndChordList();
@@ -72,7 +72,7 @@ public class ChordConsonanceDialog extends JDialog implements ActionListener{
 		setVisible(true);
 	}
 	
-	private void initializeDialog(ChordSignature startChordSig, ChordSignature endChordSig, List<EndChordRatingList> endChordRatingList) {
+	private void initializeDialog(ChordSignature startChordSig, ChordSignature endChordSig, List<P_EndChordRatingList> endChordRatingList) {
 		setLayout(new GridBagLayout());
 		setSize(300,250);
 		//setResizable(false);
@@ -203,7 +203,7 @@ public class ChordConsonanceDialog extends JDialog implements ActionListener{
 	}
 	
 	private void saveToFile() {
-		ChordChangeConsonance chordChangeConsonanceModel = new ChordChangeConsonance();
+		P_ChordChangeConsonance chordChangeConsonanceModel = new P_ChordChangeConsonance();
 		chordChangeConsonanceModel.setStartSignature(startChordLabel.getChordSignature());
 		chordChangeConsonanceModel.setEndChordList(endChordRatingsList);
 		
@@ -235,9 +235,9 @@ public class ChordConsonanceDialog extends JDialog implements ActionListener{
 		}
 	}
 	
-	private void saveScaleConsonanceModelToFile(File destinationFile, ChordChangeConsonance model) throws JAXBException {
+	private void saveScaleConsonanceModelToFile(File destinationFile, P_ChordChangeConsonance model) throws JAXBException {
 		//This is where a real application would save the file.
-		JAXBContext context = JAXBContext.newInstance(ChordChangeConsonance.class);
+		JAXBContext context = JAXBContext.newInstance(P_ChordChangeConsonance.class);
 
 		Marshaller marshaller = context.createMarshaller();
 

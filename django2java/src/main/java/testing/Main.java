@@ -38,9 +38,9 @@ import chord.ident.ScaleSignature;
 import chord.maps.ChordLibrary;
 import chord.rating.ChordRatingGUI;
 import chord.rating.PracticeGUI;
-import chord.relations.ChordChangeConsonance;
-import chord.relations.EndChordRatingList;
-import chord.relations.IntervalRating;
+import chord.relations.persist.P_ChordChangeConsonance;
+import chord.relations.persist.P_EndChordRatingList;
+import chord.relations.persist.P_IntervalRating;
 
 public class Main {
 
@@ -128,23 +128,23 @@ public class Main {
 	}
 
 	private static void tryMarshallingAndUnMarshalling() throws JAXBException {
-		IntervalRating rating = new IntervalRating(Interval.DIMINISHED12, ConsonanceRating.VERY_GOOD);
+		P_IntervalRating rating = new P_IntervalRating(Interval.DIMINISHED12, ConsonanceRating.VERY_GOOD);
 
-		EndChordRatingList endList = new EndChordRatingList();
+		P_EndChordRatingList endList = new P_EndChordRatingList();
 		endList.setEndsignature(ChordSignature.AUGSUS2);
-		List<IntervalRating> intervalRatings = new LinkedList<IntervalRating>();
+		List<P_IntervalRating> intervalRatings = new LinkedList<P_IntervalRating>();
 		intervalRatings.add(rating);
 		endList.setIntervalRatings(intervalRatings);
 
-		ChordChangeConsonance mainChordChange = new ChordChangeConsonance();
+		P_ChordChangeConsonance mainChordChange = new P_ChordChangeConsonance();
 		mainChordChange.setStartSignature(ChordSignature.MAJOR);
 
-		List<EndChordRatingList> endChordList = new LinkedList<EndChordRatingList>();
+		List<P_EndChordRatingList> endChordList = new LinkedList<P_EndChordRatingList>();
 		endChordList.add(endList);
 
 		mainChordChange.setEndChordList(endChordList);
 
-		JAXBContext context = JAXBContext.newInstance(ChordChangeConsonance.class);
+		JAXBContext context = JAXBContext.newInstance(P_ChordChangeConsonance.class);
 
 		Marshaller marshaller = context.createMarshaller();
 
@@ -153,12 +153,12 @@ public class Main {
 		Unmarshaller unmarshaller = context.createUnmarshaller();
 
 		Object unmarshalled = unmarshaller.unmarshal(new File("text.xml"));
-		ChordChangeConsonance unmChordChange = (ChordChangeConsonance)unmarshalled;
+		P_ChordChangeConsonance unmChordChange = (P_ChordChangeConsonance)unmarshalled;
 
 		System.out.println(unmChordChange.getStartSignature());
-		for(EndChordRatingList umEndList : unmChordChange.getEndChordList()) {
+		for(P_EndChordRatingList umEndList : unmChordChange.getEndChordList()) {
 			System.out.println(umEndList.getEndsignature());
-			for(IntervalRating umIntervalRating : umEndList.getIntervalRatings()) {
+			for(P_IntervalRating umIntervalRating : umEndList.getIntervalRatings()) {
 				System.out.println(umIntervalRating.getIntervalBetweenRoots());
 				System.out.println(umIntervalRating.getRating());
 			}

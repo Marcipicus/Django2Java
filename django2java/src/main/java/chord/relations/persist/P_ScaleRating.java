@@ -1,18 +1,18 @@
-package chord.relations;
+package chord.relations.persist;
 
 import chord.ConsonanceRating;
 import chord.ident.ScaleSignature;
 
-public class ScaleRating {
+public class P_ScaleRating {
 	private ScaleSignature scaleSig;
 	private ConsonanceRating rating;
 
-	public ScaleRating(ScaleSignature scaleSig, ConsonanceRating rating) {
+	public P_ScaleRating(ScaleSignature scaleSig, ConsonanceRating rating) {
 		this.scaleSig = scaleSig;
 		this.rating = rating;
 	}
 
-	public ScaleRating() {
+	public P_ScaleRating() {
 
 	}
 
@@ -42,9 +42,9 @@ public class ScaleRating {
 	public boolean equals(Object o) {
 		if (o == this)
 			return true;
-		if (!(o instanceof ScaleRating))
+		if (!(o instanceof P_ScaleRating))
 			return false;
-		ScaleRating other = (ScaleRating) o;
+		P_ScaleRating other = (P_ScaleRating) o;
 
 		boolean scalesEqual, ratingsEqual;
 

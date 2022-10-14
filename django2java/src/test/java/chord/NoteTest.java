@@ -1,4 +1,4 @@
-package chord.components.test;
+package chord;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;

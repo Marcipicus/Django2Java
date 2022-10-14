@@ -1,19 +1,19 @@
-package chord.relations;
+package chord.relations.persist;
 
 import chord.ConsonanceRating;
 import chord.Interval;
 
-public class IntervalRating {
+public class P_IntervalRating {
 
 	private Interval intervalBetweenRoots;
 	private ConsonanceRating rating;
 	
-	public IntervalRating(Interval intervalBetweenRoots,ConsonanceRating rating) {
+	public P_IntervalRating(Interval intervalBetweenRoots,ConsonanceRating rating) {
 		this.intervalBetweenRoots = intervalBetweenRoots;
 		this.rating = rating;
 	}
 	
-	public IntervalRating() {
+	public P_IntervalRating() {
 	}
 
 	public Interval getIntervalBetweenRoots() {
@@ -42,9 +42,9 @@ public class IntervalRating {
 	public boolean equals(Object o) {
 	    if (o == this)
 	        return true;
-	    if (!(o instanceof IntervalRating))
+	    if (!(o instanceof P_IntervalRating))
 	        return false;
-	    IntervalRating other = (IntervalRating) o;
+	    P_IntervalRating other = (P_IntervalRating) o;
 	    
 	    boolean intervalsEqual, ratingsEqual;
 	    

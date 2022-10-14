@@ -33,8 +33,8 @@ import chord.gui.components.ScaleLabel;
 import chord.ident.ChordSignature;
 import chord.ident.ScaleSignature;
 import chord.maps.ChordLibrary;
-import chord.relations.ScaleConsonance;
-import chord.relations.ScaleRating;
+import chord.relations.persist.P_ScaleConsonance;
+import chord.relations.persist.P_ScaleRating;
 
 public class ScaleConsonanceDialog extends JDialog implements ActionListener {
 
@@ -45,7 +45,7 @@ public class ScaleConsonanceDialog extends JDialog implements ActionListener {
 	
 	private final static String FRAME_TITLE = "Scale Consonance Rating";
 
-	private List<ScaleRating> scaleRatings;
+	private List<P_ScaleRating> scaleRatings;
 	private ChordLabel chordLabel;
 	private ScaleLabel scaleLabel;
 	private RatingRadioPanel ratingPanel;
@@ -53,14 +53,14 @@ public class ScaleConsonanceDialog extends JDialog implements ActionListener {
 
 	private JButton playButton, previousScaleButton, saveRatingButton,saveToFileButton;
 	
-	public ScaleConsonanceDialog(JFrame parentFrame, ScaleConsonance scaleConsonanceModel) {
+	public ScaleConsonanceDialog(JFrame parentFrame, P_ScaleConsonance scaleConsonanceModel) {
 		super(parentFrame, FRAME_TITLE);
 		initializeDialog(parentFrame,scaleConsonanceModel.getChordSig());
 		
 		scaleRatings = scaleConsonanceModel.getScaleRatings();
 		int indexOfLastRating = scaleRatings.size()-1;
 		
-		ScaleRating lastRating = scaleRatings.get(indexOfLastRating);
+		P_ScaleRating lastRating = scaleRatings.get(indexOfLastRating);
 		ScaleSignature scaleSig= lastRating.getScaleSig();
 		
 		//if it is the last signature then we want to make sure that we don't rollover
@@ -96,7 +96,7 @@ public class ScaleConsonanceDialog extends JDialog implements ActionListener {
 
 		GridBagConstraints gbc; // temporary holder for GridBagConstraints..reused
 
-		this.scaleRatings = new LinkedList<ScaleRating>();
+		this.scaleRatings = new LinkedList<P_ScaleRating>();
 
 		chordLabel = new ChordLabel(chordSig);
 		gbc = new CustomGridBagConstraints(
@@ -240,7 +240,7 @@ public class ScaleConsonanceDialog extends JDialog implements ActionListener {
 		ScaleSignature scaleSig = scaleLabel.getScaleSignature();
 		ConsonanceRating rating = ratingPanel.selectedRating();
 
-		ScaleRating scaleRating = new ScaleRating();
+		P_ScaleRating scaleRating = new P_ScaleRating();
 		scaleRating.setScaleSig(scaleSig);
 		scaleRating.setRating(rating);
 		scaleRatings.add(scaleRating);
@@ -254,7 +254,7 @@ public class ScaleConsonanceDialog extends JDialog implements ActionListener {
 	}	
 
 	private void saveToFile() {
-		ScaleConsonance scaleConsonanceModel = new ScaleConsonance();
+		P_ScaleConsonance scaleConsonanceModel = new P_ScaleConsonance();
 		scaleConsonanceModel.setChordSig(chordLabel.getChordSignature());
 		scaleConsonanceModel.setScaleRatings(scaleRatings);
 		
@@ -286,9 +286,9 @@ public class ScaleConsonanceDialog extends JDialog implements ActionListener {
 		}
 	}
 	
-	private void saveScaleConsonanceModelToFile(File destinationFile, ScaleConsonance model) throws JAXBException {
+	private void saveScaleConsonanceModelToFile(File destinationFile, P_ScaleConsonance model) throws JAXBException {
 		//This is where a real application would save the file.
-		JAXBContext context = JAXBContext.newInstance(ScaleConsonance.class);
+		JAXBContext context = JAXBContext.newInstance(P_ScaleConsonance.class);
 
 		Marshaller marshaller = context.createMarshaller();
 

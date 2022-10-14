@@ -1,15 +1,15 @@
-package chord.relations;
+package chord.relations.persist;
 
 import java.util.List;
 
 import chord.ident.ChordSignature;
 
-public class EndChordRatingList {
+public class P_EndChordRatingList {
 
 	private ChordSignature endSignature;
-	private List<IntervalRating> intervalRatings;
+	private List<P_IntervalRating> intervalRatings;
 	
-	public EndChordRatingList() {
+	public P_EndChordRatingList() {
 	}
 
 	public ChordSignature getEndsignature() {
@@ -20,11 +20,11 @@ public class EndChordRatingList {
 		this.endSignature = endsignature;
 	}
 
-	public List<IntervalRating> getIntervalRatings() {
+	public List<P_IntervalRating> getIntervalRatings() {
 		return intervalRatings;
 	}
 
-	public void setIntervalRatings(List<IntervalRating> intervalRatings) {
+	public void setIntervalRatings(List<P_IntervalRating> intervalRatings) {
 		this.intervalRatings = intervalRatings;
 	}
 	//TODO: Might have to change this method to look at displayText
@@ -37,9 +37,9 @@ public class EndChordRatingList {
 	public boolean equals(Object o) {
 	    if (o == this)
 	        return true;
-	    if (!(o instanceof EndChordRatingList))
+	    if (!(o instanceof P_EndChordRatingList))
 	        return false;
-	    EndChordRatingList other = (EndChordRatingList) o;
+	    P_EndChordRatingList other = (P_EndChordRatingList) o;
 	    
 	    boolean signaturesEqual, intervalRatingsEqual;
 	    

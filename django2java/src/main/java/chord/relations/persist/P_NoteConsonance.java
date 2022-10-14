@@ -1,4 +1,4 @@
-package chord.relations;
+package chord.relations.persist;
 
 import java.util.List;
 
@@ -10,12 +10,12 @@ import chord.ident.ChordSignature;
 
 @XmlRootElement(name="NoteConsonance")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class NoteConsonance {
+public class P_NoteConsonance {
 
 	private ChordSignature chordSig;
-	private List<NoteRating> noteRatings;
+	private List<P_NoteRating> noteRatings;
 	
-	public NoteConsonance() {
+	public P_NoteConsonance() {
 	}
 
 	public ChordSignature getChordSig() {
@@ -26,11 +26,11 @@ public class NoteConsonance {
 		this.chordSig = chordSig;
 	}
 
-	public List<NoteRating> getNoteRatings() {
+	public List<P_NoteRating> getNoteRatings() {
 		return noteRatings;
 	}
 
-	public void setNoteRatings(List<NoteRating> noteRatings) {
+	public void setNoteRatings(List<P_NoteRating> noteRatings) {
 		this.noteRatings = noteRatings;
 	}
 	
@@ -44,9 +44,9 @@ public class NoteConsonance {
 	public boolean equals(Object o) {
 	    if (o == this)
 	        return true;
-	    if (!(o instanceof NoteConsonance))
+	    if (!(o instanceof P_NoteConsonance))
 	        return false;
-	    NoteConsonance other = (NoteConsonance) o;
+	    P_NoteConsonance other = (P_NoteConsonance) o;
 	    
 	    boolean signaturesEqual, noteRatingsEqual;
 	    

@@ -1,4 +1,4 @@
-package chord.relations;
+package chord.relations.persist;
 
 import java.util.List;
 
@@ -10,11 +10,11 @@ import chord.ident.ChordSignature;
 
 @XmlRootElement(name="ScaleConsonance")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ScaleConsonance {
+public class P_ScaleConsonance {
 	private ChordSignature chordSig;
-	private List<ScaleRating> scaleRatings;
+	private List<P_ScaleRating> scaleRatings;
 
-	public ScaleConsonance() {
+	public P_ScaleConsonance() {
 	}
 
 	public ChordSignature getChordSig() {
@@ -25,11 +25,11 @@ public class ScaleConsonance {
 		this.chordSig = chordSig;
 	}
 
-	public List<ScaleRating> getScaleRatings() {
+	public List<P_ScaleRating> getScaleRatings() {
 		return scaleRatings;
 	}
 
-	public void setScaleRatings(List<ScaleRating> scaleRatings) {
+	public void setScaleRatings(List<P_ScaleRating> scaleRatings) {
 		this.scaleRatings = scaleRatings;
 	}
 	
@@ -43,9 +43,9 @@ public class ScaleConsonance {
 	public boolean equals(Object o) {
 	    if (o == this)
 	        return true;
-	    if (!(o instanceof ScaleConsonance))
+	    if (!(o instanceof P_ScaleConsonance))
 	        return false;
-	    ScaleConsonance other = (ScaleConsonance) o;
+	    P_ScaleConsonance other = (P_ScaleConsonance) o;
 	    
 	    boolean signaturesEqual, scaleRatingsEqual;
 	    

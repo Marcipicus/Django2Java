@@ -5,8 +5,6 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.util.LinkedList;
-import java.util.List;
 
 import javax.sound.midi.MidiUnavailableException;
 import javax.swing.JButton;
@@ -15,9 +13,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
 
 import chord.Chord;
 import chord.ConsonanceRating;
@@ -43,7 +39,7 @@ public class NoteConsonanceDialog extends JDialog implements ActionListener{
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private List<NoteRating> noteRatings;
+	private NoteConsonance noteConsonance;
 	private ChordLabel chordLabel;
 	private IntervalLabel intervalLabel;
 	private RatingRadioPanel ratingPanel;
@@ -62,9 +58,9 @@ public class NoteConsonanceDialog extends JDialog implements ActionListener{
 
 		GridBagConstraints gbc; // temporary holder for GridBagConstraints..reused
 
-		this.noteRatings = new LinkedList<NoteRating>();
+		noteConsonance = new NoteConsonance(chordSig);
 
-		chordLabel = new ChordLabel(chordSig);
+		chordLabel = new ChordLabel(noteConsonance.getChordSig());
 		gbc = new CustomGridBagConstraints(
 				0,0,
 				1,1,
@@ -179,11 +175,8 @@ public class NoteConsonanceDialog extends JDialog implements ActionListener{
 		}
 		Interval interval = intervalLabel.getInterval();
 		ConsonanceRating rating = ratingPanel.selectedRating();
-
-		NoteRating noteRating = new NoteRating();
-		noteRating.setNoteInterval(interval);
-		noteRating.setRating(rating);
-		noteRatings.add(noteRating);
+		
+		noteConsonance.addNoteRating(new NoteRating(interval,rating));
 
 		if(interval.equals(Interval.MAJOR7)) {
 			lastNoteHasBeenRated = true; 
@@ -194,19 +187,18 @@ public class NoteConsonanceDialog extends JDialog implements ActionListener{
 	}
 	
 	private void saveToFile() {
-		NoteConsonance noteConsonanceModel = new NoteConsonance();
-		noteConsonanceModel.setChordSig(chordLabel.getChordSignature());
-		noteConsonanceModel.setNoteRatings(noteRatings);
-
+		//TODO:almost certainly errors here.
 		JFileChooser jfc = new JFileChooser();
-		File fileSaveDestination = new File("Note-"+noteConsonanceModel.getChordSig().toString()+".xml");
+		File fileSaveDestination = new File(noteConsonance.getSaveFileName());
 		jfc.setSelectedFile(fileSaveDestination);//Create a default name for the file
+
 		int returnVal = jfc.showSaveDialog(this);
 
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			fileSaveDestination = jfc.getSelectedFile();
 			try {
-				saveNoteConsonanceModelToFile(fileSaveDestination,noteConsonanceModel);
+				noteConsonance.
+				saveNoteConsonanceModelToFile(fileSaveDestination,noteConsonance);
 			} catch (JAXBException e1) {
 				JOptionPane.showMessageDialog(this,"Error saving file\n"+e1.toString(),"ERROR", JOptionPane.ERROR);
 			}
@@ -217,14 +209,4 @@ public class NoteConsonanceDialog extends JDialog implements ActionListener{
 		}
 		
 	}
-	
-	private void saveNoteConsonanceModelToFile(File destinationFile, NoteConsonance model) throws JAXBException {
-		//This is where a real application would save the file.
-		JAXBContext context = JAXBContext.newInstance(NoteConsonance.class);
-
-		Marshaller marshaller = context.createMarshaller();
-
-		marshaller.marshal(model,destinationFile);
-	}
-
 }

@@ -43,11 +43,23 @@ public enum Interval {
 	 * @return
 	 */
 	public Interval getNextInterval() {
-		Interval nextInterval;
 		try {
 			return Interval.values()[ordinal() + 1];
 		}catch(IndexOutOfBoundsException e){
 			return Interval.values()[0];
 		}
+	}
+	
+	/**
+	 * Check to see if the Interval is within the first octave.
+	 * This function exists so that duplicate intervals are not
+	 * counted....e.g. Interval.UNISON and Interval.PERFECT8 refer
+	 * to the same note. The second octave intervals only exist for
+	 * extended chords.
+	 * @return true if the interval is a major7th or below,
+	 * false otherwise
+	 */
+	public boolean inFirstOctave() {
+		return this.ordinal() < Interval.PERFECT8.ordinal();
 	}
 }

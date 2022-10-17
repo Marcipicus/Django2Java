@@ -33,8 +33,8 @@ import chord.gui.components.ScaleLabel;
 import chord.ident.ChordSignature;
 import chord.ident.ScaleSignature;
 import chord.maps.ChordLibrary;
-import chord.relations.ScaleConsonance;
-import chord.relations.ScaleRating;
+import chord.relations.persist.ScaleConsonance;
+import chord.relations.persist.ScaleRating;
 
 public class ScaleConsonanceDialog extends JDialog implements ActionListener {
 

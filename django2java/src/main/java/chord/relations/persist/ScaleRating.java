@@ -1,4 +1,4 @@
-package chord.relations;
+package chord.relations.persist;
 
 import chord.ConsonanceRating;
 import chord.ident.ScaleSignature;

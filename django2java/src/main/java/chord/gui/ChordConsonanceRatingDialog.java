@@ -19,8 +19,8 @@ import chord.gui.components.CustomGridBagConstraints;
 import chord.gui.components.IntervalLabel;
 import chord.gui.components.RatingRadioPanel;
 import chord.ident.ChordSignature;
-import chord.relations.EndChordRatingList;
-import chord.relations.IntervalRating;
+import chord.relations.persist.EndChordRatingList;
+import chord.relations.persist.IntervalRating;
 
 /**
  * This dialog is used to rate chord changes between a start chord and

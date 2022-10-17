@@ -33,8 +33,8 @@ import chord.gui.components.IntervalLabel;
 import chord.gui.components.RatingRadioPanel;
 import chord.ident.ChordSignature;
 import chord.maps.ChordLibrary;
-import chord.relations.NoteConsonance;
-import chord.relations.NoteRating;
+import chord.relations.persist.NoteConsonance;
+import chord.relations.persist.NoteRating;
 
 public class NoteConsonanceDialog extends JDialog implements ActionListener{
 

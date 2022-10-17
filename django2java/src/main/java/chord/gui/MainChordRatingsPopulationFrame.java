@@ -18,9 +18,9 @@ import javax.xml.bind.Unmarshaller;
 
 import chord.gui.components.CustomGridBagConstraints;
 import chord.ident.ChordSignature;
-import chord.relations.ChordChangeConsonance;
-import chord.relations.NoteConsonance;
-import chord.relations.ScaleConsonance;
+import chord.relations.persist.ChordChangeConsonance;
+import chord.relations.persist.NoteConsonance;
+import chord.relations.persist.ScaleConsonance;
 
 public class MainChordRatingsPopulationFrame extends JFrame implements ActionListener{
 

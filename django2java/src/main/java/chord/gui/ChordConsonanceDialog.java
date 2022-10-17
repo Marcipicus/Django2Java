@@ -21,8 +21,8 @@ import javax.xml.bind.Marshaller;
 import chord.gui.components.ChordLabel;
 import chord.gui.components.CustomGridBagConstraints;
 import chord.ident.ChordSignature;
-import chord.relations.ChordChangeConsonance;
-import chord.relations.EndChordRatingList;
+import chord.relations.persist.ChordChangeConsonance;
+import chord.relations.persist.EndChordRatingList;
 
 public class ChordConsonanceDialog extends JDialog implements ActionListener{
 

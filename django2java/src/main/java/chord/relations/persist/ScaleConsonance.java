@@ -1,4 +1,4 @@
-package chord.relations;
+package chord.relations.persist;
 
 import java.util.List;
 
@@ -8,14 +8,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import chord.ident.ChordSignature;
 
-@XmlRootElement(name="NoteConsonance")
+@XmlRootElement(name="ScaleConsonance")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class NoteConsonance {
-
+public class ScaleConsonance {
 	private ChordSignature chordSig;
-	private List<NoteRating> noteRatings;
-	
-	public NoteConsonance() {
+	private List<ScaleRating> scaleRatings;
+
+	public ScaleConsonance() {
 	}
 
 	public ChordSignature getChordSig() {
@@ -26,12 +25,12 @@ public class NoteConsonance {
 		this.chordSig = chordSig;
 	}
 
-	public List<NoteRating> getNoteRatings() {
-		return noteRatings;
+	public List<ScaleRating> getScaleRatings() {
+		return scaleRatings;
 	}
 
-	public void setNoteRatings(List<NoteRating> noteRatings) {
-		this.noteRatings = noteRatings;
+	public void setScaleRatings(List<ScaleRating> scaleRatings) {
+		this.scaleRatings = scaleRatings;
 	}
 	
 	//TODO: Might have to change this method to look at displayText
@@ -44,26 +43,26 @@ public class NoteConsonance {
 	public boolean equals(Object o) {
 	    if (o == this)
 	        return true;
-	    if (!(o instanceof NoteConsonance))
+	    if (!(o instanceof ScaleConsonance))
 	        return false;
-	    NoteConsonance other = (NoteConsonance) o;
+	    ScaleConsonance other = (ScaleConsonance) o;
 	    
-	    boolean signaturesEqual, noteRatingsEqual;
+	    boolean signaturesEqual, scaleRatingsEqual;
 	    
 	    signaturesEqual = this.chordSig.equals(other.chordSig);
-	    noteRatingsEqual = this.noteRatings.equals(other.noteRatings);
+	    scaleRatingsEqual = this.scaleRatings.equals(other.scaleRatings);
 
-	    return signaturesEqual && noteRatingsEqual;
+	    return signaturesEqual && scaleRatingsEqual;
 	}
 	
 	@Override
 	public int hashCode() {
-		final int prime = 19;
+		final int prime = 23;
 		
 		int result = 1;
 		
 		result = prime * result + ((chordSig==null) ? 0 : chordSig.hashCode());
-		result = prime * result + ((noteRatings == null) ? 0 : noteRatings.hashCode());
+		result = prime * result + ((scaleRatings == null) ? 0 : scaleRatings.hashCode());
 		
 		return result;
 	}

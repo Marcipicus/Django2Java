@@ -1,4 +1,4 @@
-package chord.relations;
+package chord.relations.persist;
 
 import java.util.List;
 

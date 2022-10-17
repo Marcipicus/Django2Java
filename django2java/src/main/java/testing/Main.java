@@ -38,9 +38,9 @@ import chord.ident.ScaleSignature;
 import chord.maps.ChordLibrary;
 import chord.rating.ChordRatingGUI;
 import chord.rating.PracticeGUI;
-import chord.relations.ChordChangeConsonance;
-import chord.relations.EndChordRatingList;
-import chord.relations.IntervalRating;
+import chord.relations.persist.ChordChangeConsonance;
+import chord.relations.persist.EndChordRatingList;
+import chord.relations.persist.IntervalRating;
 
 public class Main {
 

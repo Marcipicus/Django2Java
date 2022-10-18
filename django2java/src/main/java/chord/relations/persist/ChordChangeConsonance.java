@@ -9,8 +9,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import chord.Interval;
 import chord.ident.ChordSignature;
 
-@XmlRootElement(name="ChordChanges")
-@XmlAccessorType(XmlAccessType.FIELD)
 public class ChordChangeConsonance {
 	
 	private ChordSignature startSignature;

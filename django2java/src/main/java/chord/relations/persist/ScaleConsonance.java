@@ -8,8 +8,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import chord.ident.ChordSignature;
 
-@XmlRootElement(name="ScaleConsonance")
-@XmlAccessorType(XmlAccessType.FIELD)
 public class ScaleConsonance {
 	private ChordSignature chordSig;
 	private List<ScaleRating> scaleRatings;

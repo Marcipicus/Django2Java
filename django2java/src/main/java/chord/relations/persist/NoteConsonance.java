@@ -8,8 +8,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import chord.ident.ChordSignature;
 
-@XmlRootElement(name="NoteConsonance")
-@XmlAccessorType(XmlAccessType.FIELD)
 public class NoteConsonance {
 
 	private ChordSignature chordSig;

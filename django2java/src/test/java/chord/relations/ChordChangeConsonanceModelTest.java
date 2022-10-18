@@ -16,6 +16,11 @@ import chord.ConsonanceRating;
 import chord.Interval;
 import chord.ident.ChordSignature;
 
+/**
+ * Tests for the ChordChangeConsonanceDataModel.
+ * @author DAD
+ *
+ */
 public class ChordChangeConsonanceModelTest {
 
 	/**

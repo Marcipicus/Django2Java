@@ -3,9 +3,13 @@ package chord.relations;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.stream.Stream;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -17,6 +21,9 @@ import chord.Interval;
 import chord.ident.ChordSignature;
 
 public class NoteConsonanceModelTest {
+	//.tmp file name used to make git ignore on checkins if
+	//we forget to delete the test file
+	final String testFileName = "testNoteConsonanceFile.tmp";
 
 	/**
 	 * Parameters for testing null pointer detection in add method.
@@ -51,12 +58,35 @@ public class NoteConsonanceModelTest {
 				Arguments.of(ChordSignature.MAJOR,Interval.MINOR2,ConsonanceRating.BAD)
 				);
 	}
+	
+	/**
+	 * Take the given NoteConsonanceModel and fill it with a consistent
+	 * rating every time
+	 * @param model to be filled....it is assumed that the model is empty.
+	 */
+	static void populateTestModel(NoteConsonanceModel model) {
+		final int halfChordSigIndex = ChordSignature.values().length / 2;
+		for(int i=0; i<halfChordSigIndex; i++) {
+			ChordSignature chorSig = ChordSignature.values()[i];
+			
+			for(Interval interval : Interval.values()) {
+				if( !interval.inFirstOctave()) {
+					break;
+				}
+				
+				//Get a random ConsonanceRating
+				ConsonanceRating rating = ConsonanceRating.MEDIOCRE;
+				
+				model.addRating(chorSig, interval, rating);
+			}
+		}
+	}
 
 	/**
 	 * Main data model used for tests.
 	 * Initialized before every test.
 	 */
-	NoteConsonanceModel ncModel;
+	NoteConsonanceModel ncModel,otherModel;
 
 	/**
 	 * Initialization code for main data model.
@@ -65,8 +95,81 @@ public class NoteConsonanceModelTest {
 	@BeforeEach
 	void init() {
 		ncModel = new NoteConsonanceModel();
+		otherModel = new NoteConsonanceModel();
 	}
+	
+	/**
+	 * Make sure that a string containing a chord signature is
+	 * read and written properly.
+	 */
+	@Test
+	void testReadChordSignatureString() {
+		ChordSignature readChordSig;
 
+		final ChordSignature writtenChordSig = ChordSignature.MAJOR;
+		final String codedLine = NoteConsonanceModel.createChordSignatureString(writtenChordSig);
+		
+		readChordSig = NoteConsonanceModel.readChordSignatureFromLine(codedLine);
+		assertEquals(writtenChordSig,readChordSig);
+	}
+	
+	/**
+	 * Code a String containing an interval and a rating and
+	 * make sure that the data can be read properly
+	 */
+	@Test
+	void testParseIntervalAndRating() {
+		Interval readInterval;
+		ConsonanceRating readRating;
+		
+		final Interval writtenInterval = Interval.PERFECT5;
+		final ConsonanceRating writtenRating = ConsonanceRating.GOOD;
+		
+		final String codedLine = 
+				NoteConsonanceModel.createIntervalRatingString(
+						writtenInterval, 
+						writtenRating);
+		
+		readInterval = NoteConsonanceModel.parseIntervalFromIntervalRatingLine(codedLine);
+		assertEquals(writtenInterval,readInterval);
+		
+		readRating = NoteConsonanceModel.parseRatingFromIntervalRatingLine(codedLine);
+		assertEquals(writtenRating,readRating);
+	}
+	
+	/**
+	 * Make sure that we can save to file and load from file
+	 * properly.
+	 * @throws FileNotFoundException
+	 */
+	@Test
+	void testSavingToAndLoadingFromFile() throws FileNotFoundException {
+		NoteConsonanceModel modelLoadedFromFile;
+		
+		populateTestModel(ncModel);
+		
+		NoteConsonanceModel.saveToFile(ncModel, testFileName);
+		modelLoadedFromFile = NoteConsonanceModel.loadFromFile(testFileName);
+		
+		//Make sure we get rid of the file
+		File createdFile = new File(testFileName);
+		createdFile.delete();
+		
+		assertEquals(ncModel,modelLoadedFromFile);
+	}
+	
+	/**
+	 * Make sure .equals works
+	 */
+	@Test
+	void testEquals() {
+		populateTestModel(ncModel);
+		populateTestModel(otherModel);
+		
+		assertTrue(ncModel.equals(otherModel));
+		assertEquals(ncModel,otherModel);
+	}
+	
 	/**
 	 * Ensure that the addRating method throws an exception when
 	 * passed a null value for each of the parameters

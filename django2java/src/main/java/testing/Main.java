@@ -4,6 +4,7 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.PrintStream;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
@@ -45,14 +46,80 @@ import chord.relations.persist.IntervalRating;
 public class Main {
 
 	public static void main(String[] args) throws JAXBException, InvalidMidiDataException, MidiUnavailableException, InvalidMIDIValueException, InvalidNoteRegisterException, ChordToneBuildingException, InterruptedException {
+		
+		
+		
 		//tryPracticeGui();
 		//tryMarshallingAndUnMarshalling();
 		//tryChordChangeRatingGUI();
 		//displayConsonanceCombinations();
-		tryMainConsonanceFileBuildingGUI();
+		//tryMainConsonanceFileBuildingGUI();
 		//tryJFileChooser();
 		
 		//createAndPlayMidiSequence();
+		
+		testReadChordSignature();
+	}
+	
+	/**
+	 * String used to signify that a chord signature is on the line and
+	 * the program should start to add note consonance ratings for that
+	 * chord signature.
+	 */
+	static final String chordSignatureSignal = "ChordSignature";
+	/**
+	 * String used to signify that an interval rating is on the line.
+	 */
+	static final String intervalRatingSignal = "IntervalRating";
+	/**
+	 * String used to separate the ChordSignature and interval rating
+	 * Signal from the data on the line.
+	 */
+	static final String signalDataSeparator = ":";
+	/**
+	 * String used to separate the Interval data from the rating.
+	 */
+	static final String intervalRatingSeparator = ",";
+
+	/**
+	 * Create a string used to signify that a chord is being declared.
+	 * @param chordSig chord signature to be written to file.
+	 * @return formatted string containing the chord signature preceded by a signalString
+	 * to notify readers that the signature is on that line.
+	 */
+	static String createChordSignatureString(ChordSignature chordSig) {
+		return chordSignatureSignal+
+				signalDataSeparator+
+				chordSig;
+	}
+
+	/**
+	 * Parse a line of text containing the chordSignatureSignal and return a
+	 * ChordSignature object following the signature.
+	 * @param line line of text containing a chord signature
+	 * @return chord signature contained in the line.
+	 */
+	static ChordSignature readChordSignatureFromLine(String line) {
+		final int indexOfSignalDataSeparator = 
+				line.indexOf(signalDataSeparator);
+		final String stringContainingChordSignature = 
+				line.substring(indexOfSignalDataSeparator + 1);
+				
+		//get everything after the chordSignature signal
+		return ChordSignature.valueOf(
+				stringContainingChordSignature);
+	}
+	
+	private static void testReadChordSignature() {
+		ChordSignature readChordSig, writtenChordSig = ChordSignature.MAJOR;
+		String line = createChordSignatureString(writtenChordSig);
+		
+		System.out.println("Created Chord Signature Line");
+		System.out.println(line);
+		
+		System.out.println("Read Chord Signature Result");
+		System.out.println(readChordSignatureFromLine(line));
+		
 	}
 
 	private static void tryJFileChooser() {

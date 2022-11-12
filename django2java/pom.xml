@@ -9,8 +9,8 @@
 	<description>Library and program to create chord progressions</description>
 
 	<properties>
-		<maven.compiler.release>11</maven.compiler.release>
-		<encoding>UTF-8</encoding>
+        <maven.compiler.release>18</maven.compiler.release>
+		<project.biuld.sourceEncoding>UTF-8</project.biuld.sourceEncoding>
 	</properties>
 
 	<dependencies>
@@ -63,34 +63,12 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
+					<version>3.8.0</version>
 					<configuration>
-						<source>1.8</source>
-						<target>1.8</target>
+						<release>18</release>
 					</configuration>
 				</plugin>
-				<!-- JAXB Schema Generation from annotated class files. -->
-				<!-- <plugin>
-					<groupId>org.codehaus.mojo</groupId>
-					<artifactId>jaxb2-maven-plugin</artifactId>
-					<version>2.3</version>
-					<executions>
-						<execution>
-							<id>schemagen</id>
-							<goals>
-								<goal>schemagen</goal>
-							</goals>
-						</execution>
-					</executions>
-					<configuration>
-						<outputDirectory>src/main/resources</outputDirectory>
-						<clearOutputDir>false</clearOutputDir>
-					</configuration>
-				</plugin> -->
 			</plugins>
 		</pluginManagement>
-		<!-- <plugins> <plugin> <groupId>org.codehaus.mojo</groupId> <artifactId>jaxb2-maven-plugin</artifactId> 
-			<version>2.5.0</version> <executions> <execution> <id>xjc</id> <goals> <goal>xjc</goal> 
-			</goals> </execution> </executions> <configuration> <packageName>com.example.myschema</packageName> 
-			</configuration> </plugin> </plugins> -->
 	</build>
 </project>

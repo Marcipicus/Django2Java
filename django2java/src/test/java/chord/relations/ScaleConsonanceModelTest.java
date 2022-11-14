@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -23,6 +25,11 @@ import chord.ident.ScaleSignature;
  *
  */
 public class ScaleConsonanceModelTest {
+	
+	//.tmp file name used to make git ignore on checkins if
+	//we forget to delete the test file
+	final String testFileName = "testScaleConsonanceFile.tmp";
+	
 	/**
 	 * Parameters for testing null pointer detection in add method.
 	 * @return stream of arguments containing one null argument for addRatingTest
@@ -56,12 +63,32 @@ public class ScaleConsonanceModelTest {
 				Arguments.of(ChordSignature.MAJOR,ScaleSignature.AEOLIAN_NATURAL_7,ConsonanceRating.BAD)
 				);
 	}
+	
+	/**
+	 * Take the given ScaleConsonanceModel and fill it with a consistent
+	 * rating every time
+	 * @param model to be filled....it is assumed that the model is empty.
+	 */
+	static void populateTestModel(ScaleConsonanceModel model) {
+		final int halfChordSigIndex = ChordSignature.values().length / 2;
+		for(int i=0; i<halfChordSigIndex; i++) {
+			ChordSignature chorSig = ChordSignature.values()[i];
+			
+			for(ScaleSignature scaleSig : ScaleSignature.values()) {
+				
+				//Get a random ConsonanceRating
+				ConsonanceRating rating = ConsonanceRating.MEDIOCRE;
+				
+				model.addRating(chorSig, scaleSig, rating);
+			}
+		}
+	}
 
 	/**
 	 * Main data model used for tests.
 	 * Initialized before every test.
 	 */
-	ScaleConsonanceModel scModel;
+	ScaleConsonanceModel scModel,otherModel;
 
 	/**
 	 * Initialization code for main data model.
@@ -70,6 +97,67 @@ public class ScaleConsonanceModelTest {
 	@BeforeEach
 	void init() {
 		scModel = new ScaleConsonanceModel();
+		otherModel = new ScaleConsonanceModel();
+	}
+	
+	/**
+	 * Make sure that a string containing a chord signature is
+	 * read and written properly.
+	 */
+	@Test
+	void testReadChordSignatureString() {
+		ChordSignature readChordSig;
+
+		final ChordSignature writtenChordSig = ChordSignature.MAJOR;
+		final String codedLine = ScaleConsonanceModel.createChordSignatureString(writtenChordSig);
+		
+		readChordSig = ScaleConsonanceModel.readChordSignatureFromLine(codedLine);
+		assertEquals(writtenChordSig,readChordSig);
+	}
+	
+	/**
+	 * Code a String containing a scale signature and a rating and
+	 * make sure that the data can be read properly
+	 */
+	@Test
+	void testParseIntervalAndRating() {
+		ScaleSignature scaleSig;
+		ConsonanceRating readRating;
+		
+		final ScaleSignature writtenScaleSig = ScaleSignature.AEOLIAN;
+		final ConsonanceRating writtenRating = ConsonanceRating.GOOD;
+		
+		final String codedLine = 
+				ScaleConsonanceModel.createScaleRatingString(
+						writtenScaleSig, 
+						writtenRating);
+		
+		scaleSig = ScaleConsonanceModel.parseScaleSignatureFromScaleRatingLine(codedLine);
+		assertEquals(writtenScaleSig,scaleSig);
+		
+		readRating = ScaleConsonanceModel.parseRatingFromScaleRatingLine(codedLine);
+		assertEquals(writtenRating,readRating);
+	}
+	
+	/**
+	 * Make sure that we can save to file and load from file
+	 * properly.
+	 * @throws FileNotFoundException
+	 */
+	@Test
+	void testSavingToAndLoadingFromFile() throws FileNotFoundException {
+		ScaleConsonanceModel modelLoadedFromFile;
+		
+		populateTestModel(scModel);
+		
+		ScaleConsonanceModel.saveToFile(scModel, testFileName);
+		modelLoadedFromFile = ScaleConsonanceModel.loadFromFile(testFileName);
+		
+		//Make sure we get rid of the file
+		File createdFile = new File(testFileName);
+		createdFile.delete();
+		
+		assertEquals(scModel,modelLoadedFromFile);
 	}
 
 	/**

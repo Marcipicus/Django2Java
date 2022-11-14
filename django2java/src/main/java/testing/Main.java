@@ -4,7 +4,6 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.PrintStream;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
@@ -43,12 +42,15 @@ import chord.relations.persist.ChordChangeConsonance;
 import chord.relations.persist.EndChordRatingList;
 import chord.relations.persist.IntervalRating;
 
+/**
+ * Currently just a class to toy around with libraries until
+ * we know how they work.
+ * @author DAD
+ *
+ */
 public class Main {
 
 	public static void main(String[] args) throws JAXBException, InvalidMidiDataException, MidiUnavailableException, InvalidMIDIValueException, InvalidNoteRegisterException, ChordToneBuildingException, InterruptedException {
-		
-		
-		
 		//tryPracticeGui();
 		//tryMarshallingAndUnMarshalling();
 		//tryChordChangeRatingGUI();
@@ -58,68 +60,29 @@ public class Main {
 		
 		//createAndPlayMidiSequence();
 		
-		testReadChordSignature();
+		printTotalCombinationsForAllDataStructures();
 	}
 	
 	/**
-	 * String used to signify that a chord signature is on the line and
-	 * the program should start to add note consonance ratings for that
-	 * chord signature.
+	 * List the total number of combinations for each of the data structures
+	 * so we know if the maps are within a reasonable value of entries.
 	 */
-	static final String chordSignatureSignal = "ChordSignature";
-	/**
-	 * String used to signify that an interval rating is on the line.
-	 */
-	static final String intervalRatingSignal = "IntervalRating";
-	/**
-	 * String used to separate the ChordSignature and interval rating
-	 * Signal from the data on the line.
-	 */
-	static final String signalDataSeparator = ":";
-	/**
-	 * String used to separate the Interval data from the rating.
-	 */
-	static final String intervalRatingSeparator = ",";
+	static final void printTotalCombinationsForAllDataStructures() {
+		final int numChordScaleCombinations = 
+				ChordSignature.values().length * ScaleSignature.values().length;
+		final int numChordChangeCombinations = (int) Math.pow(ChordSignature.values().length, 2);
+		System.out.println("Total number of Combinations between, Chord/Scale");
+		System.out.println(numChordScaleCombinations);
+		
 
-	/**
-	 * Create a string used to signify that a chord is being declared.
-	 * @param chordSig chord signature to be written to file.
-	 * @return formatted string containing the chord signature preceded by a signalString
-	 * to notify readers that the signature is on that line.
-	 */
-	static String createChordSignatureString(ChordSignature chordSig) {
-		return chordSignatureSignal+
-				signalDataSeparator+
-				chordSig;
-	}
-
-	/**
-	 * Parse a line of text containing the chordSignatureSignal and return a
-	 * ChordSignature object following the signature.
-	 * @param line line of text containing a chord signature
-	 * @return chord signature contained in the line.
-	 */
-	static ChordSignature readChordSignatureFromLine(String line) {
-		final int indexOfSignalDataSeparator = 
-				line.indexOf(signalDataSeparator);
-		final String stringContainingChordSignature = 
-				line.substring(indexOfSignalDataSeparator + 1);
-				
-		//get everything after the chordSignature signal
-		return ChordSignature.valueOf(
-				stringContainingChordSignature);
-	}
-	
-	private static void testReadChordSignature() {
-		ChordSignature readChordSig, writtenChordSig = ChordSignature.MAJOR;
-		String line = createChordSignatureString(writtenChordSig);
+		System.out.println("Total number of Combinations between, Chord/Scale at all intervals.");
+		System.out.println(numChordScaleCombinations*12);
 		
-		System.out.println("Created Chord Signature Line");
-		System.out.println(line);
+		System.out.println("Total number of Combinations of chord changes");
+		System.out.println(numChordChangeCombinations);
 		
-		System.out.println("Read Chord Signature Result");
-		System.out.println(readChordSignatureFromLine(line));
-		
+		System.out.println("Total number of note chord relations.");
+		System.out.println(ChordSignature.values().length * 12);
 	}
 
 	private static void tryJFileChooser() {

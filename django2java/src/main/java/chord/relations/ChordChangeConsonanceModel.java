@@ -13,6 +13,14 @@ import chord.ident.ChordSignature;
  *
  */
 public class ChordChangeConsonanceModel {
+	
+	//TODO: Create methods to write and read to/from file for ChordChangeConsonanceModel
+	//
+	//also create method to find the last combination that was rated
+	//or the next one that needs to be rated.
+	
+
+	
 
 	private Map<ChordSignature,Map<ChordSignature,IntervalRatingMap>> chordChangeConsonanceMap;
 	

@@ -3,7 +3,10 @@ package chord.relations;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -23,6 +26,10 @@ import chord.ident.ChordSignature;
  */
 public class ChordChangeConsonanceModelTest {
 
+	//.tmp file name used to make git ignore on checkins if
+	//we forget to delete the test file
+	static final String testFileName = "testChordChangeConsonanceFile.tmp";
+
 	/**
 	 * Parameters for testing null pointer detection in add method.
 	 * @return stream of arguments containing one null argument for addRatingTest
@@ -35,7 +42,7 @@ public class ChordChangeConsonanceModelTest {
 				Arguments.of(ChordSignature.MAJOR,ChordSignature.b2,Interval.MINOR2,null)
 				);
 	}
-	
+
 	/**
 	 * Parameters for testing null pointer detection in remove method.
 	 * @return stream of arguments containing one null argument for removeRatingTest
@@ -47,7 +54,7 @@ public class ChordChangeConsonanceModelTest {
 				Arguments.of(ChordSignature.MAJOR,ChordSignature.b2,null)
 				);
 	}
-	
+
 	/**
 	 * List of parameters used to reduce amount of code created.
 	 * @return stream of arguments that can be used by most tests
@@ -60,10 +67,41 @@ public class ChordChangeConsonanceModelTest {
 	}
 
 	/**
-	 * Main data structure created before each test.
+	 * Take the given ChordChangeConsonanceModel and fill it with a consistent
+	 * rating every time
+	 * @param model to be filled....it is assumed that the model is empty.
+	 */
+	static void populateTestModel(ChordChangeConsonanceModel model) {
+		final int halfChordSigIndex = ChordSignature.values().length / 2;
+		for(int i=0; i<halfChordSigIndex; i++) {
+			ChordSignature startChordSig = ChordSignature.values()[i];
+			for(ChordSignature endChordSig : ChordSignature.values()) {
+				for(Interval interval : Interval.values()) {
+					//a chord change that start and ends with the same chord type
+					//and interval between roots is unison represents the same chord
+					if(startChordSig.equals(endChordSig) && interval.equals(Interval.UNISON)) {
+						continue;
+					}
+					if( !interval.inFirstOctave()) {
+						break;
+					}
+
+					//Get a random ConsonanceRating
+					ConsonanceRating rating = ConsonanceRating.MEDIOCRE;
+
+					model.addRating(startChordSig, endChordSig, interval, rating);
+				}
+			}
+
+
+		}
+	}
+
+	/**
+	 * Main data structures created before each test.
 	 * It will be empty before every test.
 	 */
-	ChordChangeConsonanceModel cccModel;
+	ChordChangeConsonanceModel cccModel,otherCCCmodel;
 
 	/**
 	 * Create an empty chord change consonance model before
@@ -72,7 +110,89 @@ public class ChordChangeConsonanceModelTest {
 	@BeforeEach
 	void init() {
 		cccModel = new ChordChangeConsonanceModel();
+		otherCCCmodel = new ChordChangeConsonanceModel();
 	}
+
+	/**
+	 * Make sure that a string containing a chord signature is
+	 * read and written properly.
+	 */
+	@Test
+	void testReadChordSignatureString() {
+		ChordSignature readChordSig;
+		final ChordSignature writtenChordSig = ChordSignature.MAJOR;
+
+		//Write a startChordSignatureString
+		String codedLine = 
+				ChordChangeConsonanceModel.createChordSignatureString(true, writtenChordSig);		
+		readChordSig = ChordChangeConsonanceModel.readChordSignatureFromLine(codedLine);
+		assertEquals(writtenChordSig,readChordSig);
+
+		//write an end chord signature string.
+		codedLine = 
+				ChordChangeConsonanceModel.createChordSignatureString(false, writtenChordSig);
+		readChordSig = ChordChangeConsonanceModel.readChordSignatureFromLine(codedLine);
+		assertEquals(writtenChordSig,readChordSig);
+	}
+
+	/**
+	 * Code a String containing an interval and a rating and
+	 * make sure that the data can be read properly
+	 */
+	@Test
+	void testParseIntervalAndRating() {
+		Interval readInterval;
+		ConsonanceRating readRating;
+
+		final Interval writtenInterval = Interval.PERFECT5;
+		final ConsonanceRating writtenRating = ConsonanceRating.GOOD;
+
+		final String codedLine = 
+				ChordChangeConsonanceModel.createIntervalRatingString(
+						writtenInterval, 
+						writtenRating);
+
+		readInterval = ChordChangeConsonanceModel.parseIntervalFromIntervalRatingLine(codedLine);
+		assertEquals(writtenInterval,readInterval);
+
+		readRating = ChordChangeConsonanceModel.parseRatingFromIntervalRatingLine(codedLine);
+		assertEquals(writtenRating,readRating);
+	}
+
+	/**
+	 * Make sure that we can save to file and load from file
+	 * properly.
+	 * @throws FileNotFoundException
+	 */
+	@Test
+	void testSavingToAndLoadingFromFile() throws FileNotFoundException {
+		ChordChangeConsonanceModel modelLoadedFromFile;
+
+		populateTestModel(cccModel);
+
+		ChordChangeConsonanceModel.saveToFile(cccModel, testFileName);
+		modelLoadedFromFile = ChordChangeConsonanceModel.loadFromFile(testFileName);
+
+		//Make sure we get rid of the file
+		File createdFile = new File(testFileName);
+		createdFile.delete();
+
+		assertEquals(cccModel,modelLoadedFromFile);
+	}
+
+
+	/**
+	 * Make sure .equals works
+	 */
+	@Test
+	void testEquals() {
+		populateTestModel(cccModel);
+		populateTestModel(otherCCCmodel);
+
+		assertTrue(cccModel.equals(otherCCCmodel));
+		assertEquals(cccModel,otherCCCmodel);
+	}
+
 
 	/**
 	 * Ensure that the addRating method throws an exception when
@@ -138,7 +258,7 @@ public class ChordChangeConsonanceModelTest {
 					if( startChordSig.equals(endChordSig) && interval.equals(Interval.UNISON)) {
 						continue;
 					}
-					
+
 					//adding a rating is trivial so no reason to check every
 					//rating
 					final ConsonanceRating firstRatingAdded = ConsonanceRating.VERY_GOOD;
@@ -151,7 +271,7 @@ public class ChordChangeConsonanceModelTest {
 			}
 		}
 	}
-	
+
 	/**
 	 * Ensure that the remove method throws an exception if passed a
 	 * null argument.
@@ -166,7 +286,7 @@ public class ChordChangeConsonanceModelTest {
 				assertThrows(NullPointerException.class, 
 						() -> cccModel.removeRating(startChordSig, endChordSig, intervalBetweenRoots));
 	}
-	
+
 	/**
 	 * Ensure that the model throws an exception for intervals not in
 	 * the first octave.
@@ -181,7 +301,7 @@ public class ChordChangeConsonanceModelTest {
 								ChordSignature.MAJOR, 
 								Interval.PERFECT8));
 	}
-	
+
 	/**
 	 * Ensure that a rating can be removed succesfully when it exists.
 	 * @param startChordSig start chord signature
@@ -195,7 +315,7 @@ public class ChordChangeConsonanceModelTest {
 		cccModel.addRating(startChordSig, endChordSig, intervalBetweenRoots, rating);
 		assertEquals(rating, cccModel.removeRating(startChordSig, endChordSig, intervalBetweenRoots));
 	}
-	
+
 	/**
 	 * Ensure that the data model returns null when attempting to
 	 * remove a non existent rating
@@ -209,7 +329,7 @@ public class ChordChangeConsonanceModelTest {
 	void testRemoveChordRatingNonExistentRating(ChordSignature startChordSig, ChordSignature endChordSig, Interval intervalBetweenRoots, ConsonanceRating rating) {
 		assertNull(cccModel.removeRating(startChordSig, endChordSig, intervalBetweenRoots));
 	}
-	
+
 	/**
 	 * Ensure that the get method throws an exception if passed a
 	 * null argument.
@@ -224,7 +344,7 @@ public class ChordChangeConsonanceModelTest {
 				assertThrows(NullPointerException.class, 
 						() -> cccModel.getRating(startChordSig, endChordSig, intervalBetweenRoots));
 	}
-	
+
 
 	/**
 	 * Ensure that the data model throws an exceptino when attempting to
@@ -240,14 +360,14 @@ public class ChordChangeConsonanceModelTest {
 								ChordSignature.MAJOR, 
 								Interval.PERFECT8));
 	}
-	
+
 	@ParameterizedTest
 	@MethodSource("defaultArgumentsToReduceCode")
 	void testGetRatingPassedValidValues(ChordSignature startChordSig, ChordSignature endChordSig, Interval intervalBetweenRoots, ConsonanceRating rating) {
 		assertNull(cccModel.getRating(startChordSig, endChordSig, intervalBetweenRoots));
-		
+
 		cccModel.addRating(startChordSig, endChordSig, intervalBetweenRoots, rating);
-		
+
 		assertEquals(rating, cccModel.getRating(startChordSig, endChordSig, intervalBetweenRoots));
 	}
 }

@@ -23,7 +23,7 @@ import chord.ident.ChordSignature;
 public class NoteConsonanceModelTest {
 	//.tmp file name used to make git ignore on checkins if
 	//we forget to delete the test file
-	final String testFileName = "testNoteConsonanceFile.tmp";
+	static final String testFileName = "testNoteConsonanceFile.tmp";
 
 	/**
 	 * Parameters for testing null pointer detection in add method.

@@ -167,6 +167,14 @@ public class NoteConsonanceModel {
 		}
 	}
 
+	/**
+	 * Take the given input stream representing a NoteConsonanceModel
+	 * and return a decoded NoteConsonanceModel.
+	 * @param inputStream stream of resource that was encoded using
+	 * saveToStream
+	 * @return a NoteConsonanceModel equivalent to the one encoded
+	 * by saveToStream
+	 */
 	static NoteConsonanceModel loadFromStream(InputStream inputStream) {
 		if(inputStream == null) {
 			throw new NullPointerException("inputStream may not be null");

@@ -51,6 +51,19 @@ public enum Interval {
 	}
 	
 	/**
+	 * Get the previous interval. If this is the first interval
+	 * then the function rolls over to the last interval.
+	 * @return
+	 */
+	public Interval getPreviousInterval() {
+		try {
+			return Interval.values()[ordinal() - 1];
+		}catch(IndexOutOfBoundsException e) {
+			return Interval.values()[Interval.values().length - 1];
+		}
+	}
+	
+	/**
 	 * Check to see if the Interval is within the first octave.
 	 * This function exists so that duplicate intervals are not
 	 * counted....e.g. Interval.UNISON and Interval.PERFECT8 refer

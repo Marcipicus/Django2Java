@@ -785,6 +785,14 @@ public enum ChordSignature {
 		return allChordSignatures;
 	}
 	
+	public static ChordSignature firstSignature() {
+		return values()[0];
+	}
+	
+	public static ChordSignature lastSignature() {
+		return values()[getLargestOrdinal()];
+	}
+	
 	/**
 	 * Get the largest possible ordinal value for a note.
 	 * @return
@@ -895,5 +903,9 @@ public enum ChordSignature {
 
 	public boolean isHighestValue() {
 		return ordinal() == (ChordSignature.values().length - 1);
+	}
+	
+	public boolean isLowestValue() {
+		return ordinal() == 0;
 	}
 }

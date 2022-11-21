@@ -77,7 +77,6 @@ public class NoteConsonanceModelTest {
 					break;
 				}
 
-				//Get a random ConsonanceRating
 				ConsonanceRating rating = ConsonanceRating.MEDIOCRE;
 
 				model.addRating(chorSig, interval, rating);
@@ -181,7 +180,7 @@ public class NoteConsonanceModelTest {
 	void testSavingToAndLoadingFromFile(boolean fillModel,boolean incompleteChordRating) throws FileNotFoundException {
 		NoteConsonanceModel modelLoadedFromFile;
 
-		populateTestModel(false, ncModel);
+		populateTestModel(fillModel, ncModel);
 		
 		if(incompleteChordRating) {
 			NoteConsonanceRecord lastRecordAdded =

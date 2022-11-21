@@ -794,6 +794,22 @@ public enum ScaleSignature {
 	public static int getLargestOrdinal() {
 		return ScaleSignature.values().length-1;
 	}
+	
+	/**
+	 * Get the first scale signature that exists.
+	 * @return scale signature with ordinal 0
+	 */
+	public static ScaleSignature firstSignature() {
+		return ScaleSignature.values()[0];
+	}
+	
+	/**
+	 * Get the last scale signature that exists.
+	 * @return scale signature with largest ordinal.
+	 */
+	public static ScaleSignature lastSignature() {
+		return ScaleSignature.values()[ScaleSignature.getLargestOrdinal()];
+	}
 
 	private final String signatureText;
 	private final List<Interval> intervals;

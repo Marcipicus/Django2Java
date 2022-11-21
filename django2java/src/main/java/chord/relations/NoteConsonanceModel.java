@@ -361,7 +361,7 @@ public class NoteConsonanceModel {
 				return new NoteConsonanceRecord(
 						chordSig, 
 						Interval.UNISON, 
-						ConsonanceRating.MEDIOCRE);
+						null);
 			}
 			for(Interval interval : Interval.values()) {
 				//make sure that we aren't duplicating

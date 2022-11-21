@@ -7,6 +7,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
@@ -101,6 +103,11 @@ public class ScaleConsonanceModel {
 				line.substring(indexOfFirstCharacterOfRating));
 	}
 
+	/**
+	 * Take the given data model and save it to the given stream.
+	 * @param model model to save
+	 * @param outputStream destnation stream
+	 */
 	static void saveToStream(ScaleConsonanceModel model, OutputStream outputStream) {
 		if(model == null) {
 			throw new NullPointerException("model may not be null");
@@ -108,31 +115,39 @@ public class ScaleConsonanceModel {
 		if(outputStream == null) {
 			throw new NullPointerException("outputStream may not be null.");
 		}
-
+		
+		//make sure that there are no chords with empty scale ratings
+		//this needs to be done in case there are scale ratings removed 
+		//but the map still exists
+		model.purgeUnratedScales();
 
 		//create a writer that autoflushes lines.
 		//TODO:may have to specify a charset as well.
 		try(PrintWriter modelWriter = new PrintWriter(outputStream,true)){
-			RATING_WRITER_OUTER_LOOP:
-				for(ChordSignature chordSig : model.getChordSignatureSet()) {
-					modelWriter.println(createChordSignatureString(chordSig));
-					
-					for(ScaleSignature scaleSig : model.chordToScaleRatingMap.get(chordSig).keySet()) {
-						ConsonanceRating rating = 
-								model.getRating(chordSig, scaleSig);
-						
-						if(rating == null) {
-							break RATING_WRITER_OUTER_LOOP;
-						}
-						
-						modelWriter.println(createScaleRatingString(
-								scaleSig, 
-								rating));
-					}
+			
+			for(ChordSignature chordSig : model.getChordSignatureSet()) {
+				modelWriter.println(createChordSignatureString(chordSig));
+				
+				Map<ScaleSignature,ConsonanceRating> scaleRatingMap = 
+						model.chordToScaleRatingMap.get(chordSig);
+				
+				for(ScaleSignature scaleSig : scaleRatingMap.keySet()) {
+					ConsonanceRating rating = scaleRatingMap.get(scaleSig);
+					modelWriter.println(createScaleRatingString(
+							scaleSig, 
+							rating));
 				}
+			}
 		}
 	}
 
+	/**
+	 * Read a model from the given stream and return a model containing
+	 * the data contained in it.
+	 * 
+	 * @param inputStream source data stream
+	 * @return model containing the data from the stream
+	 */
 	static ScaleConsonanceModel loadFromStream(InputStream inputStream) {
 		if(inputStream == null) {
 			throw new NullPointerException("inputStream may not be null");
@@ -285,9 +300,10 @@ public class ScaleConsonanceModel {
 	 * Get a set of all chord signatures that have ratings. 
 	 * @return set of all chord signatures with ratings.
 	 */
-	public Set<ChordSignature> getChordSignatureSet(){
+	private Set<ChordSignature> getChordSignatureSet(){
 		return this.chordToScaleRatingMap.keySet();
 	}
+
 	
 	@Override
 	public boolean equals(Object o) {
@@ -298,6 +314,30 @@ public class ScaleConsonanceModel {
 		
 		ScaleConsonanceModel other = (ScaleConsonanceModel)o;
 		
+		this.purgeUnratedScales();
+		other.purgeUnratedScales();
+		
 		return this.chordToScaleRatingMap.equals(other.chordToScaleRatingMap);
+	}
+	
+	/**
+	 * Find any chords with no scale ratings and remove them to simplify
+	 * equals comparison and save/load methods.
+	 */
+	private void purgeUnratedScales() {
+		List<ChordSignature> chordsWithNoRatings = new LinkedList<>();
+		
+		for(ChordSignature chordSig : this.chordToScaleRatingMap.keySet()) {
+			Map<ScaleSignature,ConsonanceRating> scaleRatingMap = 
+					this.chordToScaleRatingMap.get(chordSig);
+			
+			if(scaleRatingMap.size() == 0) {
+				chordsWithNoRatings.add(chordSig);
+			}
+		}
+		
+		for(ChordSignature chordSig : chordsWithNoRatings) {
+			this.chordToScaleRatingMap.remove(chordSig);
+		}
 	}
 }

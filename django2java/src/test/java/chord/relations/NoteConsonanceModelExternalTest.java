@@ -1,8 +1,11 @@
 package chord.relations;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -339,4 +342,92 @@ public class NoteConsonanceModelExternalTest {
 				lastNoteRatedRecord.interval());
 	}
 
+	/**
+	 * Make sure that the isEmpty method works
+	 * with initially empty, a single entry,
+	 * and after all records removed.
+	 */
+	@Test
+	void testIsEmpty() {
+		final NoteConsonanceRecord recordToAdd = 
+				new NoteConsonanceRecord(
+						ChordSignature._10,
+						Interval.UNISON,
+						ConsonanceRating.BAD);
+		
+		//initial empty list
+		assertTrue(ncModel.isEmpty());
+		
+		//one record added
+		ncModel.addRating(recordToAdd);
+		assertFalse(ncModel.isEmpty());
+		
+		//test after added rating removed
+		ncModel.removeRating(recordToAdd);
+		assertTrue(ncModel.isEmpty());
+	}
+	
+	@Test
+	void testIsFull() {
+		//empty model
+		assertFalse(ncModel.isFull());
+		
+		//partially filled model
+		populateTestModel(false, ncModel);
+		assertFalse(ncModel.isFull());
+		
+		//full model
+		populateTestModel(true,otherModel);
+		assertTrue(otherModel.isFull());
+		
+		//one rating removed model
+		otherModel.removeRating(otherModel.getLastRecordRated());
+		assertFalse(otherModel.isFull());
+		
+		//Rating removed out of order
+		NoteConsonanceRecord recordToRemoveOutOfOrder = 
+				new NoteConsonanceRecord(
+						ChordSignature.MAJ_ADD11,
+						Interval.MAJOR3,
+						null);
+		
+		NoteConsonanceModel modelWithRecordRemovedOutOfOrder = 
+				new NoteConsonanceModel();
+				
+		populateTestModel(true,modelWithRecordRemovedOutOfOrder);
+		
+		modelWithRecordRemovedOutOfOrder.removeRating(recordToRemoveOutOfOrder);
+		assertFalse(modelWithRecordRemovedOutOfOrder.isFull());
+	}
+	
+	@Test
+	void testEquals() {
+		populateTestModel(false,ncModel);
+		populateTestModel(false,otherModel);
+		//test a half filled model, both same
+		assertEquals(ncModel,otherModel);
+		
+		NoteConsonanceRecord recordRemoved = 
+				new NoteConsonanceRecord(
+						ChordSignature.firstSignature(), 
+						Interval.UNISON, 
+						null);
+		//test two partially filled models,
+		//not equal
+		ncModel.removeRating(recordRemoved);
+		assertNotEquals(ncModel, otherModel);
+		
+		//test two partially filled models after
+		//removal of same record
+		otherModel.removeRating(recordRemoved);
+		assertEquals(ncModel,otherModel);
+		
+		//test two completely filled models.
+		ncModel = new NoteConsonanceModel();
+		otherModel = new NoteConsonanceModel();
+
+		populateTestModel(true,ncModel);
+		populateTestModel(true,otherModel);
+		assertEquals(ncModel,otherModel);
+	}
 }

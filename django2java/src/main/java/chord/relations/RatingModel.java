@@ -62,4 +62,17 @@ public interface RatingModel<T> {
 	 * null if no interactions have been saved.
 	 */
 	T getLastRecordRated();
+	
+	/**
+	 * Test to see if the model is full.
+	 * @return true if all possible ratings are filled.
+	 */
+	boolean isFull();
+	
+	/**
+	 * Test to see if the model is empty
+	 * @return true if there are not ratings in the model
+	 */
+	boolean isEmpty();
+	
 }

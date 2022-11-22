@@ -19,7 +19,13 @@ import chord.ConsonanceRating;
 import chord.Interval;
 import chord.ident.ChordSignature;
 
-public class NoteConsonanceModelTest {
+/**
+ * This test class exists to test the NoteConsonanceModel's
+ * internal interface.
+ * @author DAD
+ *
+ */
+public class NoteConsonanceModelInternalTest {
 	//.tmp file name used to make git ignore on checkins if
 	//we forget to delete the test file
 	static final String testFileName = "testNoteConsonanceFile.tmp";
@@ -184,7 +190,7 @@ public class NoteConsonanceModelTest {
 		
 		if(incompleteChordRating) {
 			NoteConsonanceRecord lastRecordAdded =
-					ncModel.getRecordOfLastNoteConsonanceRated();
+					ncModel.getLastRecordRated();
 			
 			System.out.println("Last added:"+lastRecordAdded);
 			
@@ -374,9 +380,9 @@ public class NoteConsonanceModelTest {
 	 * works on an empty data model
 	 */
 	@Test
-	void testGetNextNoteRecordToBeRatedEmpty() {
+	void testGetNextRecordToBeRatedEmpty() {
 		final NoteConsonanceRecord record = 
-				ncModel.getNextNoteRecordToBeRated();
+				ncModel.getNextRecordToBeRated();
 
 		assertEquals(ChordSignature.firstSignature(), record.chordSignature());
 		assertEquals(Interval.UNISON,record.interval());
@@ -387,11 +393,11 @@ public class NoteConsonanceModelTest {
 	 * the getNextNoteRecordToBeRated returns null.
 	 */
 	@Test
-	void testGetNextNoteRecordToBeRatedFull() {
+	void testGetNextRecordToBeRatedFull() {
 		populateTestModel(true,ncModel);
 
 		final NoteConsonanceRecord record = 
-				ncModel.getNextNoteRecordToBeRated();
+				ncModel.getNextRecordToBeRated();
 
 		assertNull(record);
 	}
@@ -402,13 +408,13 @@ public class NoteConsonanceModelTest {
 	 * no rollover of chord.
 	 */
 	@Test
-	void testGetNextNoteRecordToBeRatedNoRolloverOfChord() {
+	void testGetNextRecordToBeRatedNoRolloverOfChord() {
 		final ChordSignature addedChordSig = ChordSignature.firstSignature();
 		final Interval addedInterval = Interval.UNISON;
 		ncModel.addRating(addedChordSig, addedInterval, ConsonanceRating.MEDIOCRE);
 
 		final NoteConsonanceRecord nextNoteRecord = 
-				ncModel.getNextNoteRecordToBeRated();
+				ncModel.getNextRecordToBeRated();
 
 		assertEquals(addedChordSig,nextNoteRecord.chordSignature());
 		assertEquals(addedInterval.getNextInterval(), nextNoteRecord.interval());
@@ -420,7 +426,7 @@ public class NoteConsonanceModelTest {
 	 * chord signature and a unison interval.
 	 */
 	@Test
-	void testGetNextNoteRecordToBeRatedRolloverOfChord() {
+	void testGetNextRecordToBeRatedRolloverOfChord() {
 		final ChordSignature addedChordSig = ChordSignature.firstSignature();
 		final ConsonanceRating addedRating = ConsonanceRating.GOOD;
 
@@ -433,7 +439,7 @@ public class NoteConsonanceModelTest {
 		}
 
 		final NoteConsonanceRecord nextToBeRatedRecord =
-				ncModel.getNextNoteRecordToBeRated();
+				ncModel.getNextRecordToBeRated();
 
 		assertEquals(
 				addedChordSig.getNextChordSignature(),
@@ -448,9 +454,9 @@ public class NoteConsonanceModelTest {
 	 * and make sure that it is null.
 	 */
 	@Test
-	void testGetRecordOfLastNoteConsonanceRatedEmpty() {
+	void testGetLastRatedRecordEmpty() {
 		final NoteConsonanceRecord lastRatedNoteConsonanceRecord= 
-				ncModel.getRecordOfLastNoteConsonanceRated();
+				ncModel.getLastRecordRated();
 
 		assertNull(lastRatedNoteConsonanceRecord);
 	}
@@ -461,7 +467,7 @@ public class NoteConsonanceModelTest {
 	 * and an Interval of MAJOR7
 	 */
 	@Test
-	void testGetRecordOfLastNoteConsonanceRatedFull() {
+	void testGetLastRatedRecordFull() {
 		final ChordSignature lastChordSignature = 
 				ChordSignature.lastSignature();
 		final Interval lastIntervalToBeRated =
@@ -470,7 +476,7 @@ public class NoteConsonanceModelTest {
 		populateTestModel(true, ncModel);
 
 		final NoteConsonanceRecord lastRatingRecord =
-				ncModel.getRecordOfLastNoteConsonanceRated();
+				ncModel.getLastRecordRated();
 
 		assertEquals(
 				lastChordSignature,
@@ -480,14 +486,12 @@ public class NoteConsonanceModelTest {
 				lastRatingRecord.interval());
 	}
 
-
-
 	/**
 	 * Add a rating and make sure that it is returned from 
 	 * the getRecordOfLastNoteConsonanceRated function.
 	 */
 	@Test
-	void testGetRecordOfLastNoteConsonanceRatedNormalEntry() {
+	void testGetLastRatedRecordNormalEntry() {
 		final ChordSignature addedChordSig = ChordSignature.firstSignature();
 		final Interval addedInterval = Interval.UNISON;
 		final ConsonanceRating addedRating = ConsonanceRating.BAD;
@@ -495,7 +499,7 @@ public class NoteConsonanceModelTest {
 		ncModel.addRating(addedChordSig, addedInterval, addedRating);
 
 		NoteConsonanceRecord addedRecord = 
-				ncModel.getRecordOfLastNoteConsonanceRated();
+				ncModel.getLastRecordRated();
 
 		assertEquals(addedChordSig,addedRecord.chordSignature());
 		assertEquals(addedInterval,addedRecord.interval());
@@ -505,7 +509,7 @@ public class NoteConsonanceModelTest {
 		//values have been removed.
 		ncModel.removeRating(addedChordSig, addedInterval);
 		NoteConsonanceRecord lastRecordAfterRemoval =
-				ncModel.getRecordOfLastNoteConsonanceRated();
+				ncModel.getLastRecordRated();
 
 		assertNull(lastRecordAfterRemoval);
 	}
@@ -531,7 +535,7 @@ public class NoteConsonanceModelTest {
 		}
 
 		final NoteConsonanceRecord lastNoteRatedRecord = 
-				ncModel.getRecordOfLastNoteConsonanceRated();
+				ncModel.getLastRecordRated();
 
 		assertEquals(
 				addedChordSig,
@@ -540,5 +544,4 @@ public class NoteConsonanceModelTest {
 				Interval.MAJOR7,
 				lastNoteRatedRecord.interval());
 	}
-
 }

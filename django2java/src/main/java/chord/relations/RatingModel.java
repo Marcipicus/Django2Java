@@ -1,7 +1,5 @@
 package chord.relations;
 
-import chord.ConsonanceRating;
-
 /**
  * RatingModel interface declares the common methods for
  * all ConsonanceRatingDataModels(ChordChangeConsonanceModel,
@@ -24,7 +22,7 @@ public interface RatingModel<T> {
 	 * @return the previous rating that existed for the record,
 	 * null if no previous rating exists.
 	 */
-	ConsonanceRating addRating(T record);
+	T addRating(T record);
 	
 	/**
 	 * Remove the rating represented by the record .
@@ -34,7 +32,7 @@ public interface RatingModel<T> {
 	 * @return the rating for the record which was removed if it exists,
 	 * null if no rating exists.
 	 */
-	ConsonanceRating removeRating(T record);
+	T removeRating(T record);
 	
 	/**
 	 * Get the record containing the rating represented by the

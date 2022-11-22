@@ -12,7 +12,7 @@ import chord.ident.ChordSignature;
 public record NoteConsonanceRecord(
 		ChordSignature chordSignature, 
 		Interval interval, 
-		ConsonanceRating rating) {
+		ConsonanceRating rating) implements Rateable{
 	
 	/**
 	 * Create a new NoteConsonanceRecord.
@@ -36,4 +36,8 @@ public record NoteConsonanceRecord(
 		//assignments created automagically
 	}
 
+	@Override
+	public boolean isRated() {
+		return rating!=null;
+	}
 }

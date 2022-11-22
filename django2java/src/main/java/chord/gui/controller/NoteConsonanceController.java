@@ -46,7 +46,7 @@ public class NoteConsonanceController {
 		}
 		this.noteConsonanceModel = noteConsonanceModel;
 		NoteConsonanceRecord noteRecordOfNextUnratedValue = 
-				this.noteConsonanceModel.getNextNoteRecordToBeRated();
+				this.noteConsonanceModel.getNextRecordToBeRated();
 		
 		//All Chord Interval combinations have been filled
 		if(noteRecordOfNextUnratedValue == null) {
@@ -121,13 +121,16 @@ public class NoteConsonanceController {
 	 * @param rating consonance rating for the current chord note interaction.
 	 */
 	public void saveRating(ConsonanceRating rating) {
-		noteConsonanceModel.addRating(
-				chordSigCurrentlyBeingRated, 
-				intervalCurrentlyBeingRated, 
-				rating);
+		NoteConsonanceRecord recordToSave = 
+				new NoteConsonanceRecord(
+						chordSigCurrentlyBeingRated, 
+						intervalCurrentlyBeingRated, 
+						rating);
+		
+		noteConsonanceModel.addRating(recordToSave);
 		
 		NoteConsonanceRecord nextNoteConsonanceRecord = 
-				noteConsonanceModel.getNextNoteRecordToBeRated();
+				noteConsonanceModel.getNextRecordToBeRated();
 		
 		//All interactions have been rated
 		if(nextNoteConsonanceRecord == null) {
@@ -154,17 +157,15 @@ public class NoteConsonanceController {
 	 */
 	public void previousRating() {
 		NoteConsonanceRecord lastRatedRecord = 
-				noteConsonanceModel.getRecordOfLastNoteConsonanceRated();
+				noteConsonanceModel.getLastRecordRated();
 		
 		//do nothing if there are no records
 		if(lastRatedRecord == null) {
 			return;
 		}
 		
-		noteConsonanceModel.removeRating(
-				lastRatedRecord.chordSignature(), 
-				lastRatedRecord.interval());
-
+		noteConsonanceModel.removeRating(lastRatedRecord);
+		
 		updateChordSigIntervalCurrentlyBeingRated(lastRatedRecord);
 	}
 }

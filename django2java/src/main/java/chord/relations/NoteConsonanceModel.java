@@ -23,7 +23,7 @@ import chord.ident.ChordSignature;
  * by the interval between the root note of the chord and the note that is
  * being rated.
  */
-public class NoteConsonanceModel {
+public class NoteConsonanceModel implements RatingModel<NoteConsonanceRecord>{
 
 	/**
 	 * String used to signify that a chord signature is on the line and
@@ -263,7 +263,7 @@ public class NoteConsonanceModel {
 	 * @return the previous rating that existed for the chord signature and interval,
 	 * null if no previous rating exists.
 	 */
-	public ConsonanceRating addRating(
+	ConsonanceRating addRating(
 			ChordSignature chordSig, 
 			Interval interval, 
 			ConsonanceRating rating) {
@@ -298,7 +298,7 @@ public class NoteConsonanceModel {
 	 * @return the rating that was removed if successful,
 	 * null if the rating does not exist.
 	 */
-	public ConsonanceRating removeRating(ChordSignature chordSig, Interval interval) {
+	ConsonanceRating removeRating(ChordSignature chordSig, Interval interval) {
 		if(chordSig == null) {
 			throw new NullPointerException("ChordSignature may not be null.");
 		}
@@ -323,7 +323,7 @@ public class NoteConsonanceModel {
 	 * @return the rating for the parameters if it exists, 
 	 * null otherwise
 	 */
-	public ConsonanceRating getRating(ChordSignature chordSig, Interval interval) {
+	ConsonanceRating getRating(ChordSignature chordSig, Interval interval) {
 		if(chordSig == null) {
 			throw new NullPointerException("ChordSignature may not be null.");
 		}
@@ -341,63 +341,153 @@ public class NoteConsonanceModel {
 	}
 	
 	/**
-	 * Get the next unrated ChordInterval pair which is returned in
-	 * a record. The rating value of the record should be ignored.
-	 * 
-	 * @return record representing the next interval chord pair
-	 * which needs to be rated, null if the NoteConsonanceModel
-	 * is completely filled
+	 * Get a set of all chord signatures that have ratings. 
+	 * @return set of all chord signatures with ratings.
 	 */
-	public NoteConsonanceRecord getNextNoteRecordToBeRated() {
-		//we will iterate through all chord signatures until we find one
-		//that does not have a rating...we cannot use the keyset since
-		//the ordering of the chord signatures is not guaranteed
+	private Set<ChordSignature> getChordSignatureSet(){
+		return this.chordToIntervalRatingMap.keySet();
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if(o == this)
+			return true;
+		if(!(o instanceof NoteConsonanceModel))
+			return false;
 		
-		for(ChordSignature chordSig : ChordSignature.values()) {
-			IntervalRatingMap intervalMapForChordSig = 
-					this.chordToIntervalRatingMap.get(chordSig);
-			
-			if(intervalMapForChordSig == null) {
-				return new NoteConsonanceRecord(
-						chordSig, 
-						Interval.UNISON, 
-						null);
-			}
-			for(Interval interval : Interval.values()) {
-				//make sure that we aren't duplicating
-				//interval chord relations by going to
-				//the second octave
-				if( !interval.inFirstOctave() ) {
-					break;
-				}
-				
-				if(getRating(chordSig, interval) == null) {
-					//We are looking for the next chord/interval pair to be
-					//rated so the ConsonanceRating is only added to
-					//avoid a NullPointerException
-					//may be a design flaw
-					return new NoteConsonanceRecord(chordSig, interval, ConsonanceRating.BAD);
-				}
-			}
-		}
-		//if we reach here then every rating has been filled
-		return null;
+		NoteConsonanceModel other = (NoteConsonanceModel)o;
+		
+		//Because of removal of ratings there may be unfilled
+		//rating maps in the data structure
+		this.purgeMapsWithoutRatings();
+		other.purgeMapsWithoutRatings();
+		
+		return this.chordToIntervalRatingMap.equals(other.chordToIntervalRatingMap);
 	}
 	
 	/**
-	 * Get a record of the last Chord/Interval interaction whose rating
-	 * was saved.
+	 * Remove any intervalMaps for chord signatures with no ratings.
 	 * 
-	 * @return the last chord/interval interaction whose rating was saved.
-	 * null if no interactions have been saved.
+	 * Thisis used to simplify the equals method and save/load methods.
 	 */
-	public NoteConsonanceRecord getRecordOfLastNoteConsonanceRated() {
+	private void purgeMapsWithoutRatings() {
+		List<ChordSignature> chordSignaturesWithoutRatings = new LinkedList<>();
+		
+		for(ChordSignature chordSig : chordToIntervalRatingMap.keySet()) {
+			IntervalRatingMap ratingMapForChordSig = 
+					chordToIntervalRatingMap.get(chordSig);
+			if(ratingMapForChordSig.isEmpty()) {
+				chordSignaturesWithoutRatings.add(chordSig);
+			}
+		}
+		
+		for(ChordSignature chordSig : chordSignaturesWithoutRatings) {
+			chordToIntervalRatingMap.remove(chordSig);
+		}
+		
+	}
+
+	@Override
+	public NoteConsonanceRecord addRating(NoteConsonanceRecord record) {
+		if(record == null) {
+			throw new NullPointerException("record may not be null");
+		}if(!record.isRated()) {
+			throw new IllegalArgumentException("Record must have a rating for the addRating method.");
+		}
+		
+		ConsonanceRating rating = 
+				addRating(
+						record.chordSignature(),
+						record.interval(),
+						record.rating());
+		if(rating == null) {
+			return null;
+		}else {
+			return new NoteConsonanceRecord(
+					record.chordSignature(),
+					record.interval(),
+					rating);
+		}
+	}
+
+	@Override
+	public NoteConsonanceRecord removeRating(NoteConsonanceRecord record) {
+		if(record == null) {
+			throw new NullPointerException("record may not be null");
+		}
+		ConsonanceRating rating = 
+				removeRating(
+						record.chordSignature(),
+						record.interval());
+		if(rating==null) {
+			return null;
+		}else {
+			return new NoteConsonanceRecord(record.chordSignature(),record.interval(),rating);
+		}
+	}
+
+	@Override
+	public NoteConsonanceRecord getRating(NoteConsonanceRecord record) {
+		if(record == null) {
+			throw new NullPointerException("record may not be null");
+		}
+		
+		ConsonanceRating rating = 
+				getRating(
+						record.chordSignature(),
+						record.interval());
+		if(rating==null) {
+			return null;
+		}else {
+			return new NoteConsonanceRecord(record.chordSignature(),record.interval(),rating);
+		}	
+	}
+
+	@Override
+	public NoteConsonanceRecord getNextRecordToBeRated() {
+		//we will iterate through all chord signatures until we find one
+				//that does not have a rating...we cannot use the keyset since
+				//the ordering of the chord signatures is not guaranteed
+				
+				for(ChordSignature chordSig : ChordSignature.values()) {
+					IntervalRatingMap intervalMapForChordSig = 
+							this.chordToIntervalRatingMap.get(chordSig);
+					
+					if(intervalMapForChordSig == null) {
+						return new NoteConsonanceRecord(
+								chordSig, 
+								Interval.UNISON, 
+								null);
+					}
+					for(Interval interval : Interval.values()) {
+						//make sure that we aren't duplicating
+						//interval chord relations by going to
+						//the second octave
+						if( !interval.inFirstOctave() ) {
+							break;
+						}
+						
+						if(getRating(chordSig, interval) == null) {
+							//We are looking for the next chord/interval pair to be
+							//rated so the ConsonanceRating is only added to
+							//avoid a NullPointerException
+							//may be a design flaw
+							return new NoteConsonanceRecord(chordSig, interval, ConsonanceRating.BAD);
+						}
+					}
+				}
+				//if we reach here then every rating has been filled
+				return null;
+	}
+
+	@Override
+	public NoteConsonanceRecord getLastRecordRated() {
 		ChordSignature chordSignatureOfLastRating,chordSignatureOfCurrentRating;
 		Interval intervalOfLastRating,intervalOfCurrentRating;
 		ConsonanceRating ratingOfLastRating,ratingOfCurrentRating;
 		
 		NoteConsonanceRecord currentNoteConsonanceRecordBeingRated = 
-				getNextNoteRecordToBeRated();
+				getNextRecordToBeRated();
 		
 		//if all records have been filled return a record
 		//with the last chord signature and last interval
@@ -458,54 +548,5 @@ public class NoteConsonanceModel {
 				chordSignatureOfLastRating,
 				intervalOfLastRating,
 				ratingOfLastRating);
-	}
-
-	/**
-	 * Get a set of all chord signatures that have ratings. 
-	 * @return set of all chord signatures with ratings.
-	 */
-	public Set<ChordSignature> getChordSignatureSet(){
-		return this.chordToIntervalRatingMap.keySet();
-	}
-	
-	
-	
-	@Override
-	public boolean equals(Object o) {
-		if(o == this)
-			return true;
-		if(!(o instanceof NoteConsonanceModel))
-			return false;
-		
-		NoteConsonanceModel other = (NoteConsonanceModel)o;
-		
-		//Because of removal of ratings there may be unfilled
-		//rating maps in the data structure
-		this.purgeMapsWithoutRatings();
-		other.purgeMapsWithoutRatings();
-		
-		return this.chordToIntervalRatingMap.equals(other.chordToIntervalRatingMap);
-	}
-	
-	/**
-	 * Remove any intervalMaps for chord signatures with no ratings.
-	 * 
-	 * Thisis used to simplify the equals method and save/load methods.
-	 */
-	private void purgeMapsWithoutRatings() {
-		List<ChordSignature> chordSignaturesWithoutRatings = new LinkedList<>();
-		
-		for(ChordSignature chordSig : chordToIntervalRatingMap.keySet()) {
-			IntervalRatingMap ratingMapForChordSig = 
-					chordToIntervalRatingMap.get(chordSig);
-			if(ratingMapForChordSig.isEmpty()) {
-				chordSignaturesWithoutRatings.add(chordSig);
-			}
-		}
-		
-		for(ChordSignature chordSig : chordSignaturesWithoutRatings) {
-			chordToIntervalRatingMap.remove(chordSig);
-		}
-		
 	}
 }

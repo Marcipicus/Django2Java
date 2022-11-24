@@ -1,5 +1,7 @@
 package chord.gui.controller;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -9,6 +11,9 @@ import chord.relations.RatingModel;
 /**
  * This class is used as a mediator between the gui and 
  * the various data models.
+ * 
+ * The controller class was created so that the event model
+ * of the gui could be tested in isolation and programatically.
  * @author DAD
  *
  * @param <RECORD> the type of record we are using
@@ -93,7 +98,7 @@ public abstract class RatingModelController<RECORD, MODEL extends RatingModel<RE
 		if(rating == null) {
 			throw new NullPointerException("rating may not be null");
 		}
-		if(currentRecord == null) {
+		if(model.isFull()) {
 			return;
 		}
 		RECORD recordToSave = createRecordToSave(rating);
@@ -106,7 +111,6 @@ public abstract class RatingModelController<RECORD, MODEL extends RatingModel<RE
 					model.getNextRecordToBeRated();
 			updateCurrentRecordBeingRated(nextNoteConsonanceRecord);
 		}
-
 	}
 
 	/**
@@ -114,12 +118,12 @@ public abstract class RatingModelController<RECORD, MODEL extends RatingModel<RE
 	 * update the current record to modify it.
 	 */
 	public void previousRating() {
-		RECORD lastRecordRated,nextRecordToBeRated;
-		lastRecordRated = model.getLastRecordRated();
-
 		if(model.isEmpty()) {
 			return;
 		}
+		
+		RECORD lastRecordRated,nextRecordToBeRated;
+		lastRecordRated = model.getLastRecordRated();
 
 		model.removeRating(lastRecordRated);
 
@@ -131,9 +135,7 @@ public abstract class RatingModelController<RECORD, MODEL extends RatingModel<RE
 	/**
 	 * Take the model and save it to file.
 	 */
-	public void saveFile() {
-
-	}
+	public abstract void saveFile(File destinationFile) throws FileNotFoundException;
 
 	/**
 	 * Take the current record being rated and save it to the model

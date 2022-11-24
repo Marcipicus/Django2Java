@@ -1,5 +1,6 @@
 package chord.relations;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -214,9 +215,22 @@ public class NoteConsonanceModel implements RatingModel<NoteConsonanceRecord>{
 		if(destinationFileName == null) {
 			throw new NullPointerException("destination file name may not be null");
 		}
+		File destinationFile = new File(destinationFileName);
 
+		saveToFile(model,destinationFile);
+	}
+
+	/**
+	 * Save the given model to the destination file.
+	 * @param model model to save
+	 * @param destinationFile file to which we will save
+	 * @throws FileNotFoundException if the file is a directory or cannot
+	 * be written to for some other reason
+	 */
+	public static void saveToFile(NoteConsonanceModel model, File destinationFile) 
+			throws FileNotFoundException {
 		FileOutputStream destinationFileOutputStream = 
-				new FileOutputStream(destinationFileName);
+				new FileOutputStream(destinationFile);
 
 		NoteConsonanceModel.saveToStream(model, destinationFileOutputStream);
 	}
@@ -227,7 +241,8 @@ public class NoteConsonanceModel implements RatingModel<NoteConsonanceRecord>{
 	 * 
 	 * @param sourceFileName name of file containing the data
 	 * @return NoteConsonanceModel containing the stored data
-	 * @throws FileNotFoundException
+	 * @throws FileNotFoundException if the file does not exist or 
+	 * cannot be opened for some other reason.
 	 */
 	public static NoteConsonanceModel loadFromFile(String sourceFileName) 
 			throws FileNotFoundException {
@@ -235,8 +250,21 @@ public class NoteConsonanceModel implements RatingModel<NoteConsonanceRecord>{
 			throw new NullPointerException("sourceFileName may not be null.");
 		}
 
+		File sourceFile = new File(sourceFileName);
+		return loadFromFile(sourceFile);
+	}
+
+	/**
+	 * Create a NoteConsonanceModel from the source file.
+	 * 
+	 * @param sourceFile file containing NoteConsonance data
+	 * @return initialized NoteConsonanceModel
+	 * @throws FileNotFoundException if the file does not exist or 
+	 * cannot be opened for some other reason.
+	 */
+	public static NoteConsonanceModel loadFromFile(File sourceFile) throws FileNotFoundException {
 		FileInputStream sourceFileInputStream = 
-				new FileInputStream(sourceFileName);
+				new FileInputStream(sourceFile);
 
 		return NoteConsonanceModel.loadFromStream(sourceFileInputStream);
 	}

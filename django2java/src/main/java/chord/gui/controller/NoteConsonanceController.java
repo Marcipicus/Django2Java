@@ -43,4 +43,10 @@ public class NoteConsonanceController extends RatingModelController<NoteConsonan
 	public void saveFile(File destinationFile) throws FileNotFoundException {
 		NoteConsonanceModel.saveToFile(model, destinationFile);
 	}
+
+	@Override
+	public void play() {
+		// TODO Auto-generated method stub
+		
+	}
 }

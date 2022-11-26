@@ -31,8 +31,11 @@ import chord.gui.components.ChordLabel;
 import chord.gui.components.CustomGridBagConstraints;
 import chord.gui.components.IntervalLabel;
 import chord.gui.components.RatingRadioPanel;
+import chord.gui.controller.NoteConsonanceController;
+import chord.gui.controller.StateChangeListener;
 import chord.ident.ChordSignature;
 import chord.maps.ChordLibrary;
+import chord.relations.NoteConsonanceRecord;
 import chord.relations.persist.NoteConsonance;
 import chord.relations.persist.NoteRating;
 
@@ -42,14 +45,16 @@ public class NoteConsonanceDialog extends JDialog implements ActionListener{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
-	private List<NoteRating> noteRatings;
+	
+	private NoteConsonanceController ncController;
 	private ChordLabel chordLabel;
 	private IntervalLabel intervalLabel;
 	private RatingRadioPanel ratingPanel;
 	private boolean lastNoteHasBeenRated = false;
 
 	private JButton playButton, saveRatingButton,saveToFileButton;
+
+	private LinkedList<NoteRating> noteRatings;
 
 	public NoteConsonanceDialog(JFrame parentFrame, ChordSignature chordSig) {
 		super(parentFrame,"Note Consonance Rating");

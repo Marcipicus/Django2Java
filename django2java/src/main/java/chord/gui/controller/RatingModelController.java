@@ -64,6 +64,15 @@ public abstract class RatingModelController<RECORD, MODEL extends RatingModel<RE
 	}
 
 	/**
+	 * Get the current record being rated.
+	 * 
+	 * @return current record being rated, null if all
+	 * ratings have been filled.
+	 */
+	public RECORD getCurrentRecord() {
+		return currentRecord;
+	}
+	/**
 	 * Add a listener that watches for the current chordSignature/interval to be changed.
 	 * @param listener new listener
 	 */
@@ -131,6 +140,8 @@ public abstract class RatingModelController<RECORD, MODEL extends RatingModel<RE
 
 		updateCurrentRecordBeingRated(nextRecordToBeRated);
 	}
+	
+	public abstract void play();
 
 	/**
 	 * Take the model and save it to file.

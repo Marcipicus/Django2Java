@@ -18,12 +18,9 @@ import javax.xml.bind.Unmarshaller;
 
 import chord.gui.components.CustomGridBagConstraints;
 import chord.ident.ChordSignature;
-import chord.relations.persist.ChordChangeConsonance;
-import chord.relations.persist.NoteConsonance;
-import chord.relations.persist.ScaleConsonance;
 
 public class MainChordRatingsPopulationFrame extends JFrame implements ActionListener{
-
+	//TODO: This class needs to be rewritten to use the new rating guis
 	/**
 	 * 
 	 */
@@ -133,13 +130,13 @@ public class MainChordRatingsPopulationFrame extends JFrame implements ActionLis
 
 		switch(ratingType) {
 		case CHORD_CHANGE_CONSONANCE:
-			new ChordConsonanceDialog(this, chordSig);
+			//new ChordChangeConsonanceDialog(this, chordSig);
 			break;
 		case CHORD_NOTE_CONSONANCE:
-			new NoteConsonanceDialog(this, chordSig);
+			//new NoteConsonanceDialog(this, chordSig);
 			break;
 		case CHORD_SCALE_CONSONANCE:
-			new ScaleConsonanceDialog(this, chordSig);
+			//new ScaleConsonanceDialog(this, chordSig);
 			break;
 		default:
 			throw new IllegalArgumentException("Unhandled Rating Type");
@@ -154,26 +151,7 @@ public class MainChordRatingsPopulationFrame extends JFrame implements ActionLis
 		
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			openFileSource = jfc.getSelectedFile();
-			try {
-				if(openFileSource.getName().contains("Note")) {
-					//TODO: Create Note ConsonanceDialog
-					//TODO: THIS MIGHT NOT BE NECESSARY SINCE IT TAKES ABOUT 1/2 A MINUTE TO
-					//		POPULATE THE NOTE RATINGS FILE
-					NoteConsonance noteConsonanceModel = (NoteConsonance)openConsonanceFile(NoteConsonance.class, openFileSource);
-				}else if(openFileSource.getName().contains("Scale")){
-					ScaleConsonance scaleConsonanceModel = (ScaleConsonance)openConsonanceFile(ScaleConsonance.class, openFileSource);
-					new ScaleConsonanceDialog(this, scaleConsonanceModel);
-				}else if(openFileSource.getName().contains("Chord")) {
-					//TODO: Create Chord Consonance dialog
-					ChordChangeConsonance chordConsonanceModel = (ChordChangeConsonance)openConsonanceFile(ChordChangeConsonance.class, openFileSource);
-					ChordConsonanceDialog chordRatingDialog = new ChordConsonanceDialog(this,chordConsonanceModel);
-				}else {
-					JOptionPane.showMessageDialog(this,"Invalid File","ERROR", JOptionPane.ERROR);
-					return;
-				}
-			} catch (JAXBException e1) {
-				JOptionPane.showMessageDialog(this,"Error saving file\n"+e1.toString(),"ERROR", JOptionPane.ERROR);
-			}
+			return;
 		} else if( returnVal == JFileChooser.CANCEL_OPTION){
 			return;
 		} else if (returnVal == JFileChooser.ERROR_OPTION) {

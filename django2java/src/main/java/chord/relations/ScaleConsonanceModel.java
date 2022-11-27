@@ -22,7 +22,7 @@ import chord.ident.ScaleSignature;
  * @author DAD
  *
  */
-public class ScaleConsonanceModel {
+public class ScaleConsonanceModel implements RatingModel<ScaleConsonanceRecord>{
 
 	/**
 	 * String used to signify that a chord signature is on the line and
@@ -339,5 +339,47 @@ public class ScaleConsonanceModel {
 		for(ChordSignature chordSig : chordsWithNoRatings) {
 			this.chordToScaleRatingMap.remove(chordSig);
 		}
+	}
+
+	@Override
+	public ScaleConsonanceRecord addRating(ScaleConsonanceRecord record) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ScaleConsonanceRecord removeRating(ScaleConsonanceRecord record) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ScaleConsonanceRecord getRating(ScaleConsonanceRecord record) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ScaleConsonanceRecord getNextRecordToBeRated() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ScaleConsonanceRecord getLastRecordRated() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean isFull() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isEmpty() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

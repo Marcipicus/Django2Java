@@ -4,8 +4,6 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
 import javax.sound.midi.InvalidMidiDataException;
@@ -19,14 +17,9 @@ import javax.sound.midi.Track;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
 
 import chord.Chord;
-import chord.ConsonanceRating;
-import chord.Interval;
 import chord.MIDINote;
 import chord.NoteName;
 import chord.exceptions.ChordToneBuildingException;
@@ -38,9 +31,6 @@ import chord.ident.ScaleSignature;
 import chord.maps.ChordLibrary;
 import chord.rating.ChordRatingGUI;
 import chord.rating.PracticeGUI;
-import chord.relations.persist.ChordChangeConsonance;
-import chord.relations.persist.EndChordRatingList;
-import chord.relations.persist.IntervalRating;
 
 /**
  * Currently just a class to toy around with libraries until
@@ -157,44 +147,6 @@ public class Main {
 
 	}
 
-	private static void tryMarshallingAndUnMarshalling() throws JAXBException {
-		IntervalRating rating = new IntervalRating(Interval.DIMINISHED12, ConsonanceRating.VERY_GOOD);
-
-		EndChordRatingList endList = new EndChordRatingList();
-		endList.setEndsignature(ChordSignature.AUGSUS2);
-		List<IntervalRating> intervalRatings = new LinkedList<IntervalRating>();
-		intervalRatings.add(rating);
-		endList.setIntervalRatings(intervalRatings);
-
-		ChordChangeConsonance mainChordChange = new ChordChangeConsonance();
-		mainChordChange.setStartSignature(ChordSignature.MAJOR);
-
-		List<EndChordRatingList> endChordList = new LinkedList<EndChordRatingList>();
-		endChordList.add(endList);
-
-		mainChordChange.setEndChordList(endChordList);
-
-		JAXBContext context = JAXBContext.newInstance(ChordChangeConsonance.class);
-
-		Marshaller marshaller = context.createMarshaller();
-
-		marshaller.marshal(mainChordChange,new File("text.xml"));
-
-		Unmarshaller unmarshaller = context.createUnmarshaller();
-
-		Object unmarshalled = unmarshaller.unmarshal(new File("text.xml"));
-		ChordChangeConsonance unmChordChange = (ChordChangeConsonance)unmarshalled;
-
-		System.out.println(unmChordChange.getStartSignature());
-		for(EndChordRatingList umEndList : unmChordChange.getEndChordList()) {
-			System.out.println(umEndList.getEndsignature());
-			for(IntervalRating umIntervalRating : umEndList.getIntervalRatings()) {
-				System.out.println(umIntervalRating.getIntervalBetweenRoots());
-				System.out.println(umIntervalRating.getRating());
-			}
-		}
-	}
-	
 	//TODO: DOES NOT WORK YET. FOR SOME REASON EVERYTHING SOUNDS 
 	//LIKE A MINOR CHORD AT A LOW REGISTER
 	private static void createAndPlayMidiSequence() throws InvalidMidiDataException, MidiUnavailableException, InvalidMIDIValueException, InvalidNoteRegisterException, ChordToneBuildingException, InterruptedException {

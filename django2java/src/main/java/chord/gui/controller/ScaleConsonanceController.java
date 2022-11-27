@@ -1,5 +1,36 @@
 package chord.gui.controller;
 
-public class ScaleConsonanceController {
+import java.io.File;
+import java.io.FileNotFoundException;
+
+import chord.ConsonanceRating;
+import chord.relations.ScaleConsonanceModel;
+import chord.relations.ScaleConsonanceRecord;
+
+public class ScaleConsonanceController extends RatingModelController<ScaleConsonanceRecord, ScaleConsonanceModel>{
+
+	public ScaleConsonanceController(ScaleConsonanceModel model,
+			StateChangeListener<ScaleConsonanceRecord>[] listeners) {
+		super(model, listeners);
+		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	public void play() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void saveFile(File destinationFile) throws FileNotFoundException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected ScaleConsonanceRecord createRecordToSave(ConsonanceRating rating) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

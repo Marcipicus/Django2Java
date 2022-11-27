@@ -29,13 +29,15 @@ import chord.relations.RatingModel;
  *
  * @param <RECORD> record type that represents the musical combination
  * being rated
+ * @param <MODEL> data model to store ratings represented by RECORD
  * @param <CONTROLLER> controller that mediates requests from the gui
  * to the data model.
  * @param <RECORDPANEL> panel to display the current record being rated.
  */
 public abstract class RatingDialog<
 	RECORD,
-	CONTROLLER extends RatingModelController<RECORD,RatingModel<RECORD>>,
+	MODEL extends RatingModel<RECORD>,
+	CONTROLLER extends RatingModelController<RECORD,MODEL>,
 	RECORDPANEL extends RecordPanel<RECORD>> extends JDialog 
 	implements ActionListener,StateChangeListener<RECORD>{
 	

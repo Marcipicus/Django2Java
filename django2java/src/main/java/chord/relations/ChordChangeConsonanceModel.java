@@ -23,7 +23,7 @@ import chord.ident.ScaleSignature;
  * @author DAD
  *
  */
-public class ChordChangeConsonanceModel {
+public class ChordChangeConsonanceModel implements RatingModel<ChordChangeConsonanceRecord>{
 
 	//TODO: Create methods to write and read to/from file for ChordChangeConsonanceModel
 	//
@@ -452,5 +452,47 @@ public class ChordChangeConsonanceModel {
 		ChordChangeConsonanceModel other = (ChordChangeConsonanceModel)o;
 		
 		return this.chordChangeConsonanceMap.equals(other.chordChangeConsonanceMap);
+	}
+
+	@Override
+	public ChordChangeConsonanceRecord addRating(ChordChangeConsonanceRecord record) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ChordChangeConsonanceRecord removeRating(ChordChangeConsonanceRecord record) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ChordChangeConsonanceRecord getRating(ChordChangeConsonanceRecord record) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ChordChangeConsonanceRecord getNextRecordToBeRated() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ChordChangeConsonanceRecord getLastRecordRated() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean isFull() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isEmpty() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

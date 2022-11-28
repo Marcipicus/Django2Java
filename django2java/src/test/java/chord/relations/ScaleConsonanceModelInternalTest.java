@@ -23,7 +23,7 @@ import chord.ident.ScaleSignature;
  * @author DAD
  *
  */
-public class ScaleConsonanceModelTest {
+public class ScaleConsonanceModelInternalTest {
 
 	//.tmp file name used to make git ignore on checkins if
 	//we forget to delete the test file

@@ -850,6 +850,10 @@ public enum ScaleSignature {
 		return ordinal() == ScaleSignature.getLargestOrdinal();
 	}
 	
+	public boolean isFirstSignature() {
+		return ordinal() == 0;
+	}
+	
 	public ScaleSignature getPreviousScale() {
 		if(this.ordinal() == 0) {
 			return values()[ScaleSignature.getLargestOrdinal()];

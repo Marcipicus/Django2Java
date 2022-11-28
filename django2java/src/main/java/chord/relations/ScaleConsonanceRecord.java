@@ -23,15 +23,14 @@ public record ScaleConsonanceRecord(
 	 * scale signature is being prepared
 	 * @param scaleSignature scaleSignature to which the
 	 * chord signature is being compare
-	 * @param rating rating of conosonance.
+	 * @param rating rating of consonance, may be null for
+	 * removal and retrieval of ratings.
 	 */
 	public ScaleConsonanceRecord{
 		if(chordSignature == null)
 			throw new NullPointerException("chord signature may not be null");
 		if(scaleSignature == null)
 			throw new NullPointerException("scale signature may not be null");
-		if(rating == null)
-			throw new NullPointerException("rating may not be null");
 		
 		//fields filled automagically
 	}

@@ -901,11 +901,11 @@ public enum ChordSignature {
 		return signatureText;
 	}
 
-	public boolean isHighestValue() {
+	public boolean isLastSignature() {
 		return ordinal() == (ChordSignature.values().length - 1);
 	}
 	
-	public boolean isLowestValue() {
+	public boolean isFirstSignature() {
 		return ordinal() == 0;
 	}
 }

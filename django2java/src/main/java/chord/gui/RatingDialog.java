@@ -121,6 +121,7 @@ public abstract class RatingDialog<
 				0,0,
 				0,4,
 				GridBagConstraints.HORIZONTAL);
+		add(recordPanel,gbc);
 		
 		ratingPanel = new RatingRadioPanel();
 		gbc = new CustomGridBagConstraints(

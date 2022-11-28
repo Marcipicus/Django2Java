@@ -233,7 +233,7 @@ public class ScaleConsonanceModel implements RatingModel<ScaleConsonanceRecord>{
 	 * @return the previous rating mapped to the chord and scale signatures,
 	 * null if no previous rating exists.
 	 */
-	public ConsonanceRating addRating(ChordSignature chordSig, ScaleSignature scaleSig, ConsonanceRating rating) {
+	ConsonanceRating addRating(ChordSignature chordSig, ScaleSignature scaleSig, ConsonanceRating rating) {
 		if(chordSig == null) {
 			throw new NullPointerException("ChordSignature may not be null.");
 		}
@@ -261,7 +261,7 @@ public class ScaleConsonanceModel implements RatingModel<ScaleConsonanceRecord>{
 	 * @return the rating that was removed if successful,
 	 * null if the rating does not exist.
 	 */
-	public ConsonanceRating removeRating(ChordSignature chordSig, ScaleSignature scaleSig) {
+	ConsonanceRating removeRating(ChordSignature chordSig, ScaleSignature scaleSig) {
 		if(chordSig == null) {
 			throw new NullPointerException("ChordSignature may not be null.");
 		}
@@ -282,7 +282,7 @@ public class ScaleConsonanceModel implements RatingModel<ScaleConsonanceRecord>{
 	 * @return the rating for the parameters if it exists, 
 	 * null otherwise
 	 */
-	public ConsonanceRating getRating(ChordSignature chordSig, ScaleSignature scaleSig) {
+	ConsonanceRating getRating(ChordSignature chordSig, ScaleSignature scaleSig) {
 		if(chordSig == null) {
 			throw new NullPointerException("ChordSignature may not be null.");
 		}
@@ -343,43 +343,127 @@ public class ScaleConsonanceModel implements RatingModel<ScaleConsonanceRecord>{
 
 	@Override
 	public ScaleConsonanceRecord addRating(ScaleConsonanceRecord record) {
-		// TODO Auto-generated method stub
-		return null;
+		if(record == null) {
+			throw new NullPointerException("record may not be null");
+		}
+		if(record.rating()==null) {
+			throw new IllegalArgumentException("The rating field in record may not be null.");
+		}
+		ConsonanceRating rating = this.addRating(record.chordSignature(), record.scaleSignature(), record.rating());
+		if(rating == null) {
+			return null;
+		}else {
+			return new ScaleConsonanceRecord(record.chordSignature(),record.scaleSignature(),rating);
+		}
 	}
 
 	@Override
 	public ScaleConsonanceRecord removeRating(ScaleConsonanceRecord record) {
-		// TODO Auto-generated method stub
-		return null;
+		if(record == null) {
+			throw new NullPointerException("record may not be null");
+		}
+		ConsonanceRating rating = this.removeRating(record.chordSignature(), record.scaleSignature());
+		if(rating == null) {
+			return null;
+		}else {
+			return new ScaleConsonanceRecord(record.chordSignature(),record.scaleSignature(),rating);
+		}
 	}
 
 	@Override
 	public ScaleConsonanceRecord getRating(ScaleConsonanceRecord record) {
-		// TODO Auto-generated method stub
-		return null;
+		if(record == null) {
+			throw new NullPointerException("record may not be null.");
+		}
+		ConsonanceRating rating = this.getRating(record.chordSignature(), record.scaleSignature());
+		if(rating == null) {
+			return null;
+		}else {
+			return new ScaleConsonanceRecord(record.chordSignature(),record.scaleSignature(),rating);
+		}
 	}
 
 	@Override
 	public ScaleConsonanceRecord getNextRecordToBeRated() {
-		// TODO Auto-generated method stub
+		if(isFull()) {
+			return null;
+		}
+		for(ChordSignature chordSig : ChordSignature.values()) {
+			for(ScaleSignature scaleSig : ScaleSignature.values()) {
+				ConsonanceRating rating = getRating(chordSig,scaleSig);
+				if(rating == null) {
+					return new ScaleConsonanceRecord(chordSig, scaleSig, null);
+				}
+			}
+		}
+
+		//this return statement is redundant since we check to
+		//see if the model is full at the start.
+		//leaving it here so the code compiles
 		return null;
 	}
 
 	@Override
 	public ScaleConsonanceRecord getLastRecordRated() {
-		// TODO Auto-generated method stub
-		return null;
+		if(isEmpty()) {
+			return null;
+		}
+		ChordSignature chordSigOfPreviousRecord;
+		ScaleSignature scaleSigOfPreviousRecord;
+		ConsonanceRating ratingOfPreviousRecord;
+		
+		for(ChordSignature chordSig : ChordSignature.values()) {
+			for(ScaleSignature scaleSig : ScaleSignature.values()) {
+				ConsonanceRating rating = getRating(chordSig,scaleSig);
+				if(rating == null) {
+					if(chordSig.isFirstSignature() && scaleSig.isFirstSignature()) {
+						return null;
+					}
+					if(scaleSig.isFirstSignature()) {
+						chordSigOfPreviousRecord = chordSig.getPreviousChordSignature();
+						scaleSigOfPreviousRecord = ScaleSignature.lastSignature();
+						ratingOfPreviousRecord = this.getRating(chordSigOfPreviousRecord, scaleSigOfPreviousRecord);
+						return new ScaleConsonanceRecord(
+								chordSigOfPreviousRecord, 
+								scaleSigOfPreviousRecord, 
+								ratingOfPreviousRecord);
+					}else {
+						chordSigOfPreviousRecord = chordSig;
+						scaleSigOfPreviousRecord = scaleSig.getPreviousScale();
+						ratingOfPreviousRecord = this.getRating(chordSigOfPreviousRecord, scaleSigOfPreviousRecord);
+					}
+					
+					return new ScaleConsonanceRecord(chordSigOfPreviousRecord, scaleSigOfPreviousRecord, ratingOfPreviousRecord);
+				}
+			}
+		}
+		//if we have iterated through the whole data structure then the
+		//model must be full so we return the last possible record
+		chordSigOfPreviousRecord = ChordSignature.lastSignature();
+		scaleSigOfPreviousRecord = ScaleSignature.lastSignature();
+		ratingOfPreviousRecord = this.getRating(chordSigOfPreviousRecord, scaleSigOfPreviousRecord);
+		return new ScaleConsonanceRecord(
+				chordSigOfPreviousRecord, 
+				scaleSigOfPreviousRecord, 
+				ratingOfPreviousRecord);
 	}
 
 	@Override
 	public boolean isFull() {
-		// TODO Auto-generated method stub
-		return false;
+		for(ChordSignature chordSig : ChordSignature.values()) {
+			for(ScaleSignature scaleSig : ScaleSignature.values()) {
+				ConsonanceRating rating = this.getRating(chordSig, scaleSig);
+				if(rating == null) {
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 
 	@Override
 	public boolean isEmpty() {
-		// TODO Auto-generated method stub
-		return false;
+		this.purgeUnratedScales();
+		return this.chordToScaleRatingMap.keySet().size() == 0;
 	}
 }

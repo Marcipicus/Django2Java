@@ -540,7 +540,7 @@ public class NoteConsonanceModel implements RatingModel<NoteConsonanceRecord>{
 				currentNoteConsonanceRecordBeingRated.rating();
 
 		//if there have not been any ratings added yet then return a null value
-		if( chordSignatureOfCurrentRating.isLowestValue() &&
+		if( chordSignatureOfCurrentRating.isFirstSignature() &&
 				intervalOfCurrentRating.equals(Interval.UNISON)) {
 			return null;
 		}

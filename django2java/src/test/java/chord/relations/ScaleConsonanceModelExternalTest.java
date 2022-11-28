@@ -16,7 +16,7 @@ import chord.ident.ScaleSignature;
 
 public class ScaleConsonanceModelExternalTest {
 	/**
-	 * Take the given NoteConsonanceModel and fill it with a consistent
+	 * Take the given ScaleConsonanceModel and fill it with a consistent
 	 * rating every time
 	 * @param full fill the data structure if true, half fill if false
 	 * @param model to be filled....it is assumed that the model is empty.
@@ -59,7 +59,7 @@ public class ScaleConsonanceModelExternalTest {
 	}
 	
 	/**
-	 * Add a NoteConsonanceRecord with a null rating and
+	 * Add a ScaleConsonanceRecord with a null rating and
 	 * make sure that an exception is thrown.
 	 */
 	@Test
@@ -178,7 +178,7 @@ public class ScaleConsonanceModelExternalTest {
 	}
 
 	/**
-	 * Fill a NoteConsonanceModel and make sure that
+	 * Fill a ScaleConsonanceModel and make sure that
 	 * the getNextNoteRecordToBeRated returns null.
 	 */
 	@Test
@@ -212,7 +212,7 @@ public class ScaleConsonanceModelExternalTest {
 
 	/**
 	 * Fill all ratings for a single chord and make sure that
-	 * the getNextNoteRecordToBeRated method returns the next
+	 * the getNextRecordToBeRated method returns the next
 	 * chord signature and a unison interval.
 	 */
 	@Test
@@ -252,7 +252,7 @@ public class ScaleConsonanceModelExternalTest {
 	/**
 	 * Fill a NoteConsonanceModel and make sure that
 	 * the last rating added contains the last ChordSignature
-	 * and an Interval of MAJOR7
+	 * and the last ScaleSignature
 	 */
 	@Test
 	void testGetLastRatedRecordFull() {
@@ -276,7 +276,7 @@ public class ScaleConsonanceModelExternalTest {
 
 	/**
 	 * Add a rating and make sure that it is returned from 
-	 * the getRecordOfLastNoteConsonanceRated function.
+	 * the getLastRecordRated function.
 	 */
 	@Test
 	void testGetLastRatedRecordNormalEntry() {
@@ -305,7 +305,7 @@ public class ScaleConsonanceModelExternalTest {
 
 	/**
 	 * Fill all ratings for a single chord and make sure
-	 * that the getLastRatingAdded method returns chordSig/MAJOR7 
+	 * that the getLastRatingAdded method returns chordSig/lastScalSignature
 	 */
 	@Test
 	void testGetRecordOfLastNoteConsonanceRatedRollover() {

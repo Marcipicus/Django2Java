@@ -1,5 +1,7 @@
 package chord;
 
+import java.util.Arrays;
+
 public enum Interval {
 	UNISON("U"),
 	MINOR2(UsefulUnicodeCharacters.flatSign + "2"),
@@ -26,6 +28,25 @@ public enum Interval {
 	MINOR14(UsefulUnicodeCharacters.flatSign + 14),
 	MAJOR14("14"),
 	PERFECT15("P15");
+	
+	/**
+	 * Populate the array with all of the Intervals in the first
+	 * octave excluding duplicate notes(UNISON/PERFECT8
+	 */
+	private static final Interval[] firstOctaveValuesArray = 
+			Arrays.copyOfRange(
+					Interval.values(), 
+					0, 
+					Interval.MAJOR7.ordinal() + 1);
+	/**
+	 * Get an ordered array of all intervals in the first
+	 * octave without duplicates(UNISON to MAJOR7 inclusive)				
+	 * @return array of all intervals between UNISON and MAJOR7
+	 * inclusive
+	 */
+	public static Interval[] valuesInFirstOctave() {
+		return firstOctaveValuesArray;
+	}
 	
 	private final String intervalName;
 	

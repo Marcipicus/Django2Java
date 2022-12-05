@@ -24,7 +24,7 @@ import chord.ident.ChordSignature;
  * @author DAD
  *
  */
-public class ChordChangeConsonanceModelTest {
+public class ChordChangeConsonanceModelInternalTest {
 
 	//.tmp file name used to make git ignore on checkins if
 	//we forget to delete the test file

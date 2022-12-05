@@ -8,7 +8,8 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
@@ -16,7 +17,6 @@ import java.util.Set;
 import chord.ConsonanceRating;
 import chord.Interval;
 import chord.ident.ChordSignature;
-import chord.ident.ScaleSignature;
 
 /**
  * Main data structure for rating chord changes.
@@ -285,7 +285,7 @@ public class ChordChangeConsonanceModel implements RatingModel<ChordChangeConson
 	 * @return the previous rating for the parameters,
 	 * null if there was no previous rating.
 	 */
-	public ConsonanceRating addRating(ChordSignature startChordSig, ChordSignature endChordSig, Interval intervalBetweenRoots, ConsonanceRating rating) {
+	 ConsonanceRating addRating(ChordSignature startChordSig, ChordSignature endChordSig, Interval intervalBetweenRoots, ConsonanceRating rating) {
 		if(startChordSig == null) {
 			throw new NullPointerException("start chord sig may not be null");
 		}
@@ -339,7 +339,7 @@ public class ChordChangeConsonanceModel implements RatingModel<ChordChangeConson
 	 * @return the rating associated with the parameters, or null if no
 	 * rating exists.
 	 */
-	public ConsonanceRating removeRating(ChordSignature startChordSig, ChordSignature endChordSig, Interval intervalBetweenRoots) {
+	ConsonanceRating removeRating(ChordSignature startChordSig, ChordSignature endChordSig, Interval intervalBetweenRoots) {
 		if(startChordSig == null) {
 			throw new NullPointerException("start chord sig may not be null");
 		}
@@ -378,7 +378,7 @@ public class ChordChangeConsonanceModel implements RatingModel<ChordChangeConson
 	 * @return the rating associated with the parameters,
 	 * null if no rating exists
 	 */
-	public ConsonanceRating getRating(ChordSignature startChordSig, ChordSignature endChordSig, Interval intervalBetweenRoots) {
+	ConsonanceRating getRating(ChordSignature startChordSig, ChordSignature endChordSig, Interval intervalBetweenRoots) {
 		if(startChordSig == null) {
 			throw new NullPointerException("start chord sig may not be null");
 		}
@@ -413,7 +413,7 @@ public class ChordChangeConsonanceModel implements RatingModel<ChordChangeConson
 	 * Get a set of all start chord signatures that have ratings. 
 	 * @return set of all start chord signatures with ratings.
 	 */
-	public Set<ChordSignature> getStartChordSignatureSet(){
+	private Set<ChordSignature> getStartChordSignatureSet(){
 		return this.chordChangeConsonanceMap.keySet();
 	}
 
@@ -440,59 +440,251 @@ public class ChordChangeConsonanceModel implements RatingModel<ChordChangeConson
 
 		return endChordMapForStartChordSig.keySet();
 	}
-	
-	
+
+	/**
+	 * Remove any empty maps to simplify the equals and isEmpty methods.
+	 */
+	private void purgeUnusedMaps() {
+		//Remove any end maps that have no ratings
+		purgeUnusedEndChordMaps();
+
+		//Remove any start chords that no longer have any end chords
+		//because of the previous removal
+		purgeEmptyStartChordMaps();
+	}
+
+	/**
+	 * Remove any endChordMaps that no longer have any ratings.
+	 */
+	private void purgeUnusedEndChordMaps() {
+		List<ChordChangeConsonanceRecord> recordsWithNoRatings = new LinkedList<>();
+
+		for(ChordSignature startChord : getStartChordSignatureSet()) {
+			for(ChordSignature endChord : getEndChordSignatureSetForStartChordSignature(startChord)) {
+				IntervalRatingMap intRatingMap = 
+						this.chordChangeConsonanceMap.get(startChord).get(endChord);
+				if(intRatingMap.keySet().size() == 0) {
+					//Save the startChordSignature and the endChordSignature
+					//in a record for later....interval is ignored.
+					recordsWithNoRatings.add(
+							new ChordChangeConsonanceRecord(
+									startChord, 
+									endChord, 
+									Interval.MAJOR3, 
+									null));
+				}
+			}
+		}
+
+		//remove the endChords from the map
+		for(ChordChangeConsonanceRecord record : recordsWithNoRatings) {
+			this.chordChangeConsonanceMap.get(record.startChordSignature()).remove(record.endChordSignature());
+		}
+	}
+
+	/**
+	 * Remove any maps for start chords that no longer have any
+	 * associated end chords because of a removal by purgeUnusedEndChordMaps
+	 */
+	private void purgeEmptyStartChordMaps() {
+		List<ChordSignature> startChordsWithNoEndChordMaps = new LinkedList<>();
+
+		for(ChordSignature startChord : getStartChordSignatureSet()) {
+			Map<ChordSignature,IntervalRatingMap> endChordMap = 
+					this.chordChangeConsonanceMap.get(startChord);
+
+			if(endChordMap.keySet().size() == 0) {
+				startChordsWithNoEndChordMaps.add(startChord);
+			}
+		}
+
+		for(ChordSignature chordSig : startChordsWithNoEndChordMaps) {
+			this.chordChangeConsonanceMap.remove(chordSig);
+		}
+	}
+
+
 	@Override
 	public boolean equals(Object o) {
 		if(o == this)
 			return true;
 		if(!(o instanceof ChordChangeConsonanceModel))
 			return false;
-		
+
 		ChordChangeConsonanceModel other = (ChordChangeConsonanceModel)o;
-		
+		this.purgeUnusedMaps();
+		other.purgeUnusedMaps();
+
 		return this.chordChangeConsonanceMap.equals(other.chordChangeConsonanceMap);
 	}
 
 	@Override
 	public ChordChangeConsonanceRecord addRating(ChordChangeConsonanceRecord record) {
-		// TODO Auto-generated method stub
-		return null;
+		if(record == null) {
+			throw new NullPointerException("record may not be null");
+		}
+		ConsonanceRating rating = addRating(
+				record.startChordSignature(),
+				record.endChordSignature(), 
+				record.intervalBetweenRoots(), 
+				record.rating());
+		if(rating == null) {
+			return null;
+		}else {
+			return new ChordChangeConsonanceRecord(
+					record.startChordSignature(), 
+					record.endChordSignature(), 
+					record.intervalBetweenRoots(), 
+					rating);
+		}
 	}
 
 	@Override
 	public ChordChangeConsonanceRecord removeRating(ChordChangeConsonanceRecord record) {
-		// TODO Auto-generated method stub
-		return null;
+		if(record == null) {
+			throw new NullPointerException("record may not be null");
+		}
+		ConsonanceRating rating = removeRating(
+				record.startChordSignature(),
+				record.endChordSignature(), 
+				record.intervalBetweenRoots());
+		if(rating == null) {
+			return null;
+		}else {
+			return new ChordChangeConsonanceRecord(
+					record.startChordSignature(), 
+					record.endChordSignature(), 
+					record.intervalBetweenRoots(), 
+					rating);
+		}
 	}
 
 	@Override
 	public ChordChangeConsonanceRecord getRating(ChordChangeConsonanceRecord record) {
-		// TODO Auto-generated method stub
-		return null;
+		if(record == null) {
+			throw new NullPointerException("record may not be null");
+		}
+		ConsonanceRating rating = getRating(
+				record.startChordSignature(),
+				record.endChordSignature(), 
+				record.intervalBetweenRoots());
+		if(rating == null) {
+			return null;
+		}else {
+			return new ChordChangeConsonanceRecord(
+					record.startChordSignature(), 
+					record.endChordSignature(), 
+					record.intervalBetweenRoots(), 
+					rating);
+		}
 	}
 
 	@Override
 	public ChordChangeConsonanceRecord getNextRecordToBeRated() {
-		// TODO Auto-generated method stub
+		if(isFull()) {
+			return null;
+		}
+
+		for(ChordSignature startChordSig : ChordSignature.values()) {
+			for(ChordSignature endChordSig : ChordSignature.values()) {
+				for(Interval interval : Interval.values()) {
+					//Make sure we aren't duplicating ratings
+					//PERFECT8 refers to the same note as UNISON
+					if( !interval.inFirstOctave() ) {
+						break;
+					}
+					//if the start and end chord are the same and
+					//the interval is UNISON then the combination
+					//represents the same chord
+					if(startChordSig.equals(endChordSig) && interval.equals(Interval.UNISON)) {
+						continue;
+					}
+					ConsonanceRating rating = getRating(startChordSig, endChordSig, interval);
+					if(rating == null) {
+						return new ChordChangeConsonanceRecord(startChordSig, endChordSig, interval, null);
+					}
+				}
+			}
+		}
+
+		//this is redundant...I suppose that the 
+		//check at the start is unnecessary
+		//may have to change this in the future
 		return null;
 	}
 
 	@Override
 	public ChordChangeConsonanceRecord getLastRecordRated() {
-		// TODO Auto-generated method stub
-		return null;
+		//This check isn't really necessary
+		//it works for now...maybe remove it later
+		if(isEmpty()) {
+			return null;
+		}
+
+		ChordChangeConsonanceRecord lastRecordRated = null;
+
+		OUTER_LOOP:
+			for(ChordSignature startChord : ChordSignature.values()) {
+				for(ChordSignature endChord : ChordSignature.values()) {
+					for(Interval interval : Interval.values()) {
+						//Make sure we aren't duplicating ratings
+						//PERFECT8 refers to the same note as UNISON
+						if( !interval.inFirstOctave() ) {
+							break;
+						}
+						//if the start and end chord are the same and
+						//the interval is UNISON then the combination
+						//represents the same chord
+						if(startChord.equals(endChord) && interval.equals(Interval.UNISON)) {
+							continue;
+						}
+
+						ConsonanceRating rating = getRating(startChord, endChord, interval);
+						if(rating == null) {
+							break OUTER_LOOP;
+						}
+						lastRecordRated = new ChordChangeConsonanceRecord(startChord, endChord, interval, rating);
+					}
+				}
+			}
+
+		return lastRecordRated;
 	}
 
 	@Override
 	public boolean isFull() {
-		// TODO Auto-generated method stub
-		return false;
+		
+		//TODO: These loops are pretty much the same
+		//we might need to parameterize this later with
+		//delegates or lambda expressions....works for now
+		for(ChordSignature startChord : ChordSignature.values()) {
+			for(ChordSignature endChord : ChordSignature.values()) {
+				for(Interval interval : Interval.values()) {
+					//Make sure we aren't duplicating ratings
+					//PERFECT8 refers to the same note as UNISON
+					if( !interval.inFirstOctave() ) {
+						break;
+					}
+					//if the start and end chord are the same and
+					//the interval is UNISON then the combination
+					//represents the same chord
+					if(startChord.equals(endChord) && interval.equals(Interval.UNISON)) {
+						continue;
+					}
+
+					ConsonanceRating rating = getRating(startChord, endChord, interval);
+					if(rating == null) {
+						return false;
+					}
+				}
+			}
+		}
+		return true;
 	}
 
 	@Override
 	public boolean isEmpty() {
-		// TODO Auto-generated method stub
-		return false;
+		purgeUnusedMaps();
+		return this.chordChangeConsonanceMap.keySet().size() == 0;
 	}
 }

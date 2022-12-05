@@ -31,7 +31,8 @@ public record ChordChangeConsonanceRecord(
 	 * @param endChordSignature type of end chord(MAJOR,MINOR,SUS2,SUS4....) 
 	 * @param intervalBetweenRoots the interval between the roots of the start
 	 * and end chords
-	 * @param rating rating for the chord change
+	 * @param rating rating for the chord change, may be null for retrieval/removal
+	 * of ratings in the ChordChangeConsonanceModel
 	 */
 	public ChordChangeConsonanceRecord{
 		//Null Pointer Checks
@@ -41,8 +42,6 @@ public record ChordChangeConsonanceRecord(
 			throw new NullPointerException("end chord signature may not be null");
 		if(intervalBetweenRoots == null)
 			throw new NullPointerException("interval between roots may not be null");
-		if(rating == null)
-			throw new NullPointerException("rating may not be null");
 		
 		//interval within bounds check
 		if( !intervalBetweenRoots.inFirstOctave() )

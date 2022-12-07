@@ -19,7 +19,7 @@ import chord.relations.RatingModel;
  * @param <RECORD> the type of record we are using
  * @param <MODEL> the model we are using
  */
-public abstract class RatingModelController<RECORD, MODEL extends RatingModel<RECORD>> {
+public abstract class RatingModelController<RECORD, REQUEST, MODEL extends RatingModel<RECORD,REQUEST>> {
 
 	/**
 	 * Data model for controller

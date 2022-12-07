@@ -6,8 +6,13 @@ import java.io.FileNotFoundException;
 import chord.ConsonanceRating;
 import chord.relations.ScaleConsonanceModel;
 import chord.relations.ScaleConsonanceRecord;
+import chord.relations.ScaleConsonanceRecordRequest;
 
-public class ScaleConsonanceController extends RatingModelController<ScaleConsonanceRecord, ScaleConsonanceModel>{
+public class ScaleConsonanceController extends 
+RatingModelController<
+ScaleConsonanceRecord, 
+ScaleConsonanceRecordRequest,
+ScaleConsonanceModel>{
 
 	public ScaleConsonanceController(ScaleConsonanceModel model,
 			StateChangeListener<ScaleConsonanceRecord>[] listeners) {

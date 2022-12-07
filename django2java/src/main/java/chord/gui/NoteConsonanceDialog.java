@@ -6,9 +6,11 @@ import chord.gui.components.NoteConsonanceRecordPanel;
 import chord.gui.controller.NoteConsonanceController;
 import chord.relations.NoteConsonanceModel;
 import chord.relations.NoteConsonanceRecord;
+import chord.relations.NoteConsonanceRecordRequest;
 
 public class NoteConsonanceDialog extends 
 	RatingDialog<NoteConsonanceRecord,
+	NoteConsonanceRecordRequest,
 	NoteConsonanceModel,
 	NoteConsonanceController,
 	NoteConsonanceRecordPanel>{

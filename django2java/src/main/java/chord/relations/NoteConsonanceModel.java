@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -24,8 +25,14 @@ import chord.ident.ChordSignature;
  * by the interval between the root note of the chord and the note that is
  * being rated.
  */
-public class NoteConsonanceModel implements RatingModel<NoteConsonanceRecord>{
+public class NoteConsonanceModel implements RatingModel<NoteConsonanceRecord,NoteConsonanceRecordRequest>{
 
+	/**
+	 * String used to indicate that a file represents a NoteConsonanceModel.
+	 * This will be the first line in the file and the program will not attempt
+	 * to read the file unless the string exists and is in the first line.
+	 */
+	private static final String noteConsonanceModelFileFormatIndicator = "NOTE_CONSONANCE_MODEL_FILE";
 	/**
 	 * String used to signify that a chord signature is on the line and
 	 * the program should start to add note consonance ratings for that
@@ -151,6 +158,10 @@ public class NoteConsonanceModel implements RatingModel<NoteConsonanceRecord>{
 		//create a writer that autoflushes lines.
 		//TODO:may have to specify a charset as well.
 		try(PrintWriter modelWriter = new PrintWriter(outputStream,true)){
+			//let them know what type of file it is.
+			modelWriter.println(noteConsonanceModelFileFormatIndicator);
+			
+			//write the data
 			for(ChordSignature chordSig:model.chordToIntervalRatingMap.keySet()) {
 				modelWriter.println(createChordSignatureString(chordSig));
 
@@ -181,6 +192,10 @@ public class NoteConsonanceModel implements RatingModel<NoteConsonanceRecord>{
 		NoteConsonanceModel model = new NoteConsonanceModel();
 
 		try (Scanner inputScanner = new Scanner(inputStream)) {
+			String firstLineOfFile = inputScanner.nextLine();
+			if( !firstLineOfFile.equals(noteConsonanceModelFileFormatIndicator)) {
+				throw new FileFormatException();
+			}
 			//I have to assign a value to avoid compiler errors
 			ChordSignature currentChordSignature = null;
 
@@ -587,5 +602,45 @@ public class NoteConsonanceModel implements RatingModel<NoteConsonanceRecord>{
 	public boolean isEmpty() {
 		purgeMapsWithoutRatings();
 		return this.chordToIntervalRatingMap.size() == 0;
+	}
+
+	@Override
+	public Set<NoteConsonanceRecord> getRecords(NoteConsonanceRecordRequest request) {
+		if(request == null) {
+			throw new NullPointerException("request may not be null");
+		}
+		//TODO: we might have to change this to a checked exception
+		if( !request.isInitialized()) {
+			throw new IllegalArgumentException("Request has not been properly initialized");
+		}
+		
+		Set<NoteConsonanceRecord> matchingRecords = new HashSet<>();
+		
+		for(ChordSignature chordSig : this.chordToIntervalRatingMap.keySet()) {
+			//skip any chords that we are not looking for.
+			if( !request.contains(chordSig)) {
+				continue;
+			}
+			
+			IntervalRatingMap ratingMap = this.chordToIntervalRatingMap.get(chordSig);
+			for(Interval interval : ratingMap.keySet()) {
+				//skip intervals that we are not looking for
+				if( !request.contains(interval)) {
+					continue;
+				}
+				ConsonanceRating rating = ratingMap.get(interval);
+				
+				//skip ratings we are not looking for
+				if( !request.contains(rating)) {
+					continue;
+				}
+				
+				NoteConsonanceRecord recordToAdd = 
+						new NoteConsonanceRecord(chordSig, interval, rating);
+				matchingRecords.add(recordToAdd);
+			}
+		}
+		
+		return matchingRecords;
 	}
 }

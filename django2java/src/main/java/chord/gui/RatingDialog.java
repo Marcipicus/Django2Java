@@ -36,8 +36,9 @@ import chord.relations.RatingModel;
  */
 public abstract class RatingDialog<
 	RECORD,
-	MODEL extends RatingModel<RECORD>,
-	CONTROLLER extends RatingModelController<RECORD,MODEL>,
+	REQUEST,
+	MODEL extends RatingModel<RECORD,REQUEST>,
+	CONTROLLER extends RatingModelController<RECORD,REQUEST,MODEL>,
 	RECORDPANEL extends RecordPanel<RECORD>> extends JDialog 
 	implements ActionListener,StateChangeListener<RECORD>{
 	

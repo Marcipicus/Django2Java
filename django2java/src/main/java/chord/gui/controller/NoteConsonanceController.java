@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import chord.ConsonanceRating;
 import chord.relations.NoteConsonanceModel;
 import chord.relations.NoteConsonanceRecord;
+import chord.relations.NoteConsonanceRecordRequest;
 
 /**
  * Concrete implementation of the RatngModelController to
@@ -17,7 +18,11 @@ import chord.relations.NoteConsonanceRecord;
  * @author DAD
  *
  */
-public class NoteConsonanceController extends RatingModelController<NoteConsonanceRecord, NoteConsonanceModel> {
+public class NoteConsonanceController extends 
+RatingModelController<
+NoteConsonanceRecord,
+NoteConsonanceRecordRequest, 
+NoteConsonanceModel> {
 
 	@SafeVarargs
 	public NoteConsonanceController(NoteConsonanceModel model, StateChangeListener<NoteConsonanceRecord>... listeners) {

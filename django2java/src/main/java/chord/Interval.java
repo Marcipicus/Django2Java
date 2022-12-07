@@ -28,7 +28,7 @@ public enum Interval {
 	MINOR14(UsefulUnicodeCharacters.flatSign + 14),
 	MAJOR14("14"),
 	PERFECT15("P15");
-	
+
 	/**
 	 * Populate the array with all of the Intervals in the first
 	 * octave excluding duplicate notes(UNISON/PERFECT8
@@ -47,17 +47,40 @@ public enum Interval {
 	public static Interval[] valuesInFirstOctave() {
 		return firstOctaveValuesArray;
 	}
-	
+
+	/**
+	 * Check to see if all of the intervals are non-null
+	 * and in the first octave(UNISON to MAJOR7 inclusive).
+	 * 
+	 * @param intervals array of intervals to check.
+	 * @return true if all of the intervals are in the first
+	 * octave and non-null;
+	 */
+	public static boolean allIntervalsInFirstOctave(Interval... intervals) {
+		//we have to iterate here to make sure that
+		//the intervals are in the first octave.
+		for(Interval interval : intervals) {
+			if(interval == null) {
+				return false;
+			}
+			if( !interval.inFirstOctave()) {
+				return false;
+			}
+		}
+		
+		return true;
+	}
+
 	private final String intervalName;
-	
+
 	private Interval(String intervalName) {
 		this.intervalName  = intervalName;
 	}
-	
+
 	public String displayText() {
 		return intervalName;
 	}
-	
+
 	/**
 	 * Gets the next interval. If this is the last interval then
 	 * the function rolls over to the first interval.
@@ -70,7 +93,7 @@ public enum Interval {
 			return Interval.values()[0];
 		}
 	}
-	
+
 	/**
 	 * Get the previous interval. If this is the first interval
 	 * then the function rolls over to the last interval.
@@ -83,7 +106,7 @@ public enum Interval {
 			return Interval.values()[Interval.values().length - 1];
 		}
 	}
-	
+
 	/**
 	 * Check to see if the Interval is within the first octave.
 	 * This function exists so that duplicate intervals are not

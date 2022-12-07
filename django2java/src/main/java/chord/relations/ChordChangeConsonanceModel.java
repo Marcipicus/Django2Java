@@ -1,5 +1,6 @@
 package chord.relations;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -23,7 +24,7 @@ import chord.ident.ChordSignature;
  * @author DAD
  *
  */
-public class ChordChangeConsonanceModel implements RatingModel<ChordChangeConsonanceRecord>{
+public class ChordChangeConsonanceModel implements RatingModel<ChordChangeConsonanceRecord,ChordChangeConsonanceRecordRequest>{
 
 	//TODO: Create methods to write and read to/from file for ChordChangeConsonanceModel
 	//
@@ -242,8 +243,22 @@ public class ChordChangeConsonanceModel implements RatingModel<ChordChangeConson
 			throw new NullPointerException("destination file name may not be null");
 		}
 
+		File destinationFile = new File(destinationFileName);
+		
+		saveToFile(model,destinationFile);
+	}
+	
+	/**
+	 * Save the given model to the destination file.
+	 * @param model model to save
+	 * @param destinationFile file to which we will save
+	 * @throws FileNotFoundException if the file is a directory or cannot
+	 * be written to for some other reason
+	 */
+	public static void saveToFile(ChordChangeConsonanceModel model, File destinationFile) 
+			throws FileNotFoundException {
 		FileOutputStream destinationFileOutputStream = 
-				new FileOutputStream(destinationFileName);
+				new FileOutputStream(destinationFile);
 
 		ChordChangeConsonanceModel.saveToStream(model, destinationFileOutputStream);
 	}
@@ -260,9 +275,23 @@ public class ChordChangeConsonanceModel implements RatingModel<ChordChangeConson
 		if(sourceFileName == null) {
 			throw new NullPointerException("sourceFileName may not be null.");
 		}
+		
+		File sourceFile = new File(sourceFileName);
 
+		return ChordChangeConsonanceModel.loadFromFile(sourceFile);
+	}
+	
+	/**
+	 * Create a ChordChangeConsonanceModel from the source file.
+	 * 
+	 * @param sourceFile file containing ChordChangeConsonance data
+	 * @return initialized ChordChangeConsonanceModel
+	 * @throws FileNotFoundException if the file does not exist or 
+	 * cannot be opened for some other reason.
+	 */
+	public static ChordChangeConsonanceModel loadFromFile(File sourceFile) throws FileNotFoundException {
 		FileInputStream sourceFileInputStream = 
-				new FileInputStream(sourceFileName);
+				new FileInputStream(sourceFile);
 
 		return ChordChangeConsonanceModel.loadFromStream(sourceFileInputStream);
 	}
@@ -686,5 +715,17 @@ public class ChordChangeConsonanceModel implements RatingModel<ChordChangeConson
 	public boolean isEmpty() {
 		purgeUnusedMaps();
 		return this.chordChangeConsonanceMap.keySet().size() == 0;
+	}
+
+	@Override
+	public Set<ChordChangeConsonanceRecord> getRecords(ChordChangeConsonanceRecordRequest request) {
+		if(request == null) {
+			throw new NullPointerException("request may not be null.");
+		}
+		if( !request.isInitialized() ) {
+			throw new IllegalStateException("request is not initialized");
+		}
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

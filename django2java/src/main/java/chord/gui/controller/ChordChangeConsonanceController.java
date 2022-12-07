@@ -6,8 +6,13 @@ import java.io.FileNotFoundException;
 import chord.ConsonanceRating;
 import chord.relations.ChordChangeConsonanceModel;
 import chord.relations.ChordChangeConsonanceRecord;
+import chord.relations.ChordChangeConsonanceRecordRequest;
 
-public class ChordChangeConsonanceController extends RatingModelController<ChordChangeConsonanceRecord, ChordChangeConsonanceModel>{
+public class ChordChangeConsonanceController extends 
+RatingModelController<
+ChordChangeConsonanceRecord, 
+ChordChangeConsonanceRecordRequest , 
+ChordChangeConsonanceModel>{
 
 	public ChordChangeConsonanceController(ChordChangeConsonanceModel model,
 			StateChangeListener<ChordChangeConsonanceRecord>[] listeners) {

@@ -1,5 +1,6 @@
 package chord.relations;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -7,6 +8,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -22,7 +24,7 @@ import chord.ident.ScaleSignature;
  * @author DAD
  *
  */
-public class ScaleConsonanceModel implements RatingModel<ScaleConsonanceRecord>{
+public class ScaleConsonanceModel implements RatingModel<ScaleConsonanceRecord,ScaleConsonanceRecordRequest>{
 
 	/**
 	 * String used to signify that a chord signature is on the line and
@@ -190,15 +192,29 @@ public class ScaleConsonanceModel implements RatingModel<ScaleConsonanceRecord>{
 			throw new NullPointerException("destination file name may not be null");
 		}
 		
-		FileOutputStream destinationFileOutputStream = 
-				new FileOutputStream(destinationFileName);
+		File destinationFile = new File(destinationFileName);
 		
+		ScaleConsonanceModel.saveToFile(model,destinationFile);
+	}
+	
+	/**
+	 * Save the given model to the destination file.
+	 * @param model model to save
+	 * @param destinationFile file to which we will save
+	 * @throws FileNotFoundException if the file is a directory or cannot
+	 * be written to for some other reason
+	 */
+	public static void saveToFile(ScaleConsonanceModel model, File destinationFile) 
+			throws FileNotFoundException {
+		FileOutputStream destinationFileOutputStream = 
+				new FileOutputStream(destinationFile);
+
 		ScaleConsonanceModel.saveToStream(model, destinationFileOutputStream);
 	}
 	
 	/**
-	 * Convert a file that has been used to store the data from a NoteConsonanceModel
-	 * into a NoteConsonanceModel
+	 * Convert a file that has been used to store the data from a ScaleConsonanceModel
+	 * into a ScaleConsonanceModel
 	 * 
 	 * @param sourceFileName name of file containing the data
 	 * @return NoteConsonanceModel containing the stored data
@@ -209,9 +225,22 @@ public class ScaleConsonanceModel implements RatingModel<ScaleConsonanceRecord>{
 			throw new NullPointerException("sourceFileName may not be null.");
 		}
 		
+		File sourceFile = new File(sourceFileName);
+		return ScaleConsonanceModel.loadFromFile(sourceFile);
+	}
+	
+	/**
+	 * Create a ScaleConsonanceModel from the source file.
+	 * 
+	 * @param sourceFile file containing ScaleConsonance data
+	 * @return initialized ScaleConsonanceModel
+	 * @throws FileNotFoundException if the file does not exist or 
+	 * cannot be opened for some other reason.
+	 */
+	public static ScaleConsonanceModel loadFromFile(File sourceFile) throws FileNotFoundException {
 		FileInputStream sourceFileInputStream = 
-				new FileInputStream(sourceFileName);
-		
+				new FileInputStream(sourceFile);
+
 		return ScaleConsonanceModel.loadFromStream(sourceFileInputStream);
 	}
 	
@@ -465,5 +494,46 @@ public class ScaleConsonanceModel implements RatingModel<ScaleConsonanceRecord>{
 	public boolean isEmpty() {
 		this.purgeUnratedScales();
 		return this.chordToScaleRatingMap.keySet().size() == 0;
+	}
+
+	@Override
+	public Set<ScaleConsonanceRecord> getRecords(ScaleConsonanceRecordRequest request) {
+		if(request == null) {
+			throw new NullPointerException("request may not be null");
+		}
+		if( !request.isInitialized()) {
+			throw new IllegalArgumentException("request is not initialized..check your code");
+		}
+		
+		Set<ScaleConsonanceRecord> recordsRequested = new HashSet<>();
+		
+		for(ChordSignature chordSig : chordToScaleRatingMap.keySet()) {
+			if(! request.contains(chordSig)) {
+				continue;
+			}
+			
+			Map<ScaleSignature,ConsonanceRating> scaleToRatingMap = new HashMap<>();
+			for(ScaleSignature scaleSig : scaleToRatingMap.keySet()) {
+				if( !request.contains(scaleSig)) {
+					continue;
+				}
+				
+				ConsonanceRating rating = scaleToRatingMap.get(scaleSig);
+				if( !request.contains(rating)) {
+					continue;
+				}
+				ScaleConsonanceRecord requestedRecord = 
+						new ScaleConsonanceRecord(
+								chordSig, 
+								scaleSig, 
+								rating);
+				
+				recordsRequested.add(requestedRecord);
+			}
+			
+			
+		}
+
+		return recordsRequested;
 	}
 }

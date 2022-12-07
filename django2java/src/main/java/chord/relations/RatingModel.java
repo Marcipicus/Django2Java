@@ -1,5 +1,7 @@
 package chord.relations;
 
+import java.util.Set;
+
 /**
  * RatingModel interface declares the common methods for
  * all ConsonanceRatingDataModels(ChordChangeConsonanceModel,
@@ -9,10 +11,12 @@ package chord.relations;
  * all rating data models.
  * @author DAD
  *
- * @param <T> ConsonanceRecord Type for the data model.
+ * @param <RECORD> ConsonanceRecord Type for the data model.
  * (NoteConsonanceRecord for NoteConsonanceModel...)
+ * @param <REQUEST> Object used to specify the records that
+ * the user wants to retrieve.
  */
-public interface RatingModel<T> {
+public interface RatingModel<RECORD,REQUEST> {
 
 	/**
 	 * Add the rating represented by the record .
@@ -22,7 +26,7 @@ public interface RatingModel<T> {
 	 * @return the previous rating that existed for the record,
 	 * null if no previous rating exists.
 	 */
-	T addRating(T record);
+	RECORD addRating(RECORD record);
 	
 	/**
 	 * Remove the rating represented by the record .
@@ -32,7 +36,7 @@ public interface RatingModel<T> {
 	 * @return the rating for the record which was removed if it exists,
 	 * null if no rating exists.
 	 */
-	T removeRating(T record);
+	RECORD removeRating(RECORD record);
 	
 	/**
 	 * Get the record containing the rating represented by the
@@ -43,7 +47,7 @@ public interface RatingModel<T> {
 	 * @return the record if it exists,
 	 * null otherwise
 	 */
-	T getRating(T record);
+	RECORD getRating(RECORD record);
 
 	/**
 	 * Get the next unrated record. The rating value of the record 
@@ -53,7 +57,7 @@ public interface RatingModel<T> {
 	 * which needs to be rated, null if all ratings
 	 * have already been added
 	 */
-	T getNextRecordToBeRated();
+	RECORD getNextRecordToBeRated();
 	
 	/**
 	 * Get the last record which was added to the RatingModel.
@@ -61,7 +65,7 @@ public interface RatingModel<T> {
 	 * @return the last record saved,
 	 * null if no interactions have been saved.
 	 */
-	T getLastRecordRated();
+	RECORD getLastRecordRated();
 	
 	/**
 	 * Test to see if the model is full.
@@ -74,5 +78,13 @@ public interface RatingModel<T> {
 	 * @return true if there are not ratings in the model
 	 */
 	boolean isEmpty();
+	
+	/**
+	 * Get the records specified by the request parameter.
+	 * @param request object used to specify the records
+	 * desired by the caller.
+	 * @return a set of records matching the request.
+	 */
+	Set<RECORD> getRecords(REQUEST request);
 	
 }

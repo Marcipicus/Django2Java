@@ -6,9 +6,11 @@ import chord.gui.components.ScaleConsonanceRecordPanel;
 import chord.gui.controller.ScaleConsonanceController;
 import chord.relations.ScaleConsonanceModel;
 import chord.relations.ScaleConsonanceRecord;
+import chord.relations.ScaleConsonanceRecordRequest;
 
 public class ScaleConsonanceDialog extends 
 	RatingDialog<ScaleConsonanceRecord,
+	ScaleConsonanceRecordRequest,
 	ScaleConsonanceModel,
 	ScaleConsonanceController,
 	ScaleConsonanceRecordPanel> {

@@ -18,6 +18,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import chord.ConsonanceRating;
 import chord.Interval;
 import chord.ident.ChordSignature;
+import chord.relations.record.NoteConsonanceRecord;
 
 /**
  * This test class exists to test the NoteConsonanceModel's

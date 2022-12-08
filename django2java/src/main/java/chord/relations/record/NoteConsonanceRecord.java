@@ -1,8 +1,9 @@
-package chord.relations;
+package chord.relations.record;
 
 import chord.ConsonanceRating;
 import chord.Interval;
 import chord.ident.ChordSignature;
+import chord.relations.Rateable;
 
 /**
  * Record meant to be used to return Data from the NoteConsonanceModel.

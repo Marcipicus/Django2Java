@@ -1,4 +1,4 @@
-package chord.relations;
+package chord.relations.request;
 
 /**
  * SimpleRequest exists to provide a consistent 

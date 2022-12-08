@@ -18,6 +18,8 @@ import java.util.Set;
 import chord.ConsonanceRating;
 import chord.ident.ChordSignature;
 import chord.ident.ScaleSignature;
+import chord.relations.record.ScaleConsonanceRecord;
+import chord.relations.request.ScaleConsonanceRecordRequest;
 
 /**
  * Main data structure for rating the consonance of chords to scales.

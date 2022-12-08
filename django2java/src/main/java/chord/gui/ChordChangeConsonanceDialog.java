@@ -5,8 +5,8 @@ import javax.swing.JFrame;
 import chord.gui.components.ChordChangeConsonanceRecordPanel;
 import chord.gui.controller.ChordChangeConsonanceController;
 import chord.relations.ChordChangeConsonanceModel;
-import chord.relations.ChordChangeConsonanceRecord;
-import chord.relations.ChordChangeConsonanceRecordRequest;
+import chord.relations.record.ChordChangeConsonanceRecord;
+import chord.relations.request.ChordChangeConsonanceRecordRequest;
 
 public class ChordChangeConsonanceDialog extends 
 	RatingDialog<ChordChangeConsonanceRecord,

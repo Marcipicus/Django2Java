@@ -1,4 +1,4 @@
-package chord.relations;
+package chord.relations.request;
 
 /**
  * This exception exists to notify the user that there

@@ -5,8 +5,8 @@ import java.io.FileNotFoundException;
 
 import chord.ConsonanceRating;
 import chord.relations.ScaleConsonanceModel;
-import chord.relations.ScaleConsonanceRecord;
-import chord.relations.ScaleConsonanceRecordRequest;
+import chord.relations.record.ScaleConsonanceRecord;
+import chord.relations.request.ScaleConsonanceRecordRequest;
 
 public class ScaleConsonanceController extends 
 RatingModelController<

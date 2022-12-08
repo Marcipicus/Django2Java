@@ -5,8 +5,8 @@ import java.io.FileNotFoundException;
 
 import chord.ConsonanceRating;
 import chord.relations.NoteConsonanceModel;
-import chord.relations.NoteConsonanceRecord;
-import chord.relations.NoteConsonanceRecordRequest;
+import chord.relations.record.NoteConsonanceRecord;
+import chord.relations.request.NoteConsonanceRecordRequest;
 
 /**
  * Concrete implementation of the RatngModelController to

@@ -10,7 +10,7 @@ import chord.ConsonanceRating;
 import chord.Interval;
 import chord.ident.ChordSignature;
 import chord.relations.NoteConsonanceModel;
-import chord.relations.NoteConsonanceRecord;
+import chord.relations.record.NoteConsonanceRecord;
 
 /**
  * Test class used to automate the testing of the

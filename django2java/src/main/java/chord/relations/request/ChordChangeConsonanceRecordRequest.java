@@ -1,4 +1,4 @@
-package chord.relations;
+package chord.relations.request;
 
 import chord.Interval;
 import chord.ident.ChordSignature;

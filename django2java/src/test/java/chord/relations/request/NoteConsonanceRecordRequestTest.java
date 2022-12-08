@@ -1,4 +1,4 @@
-package chord.relations;
+package chord.relations.request;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import chord.Interval;
 import chord.ident.ChordSignature;
+import chord.relations.request.NoteConsonanceRecordRequest;
 
 public class NoteConsonanceRecordRequestTest {
 

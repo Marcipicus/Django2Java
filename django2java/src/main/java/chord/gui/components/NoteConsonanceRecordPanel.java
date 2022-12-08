@@ -1,6 +1,6 @@
 package chord.gui.components;
 
-import chord.relations.NoteConsonanceRecord;
+import chord.relations.record.NoteConsonanceRecord;
 
 public class NoteConsonanceRecordPanel extends RecordPanel<NoteConsonanceRecord> {
 	

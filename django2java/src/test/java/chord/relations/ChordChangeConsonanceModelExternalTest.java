@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import chord.ConsonanceRating;
 import chord.Interval;
 import chord.ident.ChordSignature;
+import chord.relations.record.ChordChangeConsonanceRecord;
 
 public class ChordChangeConsonanceModelExternalTest {
 	/**

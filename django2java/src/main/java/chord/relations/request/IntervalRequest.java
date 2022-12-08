@@ -1,4 +1,4 @@
-package chord.relations;
+package chord.relations.request;
 
 import java.util.Arrays;
 import java.util.HashSet;

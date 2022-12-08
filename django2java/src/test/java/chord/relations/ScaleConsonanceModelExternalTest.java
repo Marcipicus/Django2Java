@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import chord.ConsonanceRating;
 import chord.ident.ChordSignature;
 import chord.ident.ScaleSignature;
+import chord.relations.record.ScaleConsonanceRecord;
 
 public class ScaleConsonanceModelExternalTest {
 	/**

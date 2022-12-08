@@ -18,6 +18,8 @@ import java.util.Set;
 import chord.ConsonanceRating;
 import chord.Interval;
 import chord.ident.ChordSignature;
+import chord.relations.record.ChordChangeConsonanceRecord;
+import chord.relations.request.ChordChangeConsonanceRecordRequest;
 
 /**
  * Main data structure for rating chord changes.

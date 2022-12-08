@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import chord.ConsonanceRating;
 import chord.Interval;
 import chord.ident.ChordSignature;
+import chord.relations.record.NoteConsonanceRecord;
 
 /**
  * This test class is used to test the external interface of the

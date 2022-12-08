@@ -5,8 +5,8 @@ import javax.swing.JFrame;
 import chord.gui.components.ScaleConsonanceRecordPanel;
 import chord.gui.controller.ScaleConsonanceController;
 import chord.relations.ScaleConsonanceModel;
-import chord.relations.ScaleConsonanceRecord;
-import chord.relations.ScaleConsonanceRecordRequest;
+import chord.relations.record.ScaleConsonanceRecord;
+import chord.relations.request.ScaleConsonanceRecordRequest;
 
 public class ScaleConsonanceDialog extends 
 	RatingDialog<ScaleConsonanceRecord,

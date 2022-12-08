@@ -13,17 +13,20 @@ public class ScaleRequest implements SimpleRequest<ScaleSignature>{
 		this.scalesRequested = new HashSet<>();
 	}
 	
-	public void add(ScaleSignature... scaleSigs ) throws ReqeustInitializationException{
+	public void add(ScaleSignature... scaleSigs ) throws RequestInitializationException{
 		if(scaleSigs == null) {
 			throw new NullPointerException("intervals may not be null.");
 		}
 		if(scaleSigs.length == 0) {
-			throw new ReqeustInitializationException("Must add at least one interval.");
+			throw new RequestInitializationException("Must add at least one interval.");
 		}
 		Set<ScaleSignature> scaleSigsPassedSet = new HashSet<>(Arrays.asList(scaleSigs));
 		
+		if(scaleSigsPassedSet.contains(null)) {
+			throw new RequestInitializationException("null scale signatures may not be added");
+		}
 		if(scaleSigs.length != scaleSigsPassedSet.size()) {
-			throw new ReqeustInitializationException("Caller passed duplicate intervals....check your code"); 
+			throw new RequestInitializationException("Caller passed duplicate intervals....check your code"); 
 		}
 		
 		this.scalesRequested = scaleSigsPassedSet;
@@ -36,7 +39,7 @@ public class ScaleRequest implements SimpleRequest<ScaleSignature>{
 	public void addAll() {
 		try {
 			add(ScaleSignature.values());
-		}catch(ReqeustInitializationException e) {
+		}catch(RequestInitializationException e) {
 			//parameters are formed properly so we don't have to
 			//worry about this......ummm yeah I know I shouldn't
 			//do this but the unit tests should catch any errors

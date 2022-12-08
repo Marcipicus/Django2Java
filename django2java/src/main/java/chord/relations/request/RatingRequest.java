@@ -22,7 +22,7 @@ public class RatingRequest implements SimpleRequest<ConsonanceRating>{
 		RatingRequest request = new RatingRequest();
 		try {
 			return new RatingRequest(ConsonanceRating.GOOD,ConsonanceRating.VERY_GOOD);
-		}catch(ReqeustInitializationException e) {
+		}catch(RequestInitializationException e) {
 			//I know this won't happen so I am not 
 			//notifying callers with the exception
 			//assignment exists to avoid compilere errors
@@ -36,26 +36,26 @@ public class RatingRequest implements SimpleRequest<ConsonanceRating>{
 		this.ratingsRequested = new HashSet<>();
 	}
 	
-	public RatingRequest(ConsonanceRating... requestedValues ) throws ReqeustInitializationException {
+	public RatingRequest(ConsonanceRating... requestedValues ) throws RequestInitializationException {
 		this();
 		add(requestedValues);
 	}
 	
 	@Override
-	public void add(ConsonanceRating... requestedValues) throws ReqeustInitializationException {
+	public void add(ConsonanceRating... requestedValues) throws RequestInitializationException {
 		if(requestedValues == null) {
 			throw new NullPointerException("consonanceRatings may not be null");
 		}
 		if(requestedValues.length == 0) {
-			throw new ReqeustInitializationException("Must add at least one rating");
+			throw new RequestInitializationException("Must add at least one rating");
 		}
 
 		Set<ConsonanceRating> passedRatings = new HashSet<>(Arrays.asList(requestedValues));
 		if(passedRatings.contains(null)) {
-			throw new ReqeustInitializationException("addRatings cannot accept null values.");
+			throw new RequestInitializationException("addRatings cannot accept null values.");
 		}
 		if(requestedValues.length != passedRatings.size()) {
-			throw new ReqeustInitializationException("Caller passed duplicate ConsonanceRatings...Check your code");
+			throw new RequestInitializationException("Caller passed duplicate ConsonanceRatings...Check your code");
 		}
 		
 		this.ratingsRequested = passedRatings;
@@ -66,7 +66,7 @@ public class RatingRequest implements SimpleRequest<ConsonanceRating>{
 		try {
 			add(ConsonanceRating.values());
 
-		}catch(ReqeustInitializationException e) {
+		}catch(RequestInitializationException e) {
 			//parameters are formed properly so we don't have to
 			//worry about this......ummm yeah I know I shouldn't
 			//do this but the unit tests should catch any errors

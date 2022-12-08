@@ -20,27 +20,27 @@ public class IntervalRequest implements SimpleRequest<Interval>{
 		this.intervalsRequested = new HashSet<>();
 	}
 	
-	public IntervalRequest(Interval... requestedValues) throws ReqeustInitializationException {
+	public IntervalRequest(Interval... requestedValues) throws RequestInitializationException {
 		this();
 		add(requestedValues);
 	}
 
 	@Override
-	public void add(Interval... requestedValues) throws ReqeustInitializationException {
+	public void add(Interval... requestedValues) throws RequestInitializationException {
 		if(requestedValues == null) {
 			throw new NullPointerException("intervals may not be null.");
 		}
 		if(requestedValues.length == 0) {
-			throw new ReqeustInitializationException("Must add at least one interval.");
+			throw new RequestInitializationException("Must add at least one interval.");
 		}
 		
 		if( !Interval.allIntervalsInFirstOctave(requestedValues) ) {
-			throw new ReqeustInitializationException("requestedValues passed are not in the first octaves, may also contain nulls");
+			throw new RequestInitializationException("requestedValues passed are not in the first octaves, may also contain nulls");
 		}
 		Set<Interval> intervalsPassedSet = new HashSet<>(Arrays.asList(requestedValues));
 		
 		if(requestedValues.length != intervalsPassedSet.size()) {
-			throw new ReqeustInitializationException("Caller passed duplicate intervals....check your code"); 
+			throw new RequestInitializationException("Caller passed duplicate intervals....check your code"); 
 		}
 		
 		this.intervalsRequested = intervalsPassedSet;
@@ -50,7 +50,7 @@ public class IntervalRequest implements SimpleRequest<Interval>{
 	public void addAll() {
 		try {
 			add(Interval.valuesInFirstOctave());
-		}catch(ReqeustInitializationException e) {
+		}catch(RequestInitializationException e) {
 			//parameters are formed properly so we don't have to
 			//worry about this......ummm yeah I know I shouldn't
 			//do this but the unit tests should catch any errors

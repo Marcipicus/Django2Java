@@ -12,7 +12,7 @@ public class ScaleConsonanceRecordRequest extends AbstractRecordRequest{
 		scaleRequest = new ScaleRequest();
 	}
 	
-	public void addScaleRequest(ScaleRequest request) throws ReqeustInitializationException{
+	public void addScaleRequest(ScaleRequest request) throws RequestInitializationException{
 		if(request == null) {
 			throw new NullPointerException("request may not be null");
 		}

@@ -12,11 +12,11 @@ public interface SimpleRequest<DATA_TYPE> {
 	/**
 	 * Add all of the values to the request.
 	 * @param requestedValues values to look for
-	 * @throws ReqeustInitializationException if the data
+	 * @throws RequestInitializationException if the data
 	 * given is invalid(contains null values or duplicates or
 	 * if there is some other subclass specific error in the data.)
 	 */
-	void add(DATA_TYPE... requestedValues) throws ReqeustInitializationException;
+	void add(DATA_TYPE... requestedValues) throws RequestInitializationException;
 	
 	/**
 	 * Add all of the possible values for the data type

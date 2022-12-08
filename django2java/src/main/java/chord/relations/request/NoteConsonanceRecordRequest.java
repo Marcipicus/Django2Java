@@ -38,9 +38,9 @@ public class NoteConsonanceRecordRequest extends AbstractRecordRequest{
 	 * @param chordSig chord signature that we are requesting records for, may not be null
 	 * @return request for all records that have the chord signature and ratings of
 	 * GOOD or VERY_GOOD
-	 * @throws ReqeustInitializationException 
+	 * @throws RequestInitializationException 
 	 */
-	public static NoteConsonanceRecordRequest allHighRatedIntervalRequest(ChordSignature chordSig) throws ReqeustInitializationException {
+	public static NoteConsonanceRecordRequest allHighRatedIntervalRequest(ChordSignature chordSig) throws RequestInitializationException {
 		if(chordSig == null) {
 			throw new NullPointerException("chordSig may not be null");
 		}

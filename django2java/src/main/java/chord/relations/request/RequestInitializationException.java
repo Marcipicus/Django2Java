@@ -6,30 +6,30 @@ package chord.relations.request;
  * @author DAD
  *
  */
-public class ReqeustInitializationException extends Exception {
+public class RequestInitializationException extends Exception {
 
-	public ReqeustInitializationException() {
+	public RequestInitializationException() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public ReqeustInitializationException(String message, Throwable cause, boolean enableSuppression,
+	public RequestInitializationException(String message, Throwable cause, boolean enableSuppression,
 			boolean writableStackTrace) {
 		super(message, cause, enableSuppression, writableStackTrace);
 		// TODO Auto-generated constructor stub
 	}
 
-	public ReqeustInitializationException(String message, Throwable cause) {
+	public RequestInitializationException(String message, Throwable cause) {
 		super(message, cause);
 		// TODO Auto-generated constructor stub
 	}
 
-	public ReqeustInitializationException(String message) {
+	public RequestInitializationException(String message) {
 		super(message);
 		// TODO Auto-generated constructor stub
 	}
 
-	public ReqeustInitializationException(Throwable cause) {
+	public RequestInitializationException(Throwable cause) {
 		super(cause);
 		// TODO Auto-generated constructor stub
 	}

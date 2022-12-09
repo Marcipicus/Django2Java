@@ -22,7 +22,7 @@ public class ChordChangeConsonanceRecordRequest extends AbstractRecordRequest {
 			throw new IllegalArgumentException("Request has not been initialized.");
 		}
 		
-		this.referenceChordRequest = request;
+		this.targetChordRequest = request;
 	}
 	
 	public void addIntervalsBetweenRootsRequest(IntervalRequest request) {

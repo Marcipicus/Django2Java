@@ -12,7 +12,7 @@ public class ScaleConsonanceRecordRequest extends AbstractRecordRequest{
 		scaleRequest = new ScaleRequest();
 	}
 	
-	public void addScaleRequest(ScaleRequest request) throws RequestInitializationException{
+	public void addScaleRequest(ScaleRequest request){
 		if(request == null) {
 			throw new NullPointerException("request may not be null");
 		}
@@ -30,7 +30,7 @@ public class ScaleConsonanceRecordRequest extends AbstractRecordRequest{
 	public boolean contains(ScaleSignature scaleSignature) {
 		//we know that there are no nulls so we don't have to check the
 		//method parameter for it.
-		return this.contains(scaleSignature);
+		return this.scaleRequest.contains(scaleSignature);
 	}
 
 	@Override

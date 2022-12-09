@@ -13,7 +13,7 @@ public abstract class AbstractRecordRequest {
 		ratingRequest = new RatingRequest();
 	}
 	
-	public void addReferenceChordRequest(ChordRequest request) {
+	public final void addReferenceChordRequest(ChordRequest request) {
 		if(request == null) {
 			throw new NullPointerException("request may not be null");
 		}
@@ -24,7 +24,7 @@ public abstract class AbstractRecordRequest {
 		this.referenceChordRequest = request;
 	}
 	
-	public void addRatingRequest(RatingRequest request) {
+	public final void addRatingRequest(RatingRequest request) {
 		if(request == null) {
 			throw new NullPointerException("request may not be null");
 		}

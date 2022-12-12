@@ -41,7 +41,7 @@ public abstract class AbstractRecordRequest {
 	 * This refers to the chord being compared to(startChord in ChordChangeConsonanceModel)
 	 * @return true if the request is looking for the chord signature
 	 */
-	public final boolean contains(ChordSignature referenceChordSig) {
+	public final boolean containsReferenceChord(ChordSignature referenceChordSig) {
 		//we know that there are no nulls so we don't have to check the
 		//method parameter for it.
 		return this.referenceChordRequest.contains(referenceChordSig);

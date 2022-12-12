@@ -507,10 +507,12 @@ public class ScaleConsonanceModel implements RatingModel<ScaleConsonanceRecord,S
 			throw new IllegalArgumentException("request is not initialized..check your code");
 		}
 		
+		purgeUnratedScales();
+		
 		Set<ScaleConsonanceRecord> recordsRequested = new HashSet<>();
 		
 		for(ChordSignature chordSig : chordToScaleRatingMap.keySet()) {
-			if(! request.contains(chordSig)) {
+			if(! request.containsReferenceChord(chordSig)) {
 				continue;
 			}
 			

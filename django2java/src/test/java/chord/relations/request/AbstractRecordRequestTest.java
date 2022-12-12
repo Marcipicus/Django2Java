@@ -48,7 +48,7 @@ public abstract class AbstractRecordRequestTest<REQUEST_TYPE extends AbstractRec
 		request.addReferenceChordRequest(chordRequest);
 		
 		for(ChordSignature chordSig : ChordSignature.values() ) {
-			assertTrue(request.contains(chordSig));
+			assertTrue(request.containsReferenceChord(chordSig));
 		}
 	}
 	

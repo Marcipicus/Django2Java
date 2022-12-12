@@ -616,11 +616,13 @@ public class NoteConsonanceModel implements RatingModel<NoteConsonanceRecord,Not
 			throw new IllegalArgumentException("Request has not been properly initialized");
 		}
 		
+		purgeMapsWithoutRatings();
+		
 		Set<NoteConsonanceRecord> matchingRecords = new HashSet<>();
 		
 		for(ChordSignature chordSig : this.chordToIntervalRatingMap.keySet()) {
 			//skip any chords that we are not looking for.
-			if( !request.contains(chordSig)) {
+			if( !request.containsReferenceChord(chordSig)) {
 				continue;
 			}
 			

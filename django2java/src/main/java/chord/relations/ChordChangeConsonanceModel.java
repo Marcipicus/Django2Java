@@ -9,6 +9,7 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -727,7 +728,50 @@ public class ChordChangeConsonanceModel implements RatingModel<ChordChangeConson
 		if( !request.isInitialized() ) {
 			throw new IllegalStateException("request is not initialized");
 		}
-		// TODO Auto-generated method stub
-		return null;
+		//purge unused maps to simplify the request process
+		//by not checking for null values
+		purgeUnusedMaps();
+		
+		Set<ChordChangeConsonanceRecord> recordsRequested = new HashSet<>();
+		
+		//reference chord loop
+		for(ChordSignature referenceChordSig : this.chordChangeConsonanceMap.keySet()) {
+			if( ! request.containsReferenceChord(referenceChordSig)) {
+				continue;
+			}
+			
+			//no need to check for nulls in these loops since we have already
+			//purged all unused maps and ratings
+			Map<ChordSignature,IntervalRatingMap> targetChordToIntervalMap =
+					this.chordChangeConsonanceMap.get(referenceChordSig);
+
+			for(ChordSignature targetChordSig : targetChordToIntervalMap.keySet()) {
+				if( !request.containsTargetChord(targetChordSig)) {
+					continue;
+				}
+				
+				IntervalRatingMap intervalRatingMap = 
+						targetChordToIntervalMap.get(targetChordSig);
+				
+				for(Interval interval : intervalRatingMap.keySet()) {
+					if( !request.containsIntervalBetweenRoots(interval)) {
+						continue;
+					}
+					
+					ConsonanceRating rating = intervalRatingMap.get(interval);
+					if( !request.contains(rating)) {
+						continue;
+					}
+					
+					recordsRequested.add(
+							new ChordChangeConsonanceRecord(
+									referenceChordSig, 
+									targetChordSig, 
+									interval, 
+									rating));
+				}
+			}
+		}
+		return recordsRequested;
 	}
 }

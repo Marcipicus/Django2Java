@@ -20,6 +20,8 @@ import javax.swing.JFrame;
 import javax.xml.bind.JAXBException;
 
 import chord.Chord;
+import chord.ConsonanceRating;
+import chord.Interval;
 import chord.MIDINote;
 import chord.NoteName;
 import chord.exceptions.ChordToneBuildingException;
@@ -31,6 +33,9 @@ import chord.ident.ScaleSignature;
 import chord.maps.ChordLibrary;
 import chord.rating.ChordRatingGUI;
 import chord.rating.PracticeGUI;
+import chord.relations.record.ChordChangeConsonanceRecord;
+import chord.relations.record.NoteConsonanceRecord;
+import chord.relations.record.ScaleConsonanceRecord;
 
 /**
  * Currently just a class to toy around with libraries until
@@ -50,8 +55,62 @@ public class Main {
 		
 		//createAndPlayMidiSequence();
 		
-		printTotalCombinationsForAllDataStructures();
+		//printTotalCombinationsForAllDataStructures();
+		printRecords();
 	}
+	
+	static final void printRecords() {
+		ChordChangeConsonanceRecord cccRecordNonNull =
+				new ChordChangeConsonanceRecord(
+						ChordSignature.MAJOR, 
+						ChordSignature.MINOR, 
+						Interval.MINOR2, 
+						ConsonanceRating.BAD);
+		
+		ChordChangeConsonanceRecord cccRecordNull =
+				new ChordChangeConsonanceRecord(
+						ChordSignature.MAJOR, 
+						ChordSignature.MINOR, 
+						Interval.MINOR2, 
+						null);
+		
+		NoteConsonanceRecord ncRecordNonNull = 
+				new NoteConsonanceRecord(
+						ChordSignature.MAJOR, 
+						Interval.MINOR2, 
+						ConsonanceRating.GOOD);
+		
+		NoteConsonanceRecord ncRecordNull = 
+				new NoteConsonanceRecord(
+						ChordSignature.MAJOR, 
+						Interval.MINOR2, 
+						null);
+		
+		ScaleConsonanceRecord scRecordNonNull =
+				new ScaleConsonanceRecord(
+						ChordSignature.MAJOR,
+						ScaleSignature.AEOLIAN,
+						ConsonanceRating.VERY_BAD);
+		
+		ScaleConsonanceRecord scRecordNull =
+				new ScaleConsonanceRecord(
+						ChordSignature.MAJOR,
+						ScaleSignature.AEOLIAN,
+						null);
+		
+		System.out.println(cccRecordNonNull);
+		System.out.println(cccRecordNull);
+		System.out.println(ncRecordNonNull);
+		System.out.println(ncRecordNull);
+		System.out.println(scRecordNonNull);
+		System.out.println(scRecordNull);
+		
+		ConsonanceRating rating = ConsonanceRating.valueOf("null");
+		
+		System.out.println(rating);
+		
+	}
+	
 	
 	/**
 	 * List the total number of combinations for each of the data structures

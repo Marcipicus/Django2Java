@@ -1,4 +1,4 @@
-package chord.relations;
+package chord.relations.record;
 
 /**
  * This interface exists to add an common method to 

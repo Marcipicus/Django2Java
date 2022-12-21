@@ -32,10 +32,10 @@ public interface PersistModelStrategy<RECORD,REQUEST extends AbstractRecordReque
 	/**
 	 * Give the persister any data that it needs to save to/load from
 	 * a source/destination.
-	 * @param parameters an object containing all of the data required
+	 * @param configParam an object containing all of the data required
 	 * to save a model or to load a model
 	 */
-	void configure(CONFIG_PARAM parameters);
+	void configure(CONFIG_PARAM configParam);
 	
 	/**
 	 * Save the model to the destination described by
@@ -50,6 +50,9 @@ public interface PersistModelStrategy<RECORD,REQUEST extends AbstractRecordReque
 	/**
 	 * Load the model from the source described by
 	 * the parameters passed to configure.
+	 * 
+	 * This method ignores the request parameter.
+	 * 
 	 * @return an initialized model containing the data
 	 * stored in the location described by parameters passed
 	 * to configure.

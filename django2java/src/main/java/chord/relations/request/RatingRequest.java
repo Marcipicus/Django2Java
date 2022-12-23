@@ -13,7 +13,7 @@ public class RatingRequest implements SimpleRequest<ConsonanceRating>{
 		request.addAll();
 		return request;
 	}
-	
+
 	/**
 	 * Get a rating request with GOOD and VERY GOOD
 	 * @return

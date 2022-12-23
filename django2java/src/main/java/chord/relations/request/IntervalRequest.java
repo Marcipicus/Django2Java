@@ -8,6 +8,10 @@ import chord.Interval;
 
 public class IntervalRequest implements SimpleRequest<Interval>{
 	
+	/**
+	 * Get a request for all intervals in the first octave.
+	 * @return
+	 */
 	public static final IntervalRequest allIntervalsRequest() {
 		IntervalRequest request = new IntervalRequest();
 		request.addAll();
@@ -46,6 +50,9 @@ public class IntervalRequest implements SimpleRequest<Interval>{
 		this.intervalsRequested = intervalsPassedSet;
 	}
 
+	/**
+	 * Add all intervals in the first octave.
+	 */
 	@Override
 	public void addAll() {
 		try {

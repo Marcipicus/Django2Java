@@ -7,12 +7,19 @@ import java.util.Set;
 import chord.ident.ScaleSignature;
 
 public class ScaleRequest implements SimpleRequest<ScaleSignature>{
+
+	public static ScaleRequest allScalesRequest() {
+		ScaleRequest request = new ScaleRequest();
+		request.addAll();
+		return request;
+	}
+
 	private Set<ScaleSignature> scalesRequested;
-	
+
 	public ScaleRequest() {
 		this.scalesRequested = new HashSet<>();
 	}
-	
+
 	public void add(ScaleSignature... scaleSigs ) throws RequestInitializationException{
 		if(scaleSigs == null) {
 			throw new NullPointerException("intervals may not be null.");
@@ -21,17 +28,17 @@ public class ScaleRequest implements SimpleRequest<ScaleSignature>{
 			throw new RequestInitializationException("Must add at least one interval.");
 		}
 		Set<ScaleSignature> scaleSigsPassedSet = new HashSet<>(Arrays.asList(scaleSigs));
-		
+
 		if(scaleSigsPassedSet.contains(null)) {
 			throw new RequestInitializationException("null scale signatures may not be added");
 		}
 		if(scaleSigs.length != scaleSigsPassedSet.size()) {
 			throw new RequestInitializationException("Caller passed duplicate intervals....check your code"); 
 		}
-		
+
 		this.scalesRequested = scaleSigsPassedSet;
 	}
-	
+
 	/**
 	 * Add all of the intervals in the first octave to the request.(UNISON to MAJOR7 inclusive.
 	 */
@@ -51,7 +58,7 @@ public class ScaleRequest implements SimpleRequest<ScaleSignature>{
 			//You're welcome
 		}
 	}
-	
+
 	/**
 	 * Test to see if the request is looking for the scale.
 	 * @param scaleSignature scaleSignature being checked to see if requested.

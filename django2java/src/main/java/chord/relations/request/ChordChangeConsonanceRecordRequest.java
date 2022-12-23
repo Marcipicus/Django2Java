@@ -5,8 +5,56 @@ import chord.ident.ChordSignature;
 
 public class ChordChangeConsonanceRecordRequest extends AbstractRecordRequest {
 	
+	/**
+	 * Get a request for all records that could possibly be contained 
+	 * in a ChordChangeConsonanceModel.
+	 * @return request for all possible values contained in a 
+	 * ChordChangeConsonanceModel
+	 */
+	public static final ChordChangeConsonanceRecordRequest allPossibleRecords() {
+		return new ChordChangeConsonanceRecordRequest(
+				ChordRequest.allChordsRequest(),
+				ChordRequest.allChordsRequest(),
+				IntervalRequest.allIntervalsRequest(),
+				RatingRequest.allRatingsRequest());
+	}
+	
+	/**
+	 * Get a request to retrieve all pleasant chord change ratings
+	 * for the reference chord.
+	 * @param referenceChord chord that scales are rated against
+	 * @return all chord changes with a rating of GOOD or VERY_GOOD
+	 * @throws RequestInitializationException if there is an error creating the request
+	 */
+	public static ChordChangeConsonanceRecordRequest allPleasantRatedRecordsForReferenceChord(ChordSignature referenceChord) throws RequestInitializationException {
+		if(referenceChord == null) {
+			throw new NullPointerException("referenceChord may not be null");
+		}
+		ChordRequest chordRequest = new ChordRequest(referenceChord);
+		
+		return new ChordChangeConsonanceRecordRequest(
+				chordRequest,
+				ChordRequest.allChordsRequest(),
+				IntervalRequest.allIntervalsRequest(),
+				RatingRequest.allPleasantRatingeRequest());
+	}
+	
+	
 	private ChordRequest targetChordRequest;
 	private IntervalRequest intervalsBetweenRootsRequest;
+	
+	public ChordChangeConsonanceRecordRequest(
+			ChordRequest referenceChordRequest,
+			ChordRequest targetChordRequest,
+			IntervalRequest intervalBewtweenRootsRequest,
+			RatingRequest ratingRequest) {
+		this();
+		
+		addReferenceChordRequest(referenceChordRequest);
+		addTargetChordRequest(targetChordRequest);
+		addIntervalsBetweenRootsRequest(intervalBewtweenRootsRequest);
+		addRatingRequest(ratingRequest);
+	}
 	
 	public ChordChangeConsonanceRecordRequest() {
 		super();

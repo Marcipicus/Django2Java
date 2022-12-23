@@ -7,6 +7,8 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.Set;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -14,6 +16,7 @@ import chord.ConsonanceRating;
 import chord.ident.ChordSignature;
 import chord.ident.ScaleSignature;
 import chord.relations.record.ScaleConsonanceRecord;
+import chord.relations.request.ScaleConsonanceRecordRequest;
 
 public class ScaleConsonanceModelExternalTest {
 	/**
@@ -418,6 +421,27 @@ public class ScaleConsonanceModelExternalTest {
 
 		populateTestModel(true,scModel);
 		populateTestModel(true,otherModel);
+		assertEquals(scModel,otherModel);
+	}
+	
+	
+	@Test
+	void testRequestMethod() {
+		populateTestModel(true,scModel);
+		
+		ScaleConsonanceRecordRequest request = 
+				ScaleConsonanceRecordRequest.allPossibleRecords();
+		
+		//We are loading the records into another model to
+		//make sure that all of the records have been retrieved.
+		Set<ScaleConsonanceRecord> recordsRetrieved = scModel.getRecords(request);
+		
+		for(ScaleConsonanceRecord record : recordsRetrieved) {
+			otherModel.addRating(record);
+		}
+		
+		//if everything was retrieved properly
+		//the two models should be equal
 		assertEquals(scModel,otherModel);
 	}
 }

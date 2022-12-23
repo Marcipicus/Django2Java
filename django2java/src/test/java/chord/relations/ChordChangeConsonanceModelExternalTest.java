@@ -7,6 +7,8 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.Set;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -14,6 +16,7 @@ import chord.ConsonanceRating;
 import chord.Interval;
 import chord.ident.ChordSignature;
 import chord.relations.record.ChordChangeConsonanceRecord;
+import chord.relations.request.ChordChangeConsonanceRecordRequest;
 
 public class ChordChangeConsonanceModelExternalTest {
 	/**
@@ -337,7 +340,7 @@ public class ChordChangeConsonanceModelExternalTest {
 	}
 
 	/**
-	 * Fill a NoteConsonanceModel and make sure that
+	 * Fill a ChordChangeConsonanceModel and make sure that
 	 * the last rating added contains the last ChordSignature
 	 * and the last ChordSignature
 	 */
@@ -531,6 +534,26 @@ public class ChordChangeConsonanceModelExternalTest {
 
 		populateTestModel(true,cccModel);
 		populateTestModel(true,otherModel);
+		assertEquals(cccModel,otherModel);
+	}
+	
+	@Test
+	void testRequestMethod() {
+		populateTestModel(true,cccModel);
+		
+		ChordChangeConsonanceRecordRequest request = 
+				ChordChangeConsonanceRecordRequest.allPossibleRecords();
+		
+		//We are loading the records into another model to
+		//make sure that all of the records have been retrieved.
+		Set<ChordChangeConsonanceRecord> recordsRetrieved = cccModel.getRecords(request);
+		
+		for(ChordChangeConsonanceRecord record : recordsRetrieved) {
+			otherModel.addRating(record);
+		}
+		
+		//if everything was retrieved properly
+		//the two models should be equal
 		assertEquals(cccModel,otherModel);
 	}
 }

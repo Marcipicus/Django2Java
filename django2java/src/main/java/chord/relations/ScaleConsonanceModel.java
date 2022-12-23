@@ -516,7 +516,7 @@ public class ScaleConsonanceModel implements RatingModel<ScaleConsonanceRecord,S
 				continue;
 			}
 			
-			Map<ScaleSignature,ConsonanceRating> scaleToRatingMap = new HashMap<>();
+			Map<ScaleSignature,ConsonanceRating> scaleToRatingMap = chordToScaleRatingMap.get(chordSig);
 			for(ScaleSignature scaleSig : scaleToRatingMap.keySet()) {
 				if( !request.contains(scaleSig)) {
 					continue;

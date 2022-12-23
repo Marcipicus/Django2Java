@@ -7,6 +7,8 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.Set;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -14,6 +16,7 @@ import chord.ConsonanceRating;
 import chord.Interval;
 import chord.ident.ChordSignature;
 import chord.relations.record.NoteConsonanceRecord;
+import chord.relations.request.NoteConsonanceRecordRequest;
 
 /**
  * This test class is used to test the external interface of the
@@ -429,6 +432,26 @@ public class NoteConsonanceModelExternalTest {
 
 		populateTestModel(true,ncModel);
 		populateTestModel(true,otherModel);
+		assertEquals(ncModel,otherModel);
+	}
+	
+	@Test
+	void testRequestMethod() {
+		populateTestModel(true,ncModel);
+		
+		NoteConsonanceRecordRequest request = 
+				NoteConsonanceRecordRequest.allExistingRatingsRequest();
+		
+		//We are loading the records into another model to
+		//make sure that all of the records have been retrieved.
+		Set<NoteConsonanceRecord> recordsRetrieved = ncModel.getRecords(request);
+		
+		for(NoteConsonanceRecord record : recordsRetrieved) {
+			otherModel.addRating(record);
+		}
+		
+		//if everything was retrieved properly
+		//the two models should be equal
 		assertEquals(ncModel,otherModel);
 	}
 }

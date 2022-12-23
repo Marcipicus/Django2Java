@@ -8,23 +8,26 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import chord.ConsonanceRating;
-import chord.Interval;
 import chord.ident.ChordSignature;
+import chord.ident.ScaleSignature;
 import chord.relations.NoteConsonanceModel;
+import chord.relations.ScaleConsonanceModel;
 import chord.relations.persist.file.FileStrategyConfig;
 import chord.relations.persist.file.NoteConsonanceFilePersistStrategy;
-import chord.relations.record.NoteConsonanceRecord;
+import chord.relations.persist.file.ScaleConsonanceFilePersistStrategy;
+import chord.relations.record.ScaleConsonanceRecord;
 import chord.relations.request.NoteConsonanceRecordRequest;
+import chord.relations.request.ScaleConsonanceRecordRequest;
 
-public class NoteConsonanceFilePersistStrategyTest {
-	
+public class ScaleConsonanceFilePersistStrategyTest {
+
 	/**
-	 * Take the given NoteConsonanceModel and fill it with a consistent
+	 * Take the given ScaleConsonanceModel and fill it with a consistent
 	 * rating every time
 	 * @param full fill the data structure if true, half fill if false
 	 * @param model to be filled....it is assumed that the model is empty.
 	 */
-	static void populateTestModel(boolean full, NoteConsonanceModel model) {	
+	static void populateTestModel(boolean full, ScaleConsonanceModel model) {	
 		final int halfChordSigIndex = ChordSignature.values().length / 2;
 		final int fullChordSigIndex = ChordSignature.values().length;
 
@@ -32,15 +35,12 @@ public class NoteConsonanceFilePersistStrategyTest {
 		for(int i=0; i<endIndex; i++) {
 			ChordSignature chordSig = ChordSignature.values()[i];
 
-			for(Interval interval : Interval.values()) {
-				if( !interval.inFirstOctave()) {
-					break;
-				}
+			for(ScaleSignature scaleSig : ScaleSignature.values()) {
 
 				ConsonanceRating rating = ConsonanceRating.MEDIOCRE;
 				
-				NoteConsonanceRecord recordToBeAdded = 
-						new NoteConsonanceRecord(chordSig,interval,rating);
+				ScaleConsonanceRecord recordToBeAdded = 
+						new ScaleConsonanceRecord(chordSig,scaleSig,rating);
 
 				model.addRating(recordToBeAdded);
 			}
@@ -49,32 +49,10 @@ public class NoteConsonanceFilePersistStrategyTest {
 	
 	File testFile;
 
-	NoteConsonanceModel model,loadedModel;
-	NoteConsonanceFilePersistStrategy fileStrategy;
+	ScaleConsonanceModel model,loadedModel;
+	ScaleConsonanceFilePersistStrategy fileStrategy;
 
-	NoteConsonanceRecordRequest request;
+	ScaleConsonanceRecordRequest request;
 	FileStrategyConfig config;
 	
-	@BeforeEach
-	void init() {
-		model = new NoteConsonanceModel();
-		
-		populateTestModel(true, model);
-		
-		testFile = new File("testFile.tmp");
-	}
-	
-	@Test
-	void testSaveAndLoad() throws PersistenceException {
-		request = NoteConsonanceRecordRequest.allExistingRatingsRequest();
-		config = new FileStrategyConfig(testFile);
-		
-		fileStrategy = new NoteConsonanceFilePersistStrategy(config, request);
-		
-		fileStrategy.save(model);
-		
-		loadedModel = fileStrategy.load();
-		
-		assertEquals(model,loadedModel);
-	}
 }

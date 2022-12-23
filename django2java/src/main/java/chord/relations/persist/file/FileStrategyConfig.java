@@ -1,4 +1,4 @@
-package chord.relations.persist;
+package chord.relations.persist.file;
 
 import java.io.File;
 

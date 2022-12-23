@@ -1,9 +1,10 @@
-package chord.relations.persist;
+package chord.relations.persist.file;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.File;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -11,6 +12,7 @@ import chord.ConsonanceRating;
 import chord.Interval;
 import chord.ident.ChordSignature;
 import chord.relations.NoteConsonanceModel;
+import chord.relations.persist.PersistenceException;
 import chord.relations.persist.file.FileStrategyConfig;
 import chord.relations.persist.file.NoteConsonanceFilePersistStrategy;
 import chord.relations.record.NoteConsonanceRecord;
@@ -62,6 +64,11 @@ public class NoteConsonanceFilePersistStrategyTest {
 		populateTestModel(true, model);
 		
 		testFile = new File("testFile.tmp");
+	}
+	
+	@AfterEach
+	void cleanup() {
+		testFile.delete();
 	}
 	
 	@Test

@@ -5,7 +5,6 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.FileNotFoundException;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -19,6 +18,7 @@ import chord.gui.components.RecordPanel;
 import chord.gui.controller.RatingModelController;
 import chord.gui.controller.StateChangeListener;
 import chord.relations.RatingModel;
+import chord.relations.persist.PersistenceException;
 
 /**
  * Abstract class used to rate "musical combinations".
@@ -187,7 +187,7 @@ public abstract class RatingDialog<
 				File destinationFile = jfc.getSelectedFile();
 				try {
 					controller.saveFile(destinationFile);
-				} catch (FileNotFoundException e1) {
+				} catch (PersistenceException e1) {
 					JOptionPane.showMessageDialog(this, e1.getMessage(),
 				               "Error Saving File", JOptionPane.ERROR_MESSAGE);
 				}

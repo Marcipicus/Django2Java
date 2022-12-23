@@ -26,10 +26,6 @@ import chord.ident.ChordSignature;
  */
 public class ChordChangeConsonanceModelInternalTest {
 
-	//.tmp file name used to make git ignore on checkins if
-	//we forget to delete the test file
-	static final String testFileName = "testChordChangeConsonanceFile.tmp";
-
 	/**
 	 * Parameters for testing null pointer detection in add method.
 	 * @return stream of arguments containing one null argument for addRatingTest
@@ -112,74 +108,6 @@ public class ChordChangeConsonanceModelInternalTest {
 		cccModel = new ChordChangeConsonanceModel();
 		otherCCCmodel = new ChordChangeConsonanceModel();
 	}
-
-	/**
-	 * Make sure that a string containing a chord signature is
-	 * read and written properly.
-	 */
-	@Test
-	void testReadChordSignatureString() {
-		ChordSignature readChordSig;
-		final ChordSignature writtenChordSig = ChordSignature.MAJOR;
-
-		//Write a startChordSignatureString
-		String codedLine = 
-				ChordChangeConsonanceModel.createChordSignatureString(true, writtenChordSig);		
-		readChordSig = ChordChangeConsonanceModel.readChordSignatureFromLine(codedLine);
-		assertEquals(writtenChordSig,readChordSig);
-
-		//write an end chord signature string.
-		codedLine = 
-				ChordChangeConsonanceModel.createChordSignatureString(false, writtenChordSig);
-		readChordSig = ChordChangeConsonanceModel.readChordSignatureFromLine(codedLine);
-		assertEquals(writtenChordSig,readChordSig);
-	}
-
-	/**
-	 * Code a String containing an interval and a rating and
-	 * make sure that the data can be read properly
-	 */
-	@Test
-	void testParseIntervalAndRating() {
-		Interval readInterval;
-		ConsonanceRating readRating;
-
-		final Interval writtenInterval = Interval.PERFECT5;
-		final ConsonanceRating writtenRating = ConsonanceRating.GOOD;
-
-		final String codedLine = 
-				ChordChangeConsonanceModel.createIntervalRatingString(
-						writtenInterval, 
-						writtenRating);
-
-		readInterval = ChordChangeConsonanceModel.parseIntervalFromIntervalRatingLine(codedLine);
-		assertEquals(writtenInterval,readInterval);
-
-		readRating = ChordChangeConsonanceModel.parseRatingFromIntervalRatingLine(codedLine);
-		assertEquals(writtenRating,readRating);
-	}
-
-	/**
-	 * Make sure that we can save to file and load from file
-	 * properly.
-	 * @throws FileNotFoundException
-	 */
-	@Test
-	void testSavingToAndLoadingFromFile() throws FileNotFoundException {
-		ChordChangeConsonanceModel modelLoadedFromFile;
-
-		populateTestModel(cccModel);
-
-		ChordChangeConsonanceModel.saveToFile(cccModel, testFileName);
-		modelLoadedFromFile = ChordChangeConsonanceModel.loadFromFile(testFileName);
-
-		//Make sure we get rid of the file
-		File createdFile = new File(testFileName);
-		createdFile.delete();
-
-		assertEquals(cccModel,modelLoadedFromFile);
-	}
-
 
 	/**
 	 * Make sure .equals works

@@ -26,7 +26,7 @@ public class NoteConsonanceRecordRequest extends AbstractRecordRequest{
 	 * Request to return all records that exist.
 	 * @return Request for all records that exist
 	 */
-	public static NoteConsonanceRecordRequest allExistingRatingsRequest() {
+	public static NoteConsonanceRecordRequest allPossibleRecords() {
 		return new NoteConsonanceRecordRequest(
 				ChordRequest.allChordsRequest(),
 				IntervalRequest.allIntervalsRequest(),

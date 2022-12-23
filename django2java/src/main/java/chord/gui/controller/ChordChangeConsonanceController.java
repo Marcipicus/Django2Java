@@ -1,10 +1,10 @@
 package chord.gui.controller;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 
 import chord.ConsonanceRating;
 import chord.relations.ChordChangeConsonanceModel;
+import chord.relations.persist.PersistenceException;
 import chord.relations.record.ChordChangeConsonanceRecord;
 import chord.relations.request.ChordChangeConsonanceRecordRequest;
 
@@ -27,7 +27,7 @@ ChordChangeConsonanceModel>{
 	}
 
 	@Override
-	public void saveFile(File destinationFile) throws FileNotFoundException {
+	public void saveFile(File destinationFile) throws PersistenceException {
 		// TODO Auto-generated method stub
 		
 	}

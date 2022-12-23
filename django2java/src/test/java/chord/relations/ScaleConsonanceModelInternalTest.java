@@ -102,66 +102,6 @@ public class ScaleConsonanceModelInternalTest {
 	}
 
 	/**
-	 * Make sure that a string containing a chord signature is
-	 * read and written properly.
-	 */
-	@Test
-	void testReadChordSignatureString() {
-		ChordSignature readChordSig;
-
-		final ChordSignature writtenChordSig = ChordSignature.MAJOR;
-		final String codedLine = ScaleConsonanceModel.createChordSignatureString(writtenChordSig);
-
-		readChordSig = ScaleConsonanceModel.readChordSignatureFromLine(codedLine);
-		assertEquals(writtenChordSig,readChordSig);
-	}
-
-	/**
-	 * Code a String containing a scale signature and a rating and
-	 * make sure that the data can be read properly
-	 */
-	@Test
-	void testParseIntervalAndRating() {
-		ScaleSignature scaleSig;
-		ConsonanceRating readRating;
-
-		final ScaleSignature writtenScaleSig = ScaleSignature.AEOLIAN;
-		final ConsonanceRating writtenRating = ConsonanceRating.GOOD;
-
-		final String codedLine = 
-				ScaleConsonanceModel.createScaleRatingString(
-						writtenScaleSig, 
-						writtenRating);
-
-		scaleSig = ScaleConsonanceModel.parseScaleSignatureFromScaleRatingLine(codedLine);
-		assertEquals(writtenScaleSig,scaleSig);
-
-		readRating = ScaleConsonanceModel.parseRatingFromScaleRatingLine(codedLine);
-		assertEquals(writtenRating,readRating);
-	}
-
-	/**
-	 * Make sure that we can save to file and load from file
-	 * properly.
-	 * @throws FileNotFoundException
-	 */
-	@Test
-	void testSavingToAndLoadingFromFile() throws FileNotFoundException {
-		ScaleConsonanceModel modelLoadedFromFile;
-
-		populateTestModel(true,scModel);
-
-		ScaleConsonanceModel.saveToFile(scModel, testFileName);
-		modelLoadedFromFile = ScaleConsonanceModel.loadFromFile(testFileName);
-
-		//Make sure we get rid of the file
-		File createdFile = new File(testFileName);
-		createdFile.delete();
-
-		assertEquals(scModel,modelLoadedFromFile);
-	}
-
-	/**
 	 * Ensure that the addRating method throws an exception when
 	 * passed a null value for each of the parameters
 	 * @param chordSig Chord Signature

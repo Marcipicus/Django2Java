@@ -73,7 +73,7 @@ public class NoteConsonanceFilePersistStrategyTest {
 	
 	@Test
 	void testSaveAndLoad() throws PersistenceException {
-		request = NoteConsonanceRecordRequest.allExistingRatingsRequest();
+		request = NoteConsonanceRecordRequest.allPossibleRecords();
 		config = new FileStrategyConfig(testFile);
 		
 		fileStrategy = new NoteConsonanceFilePersistStrategy(config, request);

@@ -1,12 +1,12 @@
 package chord.gui.controller;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.LinkedList;
 import java.util.List;
 
 import chord.ConsonanceRating;
 import chord.relations.RatingModel;
+import chord.relations.persist.PersistenceException;
 
 /**
  * This class is used as a mediator between the gui and 
@@ -146,7 +146,7 @@ public abstract class RatingModelController<RECORD, REQUEST, MODEL extends Ratin
 	/**
 	 * Take the model and save it to file.
 	 */
-	public abstract void saveFile(File destinationFile) throws FileNotFoundException;
+	public abstract void saveFile(File destinationFile) throws PersistenceException;
 
 	/**
 	 * Take the current record being rated and save it to the model

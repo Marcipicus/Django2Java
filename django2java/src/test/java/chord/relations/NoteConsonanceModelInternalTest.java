@@ -5,8 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -27,10 +25,7 @@ import chord.relations.record.NoteConsonanceRecord;
  *
  */
 public class NoteConsonanceModelInternalTest {
-	//.tmp file name used to make git ignore on checkins if
-	//we forget to delete the test file
-	static final String testFileName = "testNoteConsonanceFile.tmp";
-
+	
 	/**
 	 * Parameters for testing null pointer detection in add method.
 	 * @return stream of arguments containing one null argument for addRatingTest
@@ -106,110 +101,7 @@ public class NoteConsonanceModelInternalTest {
 		ncModel = new NoteConsonanceModel();
 		otherModel = new NoteConsonanceModel();
 	}
-
-	/**
-	 * Make sure that a string containing a chord signature is
-	 * read and written properly.
-	 */
-	@Test
-	void testReadChordSignatureString() {
-		ChordSignature readChordSig;
-
-		final ChordSignature writtenChordSig = ChordSignature.MAJOR;
-		final String codedLine = NoteConsonanceModel.createChordSignatureString(writtenChordSig);
-
-		readChordSig = NoteConsonanceModel.readChordSignatureFromLine(codedLine);
-		assertEquals(writtenChordSig,readChordSig);
-	}
-
-	/**
-	 * Code a String containing an interval and a rating and
-	 * make sure that the data can be read properly
-	 */
-	@Test
-	void testParseIntervalAndRating() {
-		Interval readInterval;
-		ConsonanceRating readRating;
-
-		final Interval writtenInterval = Interval.PERFECT5;
-		final ConsonanceRating writtenRating = ConsonanceRating.GOOD;
-
-		final String codedLine = 
-				NoteConsonanceModel.createIntervalRatingString(
-						writtenInterval, 
-						writtenRating);
-
-		readInterval = NoteConsonanceModel.parseIntervalFromIntervalRatingLine(codedLine);
-		assertEquals(writtenInterval,readInterval);
-
-		readRating = NoteConsonanceModel.parseRatingFromIntervalRatingLine(codedLine);
-		assertEquals(writtenRating,readRating);
-	}
-
-	/**
-	 * Make sure that we can save to file and load from file
-	 * properly with a partially filled data structure.
-	 * @throws FileNotFoundException
-	 */
-	@Test
-	void testSavingToAndLoadingFromFilePartiallyFilled() throws FileNotFoundException {
-		testSavingToAndLoadingFromFile(false,false);
-	}
-
-	/**
-	 * Make sure that we can save to file and load from file
-	 * properly with a completely filled data structure.
-	 * @throws FileNotFoundException
-	 */
-	@Test
-	void testSavingToAndLoadingFromFileCompletelyFilled() throws FileNotFoundException {
-		testSavingToAndLoadingFromFile(true,false);
-	}
 	
-	/**
-	 * Make sure that we can save to and load from a file that
-	 * does not fill all intervals for the final chord signature.
-	 * @throws FileNotFoundException
-	 */
-	@Test 
-	void testSavingToAndLoadingFromFileIncompleteIntervalRatings() throws FileNotFoundException{
-		testSavingToAndLoadingFromFile(false, true);
-	}
-	
-	/**
-	 * Test saving to and loading from a file.
-	 * @param fillModel fill the model completely if true, 
-	 * partially fill if false
-	 * @param incompleteChordRating leave some intervals for the final
-	 * chord incomplete if true, fill all intervals otherwise
-	 * @throws FileNotFoundException
-	 */
-	void testSavingToAndLoadingFromFile(boolean fillModel,boolean incompleteChordRating) throws FileNotFoundException {
-		NoteConsonanceModel modelLoadedFromFile;
-
-		populateTestModel(fillModel, ncModel);
-		
-		if(incompleteChordRating) {
-			NoteConsonanceRecord lastRecordAdded =
-					ncModel.getLastRecordRated();
-			
-			System.out.println("Last added:"+lastRecordAdded);
-			
-			ncModel.removeRating(
-					lastRecordAdded.chordSignature(),
-					lastRecordAdded.interval());
-		}
-
-		NoteConsonanceModel.saveToFile(ncModel, testFileName);
-		modelLoadedFromFile = NoteConsonanceModel.loadFromFile(testFileName);
-
-		//Make sure we get rid of the file
-		File createdFile = new File(testFileName);
-		createdFile.delete();
-
-		assertEquals(ncModel,modelLoadedFromFile);
-	}
-
 	/**
 	 * Make sure .equals works
 	 */

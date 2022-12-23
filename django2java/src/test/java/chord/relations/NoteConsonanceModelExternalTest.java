@@ -440,7 +440,7 @@ public class NoteConsonanceModelExternalTest {
 		populateTestModel(true,ncModel);
 		
 		NoteConsonanceRecordRequest request = 
-				NoteConsonanceRecordRequest.allExistingRatingsRequest();
+				NoteConsonanceRecordRequest.allPossibleRecords();
 		
 		//We are loading the records into another model to
 		//make sure that all of the records have been retrieved.

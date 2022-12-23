@@ -1,10 +1,12 @@
 package chord.gui.controller;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 
 import chord.ConsonanceRating;
 import chord.relations.NoteConsonanceModel;
+import chord.relations.persist.PersistenceException;
+import chord.relations.persist.file.FileStrategyConfig;
+import chord.relations.persist.file.NoteConsonanceFilePersistStrategy;
 import chord.relations.record.NoteConsonanceRecord;
 import chord.relations.request.NoteConsonanceRecordRequest;
 
@@ -45,8 +47,17 @@ NoteConsonanceModel> {
 	}
 
 	@Override
-	public void saveFile(File destinationFile) throws FileNotFoundException {
-		NoteConsonanceModel.saveToFile(model, destinationFile);
+	public void saveFile(File destinationFile) throws PersistenceException {
+		NoteConsonanceRecordRequest request = 
+				NoteConsonanceRecordRequest.allPossibleRecords();
+		FileStrategyConfig fileConfig = new FileStrategyConfig(destinationFile);
+		
+		NoteConsonanceFilePersistStrategy saveStrategy = 
+				new NoteConsonanceFilePersistStrategy(
+						fileConfig, 
+						request);
+
+		saveStrategy.save(model);
 	}
 
 	@Override

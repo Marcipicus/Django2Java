@@ -17,7 +17,7 @@ ScaleConsonanceRecordRequest,
 ScaleConsonanceModel>{
 
 	public ScaleConsonanceController(ScaleConsonanceModel model,
-			StateChangeListener<ScaleConsonanceRecord>[] listeners) {
+			StateChangeListener<ScaleConsonanceRecord>... listeners) {
 		super(model, listeners);
 	}
 

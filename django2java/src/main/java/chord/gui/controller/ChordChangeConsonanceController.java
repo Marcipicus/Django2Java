@@ -17,7 +17,7 @@ ChordChangeConsonanceRecordRequest ,
 ChordChangeConsonanceModel>{
 
 	public ChordChangeConsonanceController(ChordChangeConsonanceModel model,
-			StateChangeListener<ChordChangeConsonanceRecord>[] listeners) {
+			StateChangeListener<ChordChangeConsonanceRecord>... listeners) {
 		super(model, listeners);
 	}
 

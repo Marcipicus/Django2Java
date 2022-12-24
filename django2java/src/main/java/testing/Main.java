@@ -56,7 +56,31 @@ public class Main {
 		//createAndPlayMidiSequence();
 		
 		//printTotalCombinationsForAllDataStructures();
-		printRecords();
+		//printRecords();
+		printNumberCombinationsForConsonanceModels();
+	}
+	
+	static final void printNumberCombinationsForConsonanceModels() {
+		final int numIntervals,numScales,numChords;
+		final int noteConsModelCombs,scaleConsModelCombs,chordChangeConsModelCombs;
+		final int numChordsInConcreteDataModel,numScalesInConcreteDataModel;
+		final int numRootNotes = 12;
+		
+		numIntervals = Interval.valuesInFirstOctave().length;
+		numScales = ScaleSignature.values().length;
+		numChords = ChordSignature.values().length;
+		
+		noteConsModelCombs = numChords * numIntervals;
+		scaleConsModelCombs = numChords * numScales;
+		chordChangeConsModelCombs = numChords * numChords * numIntervals;
+		numChordsInConcreteDataModel = numRootNotes * numChords;
+		numScalesInConcreteDataModel = numRootNotes * numScales;
+		
+		System.out.println("NoteConsonanceModel Combinations       :" + noteConsModelCombs);
+		System.out.println("ScaleConsonanceModel Combinations      :" + scaleConsModelCombs);
+		System.out.println("ChordChangeConsonanceModel Combinations:" + chordChangeConsModelCombs);
+		System.out.println("Number of Chords in ChordLibrary       :" + numChordsInConcreteDataModel);
+		System.out.println("Number of Scales in ChordLibrary       :" + numScalesInConcreteDataModel);
 	}
 	
 	static final void printRecords() {

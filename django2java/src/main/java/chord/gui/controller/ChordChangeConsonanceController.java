@@ -5,6 +5,8 @@ import java.io.File;
 import chord.ConsonanceRating;
 import chord.relations.ChordChangeConsonanceModel;
 import chord.relations.persist.PersistenceException;
+import chord.relations.persist.file.ChordChangeConsonanceFilePersistStrategy;
+import chord.relations.persist.file.FileStrategyConfig;
 import chord.relations.record.ChordChangeConsonanceRecord;
 import chord.relations.request.ChordChangeConsonanceRecordRequest;
 
@@ -17,7 +19,6 @@ ChordChangeConsonanceModel>{
 	public ChordChangeConsonanceController(ChordChangeConsonanceModel model,
 			StateChangeListener<ChordChangeConsonanceRecord>[] listeners) {
 		super(model, listeners);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -28,14 +29,32 @@ ChordChangeConsonanceModel>{
 
 	@Override
 	public void saveFile(File destinationFile) throws PersistenceException {
-		// TODO Auto-generated method stub
+		ChordChangeConsonanceRecordRequest request = 
+				ChordChangeConsonanceRecordRequest.allPossibleRecords();
+		FileStrategyConfig fileConfig = new FileStrategyConfig(destinationFile);
 		
+		ChordChangeConsonanceFilePersistStrategy saveStrategy = 
+				new ChordChangeConsonanceFilePersistStrategy(
+						fileConfig, 
+						request);
+
+		saveStrategy.save(model);
 	}
 
 	@Override
 	protected ChordChangeConsonanceRecord createRecordToSave(ConsonanceRating rating) {
-		// TODO Auto-generated method stub
-		return null;
+		if(currentRecord == null) {
+			throw new IllegalStateException(
+					"This should not happen. currentRecord is checked by RatingModelController");
+		}
+		ChordChangeConsonanceRecord recordToSave = 
+				new ChordChangeConsonanceRecord(
+						currentRecord.startChordSignature(),
+						currentRecord.endChordSignature(),
+						currentRecord.intervalBetweenRoots(),
+						rating);
+		
+		return recordToSave;
 	}
 
 }

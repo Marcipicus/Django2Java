@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import chord.ConsonanceRating;
+import chord.Interval;
 import chord.ident.ChordSignature;
 import chord.ident.ScaleSignature;
 import chord.relations.ScaleConsonanceModel;
@@ -78,14 +79,29 @@ public class ScaleConsonanceControllerTest {
 	
 	@Test
 	void testPreviousRating() {
-		//attempt to go back to the previous rating when
-		//no ratings exist, make sure that nothing changes
-		scController.previousRating();
+		ScaleConsonanceRecord previousRecord, previousRecordAfterSavingAndRemoving;
 		
-		assertEquals(ChordSignature.firstSignature(),currentRecordBeingRated.chordSignature());
-		assertEquals(ScaleSignature.firstSignature(),currentRecordBeingRated.scaleSignature());
-		
-		scController.saveRating(ConsonanceRating.GOOD);
+		//Iterate through all ChordSignature and ScaleSignature
+		//combinations
+		for(ChordSignature referenceChordSid : ChordSignature.values()) {
+			for(ScaleSignature scaleSig : ScaleSignature.values()) {
+				previousRecord = scController.getCurrentRecord();
+				
+				//save the rating then turn the controller back one
+				//record by calling(pressing) previous Rating.
+				scController.saveRating(ConsonanceRating.VERY_GOOD);
+				scController.previousRating();
+				
+				//get the previous record after saving and removing
+				//it should be the same record as the first call to getCurrentRecord()
+				previousRecordAfterSavingAndRemoving = scController.getCurrentRecord();
+				
+				assertEquals(previousRecord,previousRecordAfterSavingAndRemoving);
+				
+				//Advance the controller to the next record to be rated.
+				scController.saveRating(ConsonanceRating.VERY_GOOD);
+			}
+		}
 	}
 
 }

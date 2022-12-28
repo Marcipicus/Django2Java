@@ -252,7 +252,7 @@ public class NoteConsonanceModel implements RatingModel<NoteConsonanceRecord,Not
 					//rated so the ConsonanceRating is only added to
 					//avoid a NullPointerException
 					//may be a design flaw
-					return new NoteConsonanceRecord(chordSig, interval, ConsonanceRating.BAD);
+					return new NoteConsonanceRecord(chordSig, interval, null);
 				}
 			}
 		}

@@ -17,9 +17,9 @@ public class ChordChangeConsonanceControllerTest {
 
 	ChordChangeConsonanceRecord currentRecordBeingRated;
 
-	ChordChangeConsonanceModel ncModel;
-	ChordChangeConsonanceController ncController;
-	StateChangeListener<ChordChangeConsonanceRecord> ncListener;
+	ChordChangeConsonanceModel cccModel;
+	ChordChangeConsonanceController cccController;
+	StateChangeListener<ChordChangeConsonanceRecord> cccListener;
 
 	/**
 	 * Create a new ChordChangeConsonanceController, ChordChangeConsonanceModel, and
@@ -27,15 +27,15 @@ public class ChordChangeConsonanceControllerTest {
 	 */
 	@BeforeEach
 	void init() {
-		ncModel = new ChordChangeConsonanceModel();
-		ncListener = new StateChangeListener<ChordChangeConsonanceRecord>() {
+		cccModel = new ChordChangeConsonanceModel();
+		cccListener = new StateChangeListener<ChordChangeConsonanceRecord>() {
 
 			@Override
 			public void stateChanged(ChordChangeConsonanceRecord newState) {
 				currentRecordBeingRated = newState;
 			}
 		};
-		ncController = new ChordChangeConsonanceController(ncModel, ncListener);
+		cccController = new ChordChangeConsonanceController(cccModel, cccListener);
 	}
 
 	/**
@@ -78,9 +78,9 @@ public class ChordChangeConsonanceControllerTest {
 					assertEquals(intervalBeingRated,currentRecordBeingRated.intervalBetweenRoots());
 					
 					ConsonanceRating ratingAdded = ConsonanceRating.BAD;
-					ncController.saveRating(ratingAdded);
+					cccController.saveRating(ratingAdded);
 
-					ChordChangeConsonanceRecord lastRecordAdded = ncModel.getLastRecordRated();
+					ChordChangeConsonanceRecord lastRecordAdded = cccModel.getLastRecordRated();
 					
 					assertEquals(startChordBeingRated,lastRecordAdded.startChordSignature());
 					assertEquals(endChordBeingRated,lastRecordAdded.endChordSignature());
@@ -99,12 +99,12 @@ public class ChordChangeConsonanceControllerTest {
 	void testPreviousRating() {
 		//attempt to go back to the previous rating when
 		//no ratings exist, make sure that nothing changes
-		ncController.previousRating();
+		cccController.previousRating();
 
 		assertEquals(ChordSignature.firstSignature(),currentRecordBeingRated.startChordSignature());
 		assertEquals(ChordSignature.firstSignature(),currentRecordBeingRated.endChordSignature());
 		assertEquals(Interval.MINOR2,currentRecordBeingRated.intervalBetweenRoots());
 
-		ncController.saveRating(ConsonanceRating.GOOD);
+		cccController.saveRating(ConsonanceRating.GOOD);
 	}
 }

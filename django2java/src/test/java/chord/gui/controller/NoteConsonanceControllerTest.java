@@ -61,11 +61,7 @@ public class NoteConsonanceControllerTest {
 	@Test
 	void testSaveRating() {
 		for(ChordSignature chordSigBeingRated : ChordSignature.values()) {
-			for(Interval intervalBeingRated : Interval.values()){
-				if(!intervalBeingRated.inFirstOctave()) {
-					break;
-				}
-				
+			for(Interval intervalBeingRated : Interval.valuesInFirstOctave()){
 				
 				assertEquals(chordSigBeingRated,currentRecordBeingRated.chordSignature());
 				assertEquals(intervalBeingRated,currentRecordBeingRated.interval());
@@ -87,16 +83,33 @@ public class NoteConsonanceControllerTest {
 		assertNull(currentRecordBeingRated);
 	}
 	
+	/**
+	 * Iterate through all possible records and ensure that the
+	 * previousRating method returns the previous rating
+	 */
 	@Test
 	void testPreviousRating() {
-		//attempt to go back to the previous rating when
-		//no ratings exist, make sure that nothing changes
-		ncController.previousRating();
+		NoteConsonanceRecord previousRecord, previousRecordAfterSavingAndRemoving;
 		
-		assertEquals(ChordSignature.firstSignature(),currentRecordBeingRated.chordSignature());
-		assertEquals(Interval.UNISON,currentRecordBeingRated.interval());
-		
-		ncController.saveRating(ConsonanceRating.GOOD);
+		for(ChordSignature referenceChordSid : ChordSignature.values()) {
+			for(Interval intervalBeingRated : Interval.valuesInFirstOctave()) {
+				previousRecord = ncController.getCurrentRecord();
+				
+				//save the rating then turn the controller back one
+				//record by calling(pressing) previous Rating.
+				ncController.saveRating(ConsonanceRating.VERY_GOOD);
+				ncController.previousRating();
+				
+				//get the previous record after saving and removing
+				//it should be the same record as the first call to getCurrentRecord()
+				previousRecordAfterSavingAndRemoving = ncController.getCurrentRecord();
+				
+				assertEquals(previousRecord,previousRecordAfterSavingAndRemoving);
+				
+				//Advance the controller to the next record to be rated.
+				ncController.saveRating(ConsonanceRating.VERY_GOOD);
+			}
+		}
 	}
 
 }

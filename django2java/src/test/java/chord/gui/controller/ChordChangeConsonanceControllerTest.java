@@ -12,6 +12,14 @@ import chord.ident.ChordSignature;
 import chord.relations.ChordChangeConsonanceModel;
 import chord.relations.record.ChordChangeConsonanceRecord;
 
+/**
+ * Test for the ChordChangeConsonanceController.
+ * 
+ * The ChordChangeConsonanceController exists so that we
+ * separate the 
+ * @author DAD
+ *
+ */
 public class ChordChangeConsonanceControllerTest {
 
 
@@ -97,14 +105,35 @@ public class ChordChangeConsonanceControllerTest {
 
 	@Test
 	void testPreviousRating() {
-		//attempt to go back to the previous rating when
-		//no ratings exist, make sure that nothing changes
-		cccController.previousRating();
+		ChordChangeConsonanceRecord previousRecord, previousRecordAfterSavingAndRemoving;
+		
+		//iterate through all possible chord combinations.
+		for(ChordSignature startChordSig : ChordSignature.values()) {
+			for(ChordSignature endChordSig : ChordSignature.values()) {
+				for(Interval intervalBetweenRoots: Interval.valuesInFirstOctave()) {
+					if(startChordSig.equals(endChordSig) && 
+							intervalBetweenRoots.equals(Interval.UNISON)) {
+						continue;
+					}
+					
+					previousRecord = cccController.getCurrentRecord();
+					
+					cccController.saveRating(ConsonanceRating.VERY_GOOD);
+					cccController.previousRating();
+					
+					//get the previous record after saving and removing
+					//it should be the same record as the first call to getCurrentRecord()
+					previousRecordAfterSavingAndRemoving = cccController.getCurrentRecord();
+					
 
-		assertEquals(ChordSignature.firstSignature(),currentRecordBeingRated.startChordSignature());
-		assertEquals(ChordSignature.firstSignature(),currentRecordBeingRated.endChordSignature());
-		assertEquals(Interval.MINOR2,currentRecordBeingRated.intervalBetweenRoots());
-
-		cccController.saveRating(ConsonanceRating.GOOD);
+					assertEquals(previousRecord,previousRecordAfterSavingAndRemoving);
+					
+					
+					//Advance the controller to the next record to be rated.
+					cccController.saveRating(ConsonanceRating.VERY_GOOD);
+				}
+			}
+			
+		}
 	}
 }

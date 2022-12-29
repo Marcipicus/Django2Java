@@ -9,10 +9,9 @@ import javax.swing.JPanel;
  * @param <RECORD>
  */
 public abstract class RecordPanel<RECORD> extends JPanel {
-	public RecordPanel(RECORD record) {
+	public RecordPanel() {
 		super();
 		initializePanel();
-		updatePanel(record);
 	}
 	
 	/**

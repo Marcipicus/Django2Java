@@ -17,19 +17,16 @@ public class NoteConsonanceDialog extends
 
 	public NoteConsonanceDialog(JFrame parentFrame, NoteConsonanceController controller) {
 		super(parentFrame, controller);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	protected String getDialogTitle() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Note Chord Consonance Rating";
 	}
 
 	@Override
-	protected NoteConsonanceRecordPanel createRecordPanel() {
-		// TODO Auto-generated method stub
-		return null;
+	protected NoteConsonanceRecordPanel createRecordPanel() {				
+		return new NoteConsonanceRecordPanel();
 	}
 
 }

@@ -17,7 +17,6 @@ import javax.sound.midi.Track;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.xml.bind.JAXBException;
 
 import chord.Chord;
 import chord.ConsonanceRating;
@@ -45,7 +44,7 @@ import chord.relations.record.ScaleConsonanceRecord;
  */
 public class Main {
 
-	public static void main(String[] args) throws JAXBException, InvalidMidiDataException, MidiUnavailableException, InvalidMIDIValueException, InvalidNoteRegisterException, ChordToneBuildingException, InterruptedException {
+	public static void main(String[] args) throws InvalidMidiDataException, MidiUnavailableException, InvalidMIDIValueException, InvalidNoteRegisterException, ChordToneBuildingException, InterruptedException {
 		//tryPracticeGui();
 		//tryMarshallingAndUnMarshalling();
 		//tryChordChangeRatingGUI();

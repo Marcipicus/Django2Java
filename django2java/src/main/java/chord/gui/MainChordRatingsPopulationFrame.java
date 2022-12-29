@@ -12,9 +12,6 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
 
 import chord.gui.components.CustomGridBagConstraints;
 import chord.ident.ChordSignature;
@@ -130,13 +127,13 @@ public class MainChordRatingsPopulationFrame extends JFrame implements ActionLis
 
 		switch(ratingType) {
 		case CHORD_CHANGE_CONSONANCE:
-			//new ChordChangeConsonanceDialog(this, chordSig);
+			//TODO:Add new chord change rating dialog
 			break;
 		case CHORD_NOTE_CONSONANCE:
-			//new NoteConsonanceDialog(this, chordSig);
+			//TODO:Add new chord note rating dialog
 			break;
 		case CHORD_SCALE_CONSONANCE:
-			//new ScaleConsonanceDialog(this, chordSig);
+			//TODO:Add new chord scale rating dialog
 			break;
 		default:
 			throw new IllegalArgumentException("Unhandled Rating Type");
@@ -159,12 +156,7 @@ public class MainChordRatingsPopulationFrame extends JFrame implements ActionLis
 		}
 	}
 	
-	public Object openConsonanceFile(Class openFileType, File openFileSource) throws JAXBException {
-		JAXBContext context = JAXBContext.newInstance(openFileType);
-		
-		Unmarshaller unmarshaller = context.createUnmarshaller();
-
-		Object unmarshalled = unmarshaller.unmarshal(openFileSource);
-		return unmarshalled;
+	public Object openConsonanceFile(Class openFileType, File openFileSource) {
+		return null;
 	}
 }

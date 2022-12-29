@@ -90,6 +90,9 @@ public abstract class RatingDialog<
 		setTitle(getDialogTitle());
 		initializeDialog();
 		
+		//the following two lines udate the RecordPanel
+		//so we don't have to fill it in explicitly
+		//when the panels are made
 		controller.addStateChangeListener(this);
 		stateChanged(controller.getCurrentRecord());
 		setVisible(true);

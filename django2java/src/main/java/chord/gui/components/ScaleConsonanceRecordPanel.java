@@ -4,8 +4,8 @@ import chord.relations.record.ScaleConsonanceRecord;
 
 public class ScaleConsonanceRecordPanel extends RecordPanel<ScaleConsonanceRecord> {
 
-	public ScaleConsonanceRecordPanel(ScaleConsonanceRecord record) {
-		super(record);
+	public ScaleConsonanceRecordPanel() {
+		super();
 		// TODO Auto-generated constructor stub
 	}
 

@@ -17,19 +17,16 @@ public class ScaleConsonanceDialog extends
 
 	public ScaleConsonanceDialog(JFrame parentFrame, ScaleConsonanceController controller) {
 		super(parentFrame, controller);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	protected String getDialogTitle() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Scale Rating Dialog";
 	}
 
 	@Override
 	protected ScaleConsonanceRecordPanel createRecordPanel() {
-		// TODO Auto-generated method stub
-		return null;
+		return new ScaleConsonanceRecordPanel();
 	}
 
 }

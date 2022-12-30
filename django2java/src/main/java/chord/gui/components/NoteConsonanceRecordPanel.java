@@ -1,8 +1,5 @@
 package chord.gui.components;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridLayout;
-
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 

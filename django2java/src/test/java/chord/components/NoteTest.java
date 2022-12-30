@@ -99,7 +99,7 @@ public class NoteTest{
 
 	@Test
 	public void testRollOverOnIncrementOneSemitone() {
-		testNote = testNote.G_SHARP;
+		testNote = NoteName.G_SHARP;
 
 		testNote = testNote.incrementOneSemitone();
 
@@ -153,7 +153,7 @@ public class NoteTest{
 
 	@Test
 	public void testRollOverOnDecrementtOneSemitone() {
-		testNote = testNote.A;
+		testNote = NoteName.A;
 
 		testNote = testNote.decrementOneSemitone();
 

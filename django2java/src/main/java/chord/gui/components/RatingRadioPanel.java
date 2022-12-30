@@ -56,4 +56,29 @@ public class RatingRadioPanel extends JPanel {
 		}
 		throw new IllegalStateException("There is no selected rating.");
 	}
+	
+	public void setRating(ConsonanceRating rating) {
+		if(rating == null) {
+			throw new NullPointerException("rating may not be null");
+		}
+		switch(rating) {
+		case BAD:
+			bad.setSelected(true);
+			break;
+		case GOOD:
+			good.setSelected(true);
+			break;
+		case MEDIOCRE:
+			mediocre.setSelected(true);
+			break;
+		case VERY_BAD:
+			veryBad.setSelected(true);
+			break;
+		case VERY_GOOD:
+			veryGood.setSelected(true);
+			break;
+		default:
+			throw new IllegalArgumentException("unhandled case statement...check ConsonanceRating enum");
+		}
+	}
 }

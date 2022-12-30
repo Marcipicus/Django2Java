@@ -4,6 +4,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.File;
 
 import javax.swing.JButton;
@@ -12,6 +14,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import chord.ConsonanceRating;
 import chord.gui.components.CustomGridBagConstraints;
 import chord.gui.components.RatingRadioPanel;
 import chord.gui.components.RecordPanel;
@@ -40,7 +43,20 @@ public abstract class RatingDialog<
 	MODEL extends RatingModel<RECORD,REQUEST>,
 	CONTROLLER extends RatingModelController<RECORD,REQUEST,MODEL>,
 	RECORDPANEL extends RecordPanel<RECORD>> extends JDialog 
-	implements ActionListener,StateChangeListener<RECORD>{
+	implements ActionListener,KeyListener,StateChangeListener<RECORD>{
+	
+	
+	//button hotkeys
+	private static final char PREVIOUS_RATING_CHAR = 's';
+	private static final char PLAY_RECORD_CHAR = 'd';
+	private static final char SAVE_RATING_CHAR = 'f';
+	
+	//rating hotkeys
+	private static final char VERY_BAD_RATING_CHAR = '1';
+	private static final char BAD_RATING_CHAR = '2';
+	private static final char MEDIOCRE_RATING_CHAR = '3';
+	private static final char GOOD_RATING_CHAR = '4';
+	private static final char VERY_GOOD_RATING_CHAR = '5';
 	
 	/**
 	 * Controller that mediates requests from the gui to
@@ -91,11 +107,16 @@ public abstract class RatingDialog<
 		setTitle(getDialogTitle());
 		initializeDialog();
 		
+		//Required for key events to work
+		setFocusable(true);
+		addKeyListener(this);
+		
 		//the following two lines udate the RecordPanel
 		//so we don't have to fill it in explicitly
 		//when the panels are made
 		controller.addStateChangeListener(this);
 		stateChanged(controller.getCurrentRecord());
+		
 		setVisible(true);
 	}
 	
@@ -134,6 +155,7 @@ public abstract class RatingDialog<
 				2,5,
 				GridBagConstraints.HORIZONTAL);
 		add(ratingPanel,gbc);
+		ratingPanel.setToolTipText("Hotkey: number keys 1-5, 1 lowest 5, highest");
 
 		playButton = new JButton("Play");
 		playButton.addActionListener(this);
@@ -142,6 +164,7 @@ public abstract class RatingDialog<
 				2,1,
 				GridBagConstraints.HORIZONTAL);
 		add(playButton,gbc);
+		playButton.setToolTipText("Hotkey is:"+RatingDialog.PLAY_RECORD_CHAR);
 
 		saveRatingButton = new JButton("Save Rating");
 		saveRatingButton.addActionListener(this);
@@ -150,6 +173,7 @@ public abstract class RatingDialog<
 				2,1,
 				GridBagConstraints.HORIZONTAL);
 		add(saveRatingButton,gbc);
+		saveRatingButton.setToolTipText("Hotkey is:" + RatingDialog.SAVE_RATING_CHAR);
 		
 		previousRatingButton = new JButton("Previous Rating");
 		previousRatingButton.addActionListener(this);
@@ -158,6 +182,7 @@ public abstract class RatingDialog<
 				2,1,
 				GridBagConstraints.HORIZONTAL);
 		add(previousRatingButton,gbc);
+		previousRatingButton.setToolTipText("Hotkey is:"+RatingDialog.PREVIOUS_RATING_CHAR);
 
 		saveToFileButton = new JButton("Save To File");
 		saveToFileButton.addActionListener(this);
@@ -166,6 +191,7 @@ public abstract class RatingDialog<
 				2,1,
 				GridBagConstraints.HORIZONTAL);
 		add(saveToFileButton,gbc);
+		saveToFileButton.setToolTipText("No hotkey for saveto file");
 	}
 	
 	/**
@@ -211,5 +237,38 @@ public abstract class RatingDialog<
 			throw new IllegalArgumentException("Unhandled Event source.");
 		}
 	}
+	
+	//Simple key listener for hot keys
+	@Override
+	public void keyTyped(KeyEvent e) {
+		final char typedCharacter = e.getKeyChar();
+		
+		//BUTTON HOTKEYS
+		if(typedCharacter == RatingDialog.PREVIOUS_RATING_CHAR) {
+			controller.previousRating();
+		}else if(typedCharacter == PLAY_RECORD_CHAR) {
+			controller.play();
+		}else if(typedCharacter == SAVE_RATING_CHAR) {
+			controller.saveRating(ratingPanel.selectedRating());
+			//RATING HOTKEYS
+		}else if(typedCharacter == VERY_BAD_RATING_CHAR) {
+			ratingPanel.setRating(ConsonanceRating.VERY_BAD);
+		}else if(typedCharacter == BAD_RATING_CHAR) {
+			ratingPanel.setRating(ConsonanceRating.BAD);
+		}else if(typedCharacter == MEDIOCRE_RATING_CHAR) {
+			ratingPanel.setRating(ConsonanceRating.MEDIOCRE);
+		}else if(typedCharacter == GOOD_RATING_CHAR) {
+			ratingPanel.setRating(ConsonanceRating.GOOD);
+		}else if(typedCharacter == VERY_GOOD_RATING_CHAR) {
+			ratingPanel.setRating(ConsonanceRating.VERY_GOOD);
+		}
+	}
 
+	@Override
+	public void keyPressed(KeyEvent e) {
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+	}
 }

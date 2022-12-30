@@ -49,14 +49,14 @@ public class Main {
 		//tryMarshallingAndUnMarshalling();
 		//tryChordChangeRatingGUI();
 		//displayConsonanceCombinations();
-		//tryMainConsonanceFileBuildingGUI();
+		tryMainConsonanceFileBuildingGUI();
 		//tryJFileChooser();
 		
 		//createAndPlayMidiSequence();
 		
 		//printTotalCombinationsForAllDataStructures();
 		//printRecords();
-		printNumberCombinationsForConsonanceModels();
+		//printNumberCombinationsForConsonanceModels();
 	}
 	
 	static final void printNumberCombinationsForConsonanceModels() {

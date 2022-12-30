@@ -87,6 +87,7 @@ public abstract class RatingDialog<
 		if(controller == null) {
 			throw new NullPointerException("Controller may not be null");
 		}
+		this.controller = controller;
 		setTitle(getDialogTitle());
 		initializeDialog();
 		
@@ -123,38 +124,46 @@ public abstract class RatingDialog<
 		recordPanel = createRecordPanel();
 		gbc = new CustomGridBagConstraints(
 				0,0,
-				0,4,
+				2,5,
 				GridBagConstraints.HORIZONTAL);
 		add(recordPanel,gbc);
 		
 		ratingPanel = new RatingRadioPanel();
 		gbc = new CustomGridBagConstraints(
-				1,0,
-				1,4,
+				3,0,
+				2,5,
 				GridBagConstraints.HORIZONTAL);
 		add(ratingPanel,gbc);
 
 		playButton = new JButton("Play");
 		playButton.addActionListener(this);
 		gbc = new CustomGridBagConstraints(
-				0,5,
-				1,1,
+				0,6,
+				2,1,
 				GridBagConstraints.HORIZONTAL);
 		add(playButton,gbc);
 
 		saveRatingButton = new JButton("Save Rating");
 		saveRatingButton.addActionListener(this);
 		gbc = new CustomGridBagConstraints(
-				1,5,
-				1,1,
+				3,6,
+				2,1,
 				GridBagConstraints.HORIZONTAL);
 		add(saveRatingButton,gbc);
+		
+		previousRatingButton = new JButton("Previous Rating");
+		previousRatingButton.addActionListener(this);
+		gbc = new CustomGridBagConstraints(
+				0,7,
+				2,1,
+				GridBagConstraints.HORIZONTAL);
+		add(previousRatingButton,gbc);
 
 		saveToFileButton = new JButton("Save To File");
 		saveToFileButton.addActionListener(this);
 		gbc = new CustomGridBagConstraints(
-				1,6,
-				1,1,
+				3,7,
+				2,1,
 				GridBagConstraints.HORIZONTAL);
 		add(saveToFileButton,gbc);
 	}

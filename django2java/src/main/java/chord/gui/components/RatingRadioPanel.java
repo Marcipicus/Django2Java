@@ -1,19 +1,22 @@
 package chord.gui.components;
 
+import java.awt.Component;
+
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
 import chord.ConsonanceRating;
 
 public class RatingRadioPanel extends JPanel {
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	private JRadioButton veryGood,good,mediocre,bad,veryBad;
 
 	public RatingRadioPanel() {
@@ -23,25 +26,25 @@ public class RatingRadioPanel extends JPanel {
 		mediocre = new JRadioButton(ConsonanceRating.MEDIOCRE.toString());
 		bad = new JRadioButton(ConsonanceRating.BAD.toString());
 		veryBad = new JRadioButton(ConsonanceRating.VERY_BAD.toString());
-		
+
 		veryGood.setSelected(true);
-		
+
 		ButtonGroup ratingButtonGroup = new ButtonGroup();
 		ratingButtonGroup.add(veryGood);
 		ratingButtonGroup.add(good);
 		ratingButtonGroup.add(mediocre);
 		ratingButtonGroup.add(bad);
 		ratingButtonGroup.add(veryBad);
-		
+
 		setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
-		
+
 		add(veryGood);
 		add(good);
 		add(mediocre);
 		add(bad);
 		add(veryBad);
 	}
-	
+
 	public ConsonanceRating selectedRating() {
 		if(veryGood.isSelected()) {
 			return ConsonanceRating.VERY_GOOD;
@@ -56,7 +59,7 @@ public class RatingRadioPanel extends JPanel {
 		}
 		throw new IllegalStateException("There is no selected rating.");
 	}
-	
+
 	public void setRating(ConsonanceRating rating) {
 		if(rating == null) {
 			throw new NullPointerException("rating may not be null");

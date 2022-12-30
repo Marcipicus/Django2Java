@@ -121,7 +121,7 @@ public class MainChordRatingsPopulationFrame extends JFrame implements ActionLis
 		} else if( returnVal == JFileChooser.CANCEL_OPTION){
 			JOptionPane.showMessageDialog(this,"User Canceled File Select Dialog\n","INFO", JOptionPane.INFORMATION_MESSAGE);
 		} else if (returnVal == JFileChooser.ERROR_OPTION) {
-			JOptionPane.showMessageDialog(this,"Error selecting file\n","ERROR", JOptionPane.ERROR);
+			JOptionPane.showMessageDialog(this,"Error selecting file\n","ERROR", JOptionPane.ERROR_MESSAGE);
 		}
 		return null;
 	}
@@ -158,7 +158,7 @@ public class MainChordRatingsPopulationFrame extends JFrame implements ActionLis
 				throw new IllegalArgumentException("Unhandled Rating Type");
 			}
 		}catch(PersistenceException e) {
-			JOptionPane.showMessageDialog(this,"Error loading from ratings from file\n"+e.getMessage(),"ERROR", JOptionPane.ERROR);
+			JOptionPane.showMessageDialog(this,"Error loading from ratings from file\n"+e.getMessage(),"ERROR", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 

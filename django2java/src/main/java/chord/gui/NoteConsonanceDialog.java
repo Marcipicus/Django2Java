@@ -21,7 +21,7 @@ public class NoteConsonanceDialog extends
 
 	@Override
 	protected String getDialogTitle() {
-		return "Note Consonance Rating Submission Dialog";
+		return "Note Consonance Rating Dialog";
 	}
 
 	@Override

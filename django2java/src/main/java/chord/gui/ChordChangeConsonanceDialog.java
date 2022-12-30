@@ -17,19 +17,16 @@ public class ChordChangeConsonanceDialog extends
 
 	public ChordChangeConsonanceDialog(JFrame parentFrame, ChordChangeConsonanceController controller) {
 		super(parentFrame, controller);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	protected String getDialogTitle() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Chord Change Rating Dialog";
 	}
 
 	@Override
 	protected ChordChangeConsonanceRecordPanel createRecordPanel() {
-		// TODO Auto-generated method stub
-		return null;
+		return new ChordChangeConsonanceRecordPanel();
 	}
 
 }

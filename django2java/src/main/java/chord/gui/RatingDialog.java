@@ -77,8 +77,8 @@ implements ActionListener,KeyListener,StateChangeListener<RECORD>,RatingDialogAc
 			if(ratingDialog == null) {
 				throw new NullPointerException("Object passed may not be null");
 			}
-			if( ! (ratingDialog instanceof Component) ) {
-				throw new IllegalArgumentException("Object passed must be a component");
+			if( ! (ratingDialog instanceof JDialog) ) {
+				throw new IllegalArgumentException("Object passed must be a JDialog");
 			}
 			if( !(ratingDialog instanceof RatingDialogActions)) {
 				throw new IllegalArgumentException("Object passed must implement RatingDialogActions");

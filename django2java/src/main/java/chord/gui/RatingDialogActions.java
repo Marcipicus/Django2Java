@@ -11,6 +11,17 @@ package chord.gui;
 public interface RatingDialogActions {
 	
 	/**
+	 * Return values for saveFile 
+	 * @author DAD
+	 *
+	 */
+	public static enum SaveResult{
+		SUCCESS,
+		ERROR,
+		CANCEL;
+	}
+	
+	/**
 	 * Play the current rating record.
 	 */
 	void play();
@@ -24,10 +35,12 @@ public interface RatingDialogActions {
 	 * Go back to the previous rating.
 	 */
 	void previousRating();
-	
+
 	/**
 	 * Save the current model to file.
+	 * @return result of the operation,
+	 * SUCCESS, ERROR, or CANCEL
 	 */
-	void saveFile();
+	SaveResult saveFile();
 
 }

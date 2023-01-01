@@ -1,6 +1,5 @@
 package chord.gui;
 
-import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
@@ -95,8 +94,20 @@ implements ActionListener,KeyListener,StateChangeListener<RECORD>,RatingDialogAc
 			switch(input) {
 			case JOptionPane.YES_OPTION:
 				//save the file and close the window
-				ratingDialogActions.saveFile();
-				parentRatingDialog.dispose();
+				SaveResult saveResult  = ratingDialogActions.saveFile();
+				switch(saveResult) {
+				//Both of the following cases show Message dialogs
+				//in the call to saveFile the switch is just to
+				//determine if we should close the window or not.
+				case CANCEL:
+				case ERROR:
+					return;
+				case SUCCESS:
+					parentRatingDialog.dispose();
+					break;
+				default:
+					throw new IllegalArgumentException("Unhandled case statement.");
+				}
 				break;
 			case JOptionPane.NO_OPTION:
 				//close the window
@@ -284,24 +295,35 @@ implements ActionListener,KeyListener,StateChangeListener<RECORD>,RatingDialogAc
 	}
 
 	@Override
-	public void saveFile() {
+	public SaveResult saveFile() {
 		JFileChooser jfc = new JFileChooser();
 		jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		int returnVal = jfc.showSaveDialog(this);
+		
+		
 		if(returnVal == JFileChooser.CANCEL_OPTION) {
-			return;
+			return SaveResult.CANCEL;
 		}else if(returnVal == JFileChooser.APPROVE_OPTION) {
 			File destinationFile = jfc.getSelectedFile();
 			try {
+				//TODO: Test for type of file before saving to
+				//prevent overwrites
 				controller.saveFile(destinationFile);
+				return SaveResult.SUCCESS;
 			} catch (PersistenceException e1) {
 				JOptionPane.showMessageDialog(this, e1.getMessage(),
 						"Error Saving File", JOptionPane.ERROR_MESSAGE);
+				return SaveResult.ERROR;
 			}
 		}else if(returnVal == JFileChooser.ERROR_OPTION) {
 			JOptionPane.showMessageDialog(this, "JFileChooser Error",
 					"Error Saving File", JOptionPane.ERROR_MESSAGE);
+			return SaveResult.ERROR;
 		}
+		
+		//This code will never be reached
+		//because all other paths have a return
+		return null;
 	}
 
 	@Override

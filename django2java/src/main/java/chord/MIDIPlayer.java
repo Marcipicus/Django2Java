@@ -4,6 +4,7 @@ import javax.sound.midi.Instrument;
 import javax.sound.midi.MidiChannel;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
+import javax.sound.midi.Sequencer;
 import javax.sound.midi.Synthesizer;
 import javax.sound.midi.Track;
 
@@ -73,4 +74,52 @@ public class MIDIPlayer {
 			midiChannels[0].noteOn(mNote.getMidiNoteNumber(),30);
 		}
 	}
+	
+	private Track createTrackForChordChange(ChordSignature startSig, ChordSignature endSig, Interval intervalBetweenRoots) {
+		return null;
+	}
+	
+	private Track createTrackForChord(ChordSignature chordSig, int numBars) {
+		return null;
+	}
+	
+	private Track createTrackForScale(ScaleSignature scaleSig,int numBars) {
+		return null;
+	}
+	
+	private Track createTrackForNote(NoteName note, int numBars) {
+		return null;
+	}
+	/*
+	private Sequence createChordSequence(NoteName rootNote, ChordSignature startChordSig,ChordSignature endChordSig) throws InvalidMidiDataException {
+		Chord startChord, endChord;
+		startChord = ChordLibrary.getInstance().get
+		
+		//Create a sequence that runs at 80 bpm(PPQ is the division type(bpm) 80 is the resolution
+		Sequence chordChangeSequence = new Sequence(Sequence.PPQ,80);
+		Track backingTrack;
+		backingTrack = chordChangeSequence.createTrack();
+		
+		MetaMessage startChord, endChord ;
+		
+		startChord = new MetaMessage();
+		startChord.setMessage(0xFF,);
+		
+		backingTrack.add(new MidiEvent(new MidiMessage, DEFAULT_REGISTER))
+		
+		leadTrack = chordChangeSequence.createTrack();
+	
+	}
+	*/
+	/*
+	private Sequence createChordScaleSequence(NoteName rootNote, ChordSignature chordSig,ScaleSignature scale) {
+		Sequence 
+	}
+	
+	private Sequence createChordNoteSequence(NoteName rootNote, ChordSignature chordSig,Interval intervalForNote) {
+		Sequence 
+	}
+	
+	private byte[] 
+	*/
 }

@@ -30,7 +30,6 @@ import chord.relations.request.NoteConsonanceRecordRequest;
 import chord.relations.request.ScaleConsonanceRecordRequest;
 
 public class MainChordRatingsPopulationFrame extends JFrame implements ActionListener{
-	//TODO: This class needs to be rewritten to use the new rating guis
 	/**
 	 * 
 	 */

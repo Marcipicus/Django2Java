@@ -1,6 +1,5 @@
 package chord.gui;
 
-import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
@@ -99,8 +98,15 @@ implements ActionListener,KeyListener,StateChangeListener<RECORD>,RatingDialogAc
 				parentRatingDialog.dispose();
 				break;
 			case JOptionPane.NO_OPTION:
-				//close the window
-				parentRatingDialog.dispose();
+				int confirmNoSaving = JOptionPane.showConfirmDialog(parentRatingDialog,"Are you sure you don't want to save your progress?","WARNING",JOptionPane.YES_NO_OPTION);
+				if(confirmNoSaving == JOptionPane.YES_OPTION) {
+					//close the window
+					parentRatingDialog.dispose();
+				}else if(confirmNoSaving == JOptionPane.NO_OPTION) {
+					//prompt the user again to save,cancel,or exit without saving.
+					windowClosing(we);
+					return;
+				}
 				break;
 			case JOptionPane.CANCEL_OPTION:
 				//return to the rating dialog
@@ -285,7 +291,27 @@ implements ActionListener,KeyListener,StateChangeListener<RECORD>,RatingDialogAc
 
 	@Override
 	public void saveFile() {
-		JFileChooser jfc = new JFileChooser();
+		JFileChooser jfc = new JFileChooser() {
+			public void approveSelection(){
+		        File f = getSelectedFile();
+		        if(f.exists() && getDialogType() == SAVE_DIALOG){
+		            int result = JOptionPane.showConfirmDialog(this,"The file exists, overwrite?","Existing file",JOptionPane.YES_NO_CANCEL_OPTION);
+		            switch(result){
+		                case JOptionPane.YES_OPTION:
+		                    super.approveSelection();
+		                    return;
+		                case JOptionPane.NO_OPTION:
+		                    return;
+		                case JOptionPane.CLOSED_OPTION:
+		                    return;
+		                case JOptionPane.CANCEL_OPTION:
+		                    cancelSelection();
+		                    return;
+		            }
+		        }
+		        super.approveSelection();
+		    }
+		};
 		jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		int returnVal = jfc.showSaveDialog(this);
 		if(returnVal == JFileChooser.CANCEL_OPTION) {

@@ -2,6 +2,16 @@ package chord;
 
 import java.util.Arrays;
 
+/**
+ * Enumeration used to define chord signatures, scale signatures,
+ * and notes relative to a root note.
+ * 
+ * It declares all simple intervals and all compound intervals in
+ * the second octave since those are the only ones needed to define
+ * chords, and scales.
+ * @author DAD
+ *
+ */
 public enum Interval {
 	UNISON("U"),
 	MINOR2(UsefulUnicodeCharacters.flatSign + "2"),
@@ -71,14 +81,99 @@ public enum Interval {
 		return true;
 	}
 
+	/**
+	 * Name of the interval used to generate display text.
+	 */
 	private final String intervalName;
 
+	/**
+	 * Create the interval with the given interval name
+	 * which will be used for display text.
+	 * @param intervalName name of interval used for displayText
+	 */
 	private Interval(String intervalName) {
 		this.intervalName  = intervalName;
 	}
 
+	/**
+	 * Get the text used to display the interval.
+	 * 
+	 * This is intended to be used with a note name
+	 * to specify an interval e.g.Ab2 A with a minor 2nd
+	 * @return
+	 */
 	public String displayText() {
 		return intervalName;
+	}
+	
+	/**
+	 * Get the inversion of the given interval stated
+	 * as a simple interval(Interval within the first octave.
+	 * @return the inversion of the interval as a simple interval.
+	 */
+	public Interval getInversion() {
+		//This had to be implemented as a switch
+		//statement because I cannot add the constant
+		//as a parameter to the constructor since the 
+		//inversion cannot be used until it is declared.
+		
+		//we could calculate the value as well
+		//but I can't be bothered to do it and
+		//this works just as well
+		switch(this) {
+		case UNISON:
+			return PERFECT8;
+		case MINOR2:
+			return MAJOR7;
+		case MAJOR2:
+			return MINOR7;
+		case MINOR3:
+			return MAJOR6;
+		case MAJOR3:
+			return MINOR6;
+		case PERFECT4:
+			return PERFECT5;
+		case DIMINISHED5:
+			return DIMINISHED5;
+		case PERFECT5:
+			return PERFECT4;
+		case MINOR6:
+			return MAJOR3;
+		case MAJOR6:
+			return MINOR3;
+		case MINOR7:
+			return MAJOR2;
+		case MAJOR7:
+			return MINOR2;
+		case PERFECT8:
+			return UNISON;
+		case MINOR9:
+			return MAJOR7;
+		case MAJOR9:
+			return MINOR7;
+		case MINOR10:
+			return MAJOR6;
+		case MAJOR10:
+			return MINOR6;
+		case PERFECT11:
+			return PERFECT5;
+		case DIMINISHED12:
+			return DIMINISHED5;
+		case PERFECT12:
+			return PERFECT4;
+		case MINOR13:
+			return MAJOR3;
+		case MAJOR13:
+			return MINOR3;
+		case MINOR14:
+			return MAJOR2;
+		case MAJOR14:
+			return MINOR2;
+		case PERFECT15:
+			return UNISON;
+		default:
+			throw new IllegalStateException("Unhandled case statement");
+		}
 	}
 
 	/**

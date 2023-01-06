@@ -96,18 +96,18 @@ implements ActionListener,KeyListener,StateChangeListener<RECORD>,RatingDialogAc
 				//save the file and close the window
 				ratingDialogActions.saveFile();
 				parentRatingDialog.dispose();
-				break;
+				return;
 			case JOptionPane.NO_OPTION:
 				int confirmNoSaving = JOptionPane.showConfirmDialog(parentRatingDialog,"Are you sure you don't want to save your progress?","WARNING",JOptionPane.YES_NO_OPTION);
 				if(confirmNoSaving == JOptionPane.YES_OPTION) {
 					//close the window
 					parentRatingDialog.dispose();
+					return;
 				}else if(confirmNoSaving == JOptionPane.NO_OPTION) {
 					//prompt the user again to save,cancel,or exit without saving.
 					windowClosing(we);
 					return;
 				}
-				break;
 			case JOptionPane.CANCEL_OPTION:
 				//return to the rating dialog
 				return;

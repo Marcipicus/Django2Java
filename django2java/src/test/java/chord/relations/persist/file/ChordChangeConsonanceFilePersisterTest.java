@@ -21,7 +21,7 @@ import chord.relations.record.ChordChangeConsonanceRecord;
 import chord.relations.request.ChordChangeConsonanceRecordRequest;
 import chord.relations.request.NoteConsonanceRecordRequest;
 
-public class ChordChangeConsonanceFilePersistStrategyTest {
+public class ChordChangeConsonanceFilePersisterTest {
 	/**
 	 * Take the given ChordChangeConsonanceModel and fill it with a consistent
 	 * rating every time

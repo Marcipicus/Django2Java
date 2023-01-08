@@ -6,7 +6,7 @@ import chord.ConsonanceRating;
 import chord.relations.ScaleConsonanceModel;
 import chord.relations.persist.PersistenceException;
 import chord.relations.persist.file.FileStrategyConfig;
-import chord.relations.persist.file.ScaleConsonanceFilePersistStrategy;
+import chord.relations.persist.file.ScaleConsonanceFilePersister;
 import chord.relations.record.ScaleConsonanceRecord;
 import chord.relations.request.ScaleConsonanceRecordRequest;
 
@@ -33,8 +33,8 @@ ScaleConsonanceModel>{
 				ScaleConsonanceRecordRequest.allPossibleRecords();
 		FileStrategyConfig fileConfig = new FileStrategyConfig(destinationFile);
 		
-		ScaleConsonanceFilePersistStrategy saveStrategy = 
-				new ScaleConsonanceFilePersistStrategy(
+		ScaleConsonanceFilePersister saveStrategy = 
+				new ScaleConsonanceFilePersister(
 						fileConfig, 
 						request);
 

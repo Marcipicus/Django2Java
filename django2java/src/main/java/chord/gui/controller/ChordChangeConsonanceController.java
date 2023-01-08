@@ -5,7 +5,7 @@ import java.io.File;
 import chord.ConsonanceRating;
 import chord.relations.ChordChangeConsonanceModel;
 import chord.relations.persist.PersistenceException;
-import chord.relations.persist.file.ChordChangeConsonanceFilePersistStrategy;
+import chord.relations.persist.file.ChordChangeConsonanceFilePersister;
 import chord.relations.persist.file.FileStrategyConfig;
 import chord.relations.record.ChordChangeConsonanceRecord;
 import chord.relations.request.ChordChangeConsonanceRecordRequest;
@@ -33,8 +33,8 @@ ChordChangeConsonanceModel>{
 				ChordChangeConsonanceRecordRequest.allPossibleRecords();
 		FileStrategyConfig fileConfig = new FileStrategyConfig(destinationFile);
 		
-		ChordChangeConsonanceFilePersistStrategy saveStrategy = 
-				new ChordChangeConsonanceFilePersistStrategy(
+		ChordChangeConsonanceFilePersister saveStrategy = 
+				new ChordChangeConsonanceFilePersister(
 						fileConfig, 
 						request);
 

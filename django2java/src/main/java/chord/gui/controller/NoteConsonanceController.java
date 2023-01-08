@@ -6,7 +6,7 @@ import chord.ConsonanceRating;
 import chord.relations.NoteConsonanceModel;
 import chord.relations.persist.PersistenceException;
 import chord.relations.persist.file.FileStrategyConfig;
-import chord.relations.persist.file.NoteConsonanceFilePersistStrategy;
+import chord.relations.persist.file.NoteConsonanceFilePersister;
 import chord.relations.record.NoteConsonanceRecord;
 import chord.relations.request.NoteConsonanceRecordRequest;
 
@@ -52,8 +52,8 @@ NoteConsonanceModel> {
 				NoteConsonanceRecordRequest.allPossibleRecords();
 		FileStrategyConfig fileConfig = new FileStrategyConfig(destinationFile);
 		
-		NoteConsonanceFilePersistStrategy saveStrategy = 
-				new NoteConsonanceFilePersistStrategy(
+		NoteConsonanceFilePersister saveStrategy = 
+				new NoteConsonanceFilePersister(
 						fileConfig, 
 						request);
 

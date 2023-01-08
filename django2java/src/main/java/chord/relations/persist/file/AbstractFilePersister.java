@@ -26,7 +26,7 @@ import chord.relations.request.AbstractRecordRequest;
  * @param <REQUEST> type of request to use
  * @param <MODEL> type of model to use
  */
-public abstract class AbstractFilePersistStrategy<
+public abstract class AbstractFilePersister<
 	RECORD extends StringPersistable,
 	REQUEST extends AbstractRecordRequest,
 	MODEL extends RatingModel<RECORD,REQUEST>>
@@ -40,7 +40,7 @@ public abstract class AbstractFilePersistStrategy<
 	
 	private REQUEST request;
 	
-	public AbstractFilePersistStrategy(
+	public AbstractFilePersister(
 			FileStrategyConfig config, 
 			REQUEST request) {
 		

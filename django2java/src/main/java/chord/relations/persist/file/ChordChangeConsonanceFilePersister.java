@@ -4,13 +4,13 @@ import chord.relations.ChordChangeConsonanceModel;
 import chord.relations.record.ChordChangeConsonanceRecord;
 import chord.relations.request.ChordChangeConsonanceRecordRequest;
 
-public class ChordChangeConsonanceFilePersistStrategy extends
-		AbstractFilePersistStrategy<ChordChangeConsonanceRecord, ChordChangeConsonanceRecordRequest, ChordChangeConsonanceModel> {
+public class ChordChangeConsonanceFilePersister extends
+		AbstractFilePersister<ChordChangeConsonanceRecord, ChordChangeConsonanceRecordRequest, ChordChangeConsonanceModel> {
 
 	private static final String CHORD_CHANGE_CONSONANCE_FILE_TYPE_SIGNIFIER = "ChordChangeConsonanceModelFile";
 	
 	
-	public ChordChangeConsonanceFilePersistStrategy(FileStrategyConfig config,
+	public ChordChangeConsonanceFilePersister(FileStrategyConfig config,
 			ChordChangeConsonanceRecordRequest request) {
 		super(config, request);
 	}

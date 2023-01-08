@@ -21,10 +21,10 @@ import chord.relations.ChordChangeConsonanceModel;
 import chord.relations.NoteConsonanceModel;
 import chord.relations.ScaleConsonanceModel;
 import chord.relations.persist.PersistenceException;
-import chord.relations.persist.file.ChordChangeConsonanceFilePersistStrategy;
+import chord.relations.persist.file.ChordChangeConsonanceFilePersister;
 import chord.relations.persist.file.FileStrategyConfig;
-import chord.relations.persist.file.NoteConsonanceFilePersistStrategy;
-import chord.relations.persist.file.ScaleConsonanceFilePersistStrategy;
+import chord.relations.persist.file.NoteConsonanceFilePersister;
+import chord.relations.persist.file.ScaleConsonanceFilePersister;
 import chord.relations.request.ChordChangeConsonanceRecordRequest;
 import chord.relations.request.NoteConsonanceRecordRequest;
 import chord.relations.request.ScaleConsonanceRecordRequest;
@@ -175,8 +175,8 @@ public class MainChordRatingsPopulationFrame extends JFrame implements ActionLis
 		if(fileStrategyConfig == null) {
 			cccModel = new ChordChangeConsonanceModel();
 		}else {
-			ChordChangeConsonanceFilePersistStrategy chordChangePersistStrategy = 
-					new ChordChangeConsonanceFilePersistStrategy(
+			ChordChangeConsonanceFilePersister chordChangePersistStrategy = 
+					new ChordChangeConsonanceFilePersister(
 							fileStrategyConfig, 
 							ChordChangeConsonanceRecordRequest.allPossibleRecords());
 			cccModel = chordChangePersistStrategy.load();
@@ -200,8 +200,8 @@ public class MainChordRatingsPopulationFrame extends JFrame implements ActionLis
 		if(fileStrategyConfig == null) {
 			scModel = new ScaleConsonanceModel();
 		}else {
-			ScaleConsonanceFilePersistStrategy scaleConsonancePersistStrategy = 
-					new ScaleConsonanceFilePersistStrategy(
+			ScaleConsonanceFilePersister scaleConsonancePersistStrategy = 
+					new ScaleConsonanceFilePersister(
 							fileStrategyConfig, 
 							ScaleConsonanceRecordRequest.allPossibleRecords());
 			scModel = scaleConsonancePersistStrategy.load();
@@ -225,8 +225,8 @@ public class MainChordRatingsPopulationFrame extends JFrame implements ActionLis
 		if(fileStrategyConfig == null) {
 			ncModel = new NoteConsonanceModel();
 		}else {
-			NoteConsonanceFilePersistStrategy noteConsonancePersistStrategy = 
-					new NoteConsonanceFilePersistStrategy(
+			NoteConsonanceFilePersister noteConsonancePersistStrategy = 
+					new NoteConsonanceFilePersister(
 							fileStrategyConfig, 
 							NoteConsonanceRecordRequest.allPossibleRecords());
 			ncModel = noteConsonancePersistStrategy.load();

@@ -4,12 +4,12 @@ import chord.relations.ScaleConsonanceModel;
 import chord.relations.record.ScaleConsonanceRecord;
 import chord.relations.request.ScaleConsonanceRecordRequest;
 
-public class ScaleConsonanceFilePersistStrategy
-		extends AbstractFilePersistStrategy<ScaleConsonanceRecord, ScaleConsonanceRecordRequest, ScaleConsonanceModel> {
+public class ScaleConsonanceFilePersister
+		extends AbstractFilePersister<ScaleConsonanceRecord, ScaleConsonanceRecordRequest, ScaleConsonanceModel> {
 
 	private static final String SCALE_CONSONANCE_FILE_TYPE_SIGNIFIER = "ScaleConsonanceModelFile";
 	
-	public ScaleConsonanceFilePersistStrategy(FileStrategyConfig config, ScaleConsonanceRecordRequest request) {
+	public ScaleConsonanceFilePersister(FileStrategyConfig config, ScaleConsonanceRecordRequest request) {
 		super(config, request);
 	}
 

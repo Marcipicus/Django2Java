@@ -4,15 +4,15 @@ import chord.relations.NoteConsonanceModel;
 import chord.relations.record.NoteConsonanceRecord;
 import chord.relations.request.NoteConsonanceRecordRequest;
 
-public class NoteConsonanceFilePersistStrategy extends 
-	AbstractFilePersistStrategy<
+public class NoteConsonanceFilePersister extends 
+	AbstractFilePersister<
 		NoteConsonanceRecord, 
 		NoteConsonanceRecordRequest, 
 		NoteConsonanceModel> {
 	
 	private static final String NOTE_CONSONANCE_FILE_TYPE_SIGNIFIER = "NoteConsonanceModelFile";
 	
-	public NoteConsonanceFilePersistStrategy(FileStrategyConfig config, NoteConsonanceRecordRequest request) {
+	public NoteConsonanceFilePersister(FileStrategyConfig config, NoteConsonanceRecordRequest request) {
 		super(config, request);
 	}
 

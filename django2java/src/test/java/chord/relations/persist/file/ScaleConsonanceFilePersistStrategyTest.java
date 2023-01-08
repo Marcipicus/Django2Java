@@ -14,7 +14,7 @@ import chord.ident.ScaleSignature;
 import chord.relations.ScaleConsonanceModel;
 import chord.relations.persist.PersistenceException;
 import chord.relations.persist.file.FileStrategyConfig;
-import chord.relations.persist.file.ScaleConsonanceFilePersistStrategy;
+import chord.relations.persist.file.ScaleConsonanceFilePersister;
 import chord.relations.record.ScaleConsonanceRecord;
 import chord.relations.request.ScaleConsonanceRecordRequest;
 
@@ -49,7 +49,7 @@ public class ScaleConsonanceFilePersistStrategyTest {
 	File testFile;
 
 	ScaleConsonanceModel model,loadedModel;
-	ScaleConsonanceFilePersistStrategy fileStrategy;
+	ScaleConsonanceFilePersister fileStrategy;
 
 	ScaleConsonanceRecordRequest request;
 	FileStrategyConfig config;
@@ -73,7 +73,7 @@ public class ScaleConsonanceFilePersistStrategyTest {
 		request = ScaleConsonanceRecordRequest.allPossibleRecords();
 		config = new FileStrategyConfig(testFile);
 		
-		fileStrategy = new ScaleConsonanceFilePersistStrategy(config, request);
+		fileStrategy = new ScaleConsonanceFilePersister(config, request);
 		
 		fileStrategy.save(model);
 		

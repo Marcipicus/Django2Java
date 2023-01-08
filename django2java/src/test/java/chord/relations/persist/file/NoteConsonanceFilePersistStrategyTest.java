@@ -14,7 +14,7 @@ import chord.ident.ChordSignature;
 import chord.relations.NoteConsonanceModel;
 import chord.relations.persist.PersistenceException;
 import chord.relations.persist.file.FileStrategyConfig;
-import chord.relations.persist.file.NoteConsonanceFilePersistStrategy;
+import chord.relations.persist.file.NoteConsonanceFilePersister;
 import chord.relations.record.NoteConsonanceRecord;
 import chord.relations.request.NoteConsonanceRecordRequest;
 
@@ -52,7 +52,7 @@ public class NoteConsonanceFilePersistStrategyTest {
 	File testFile;
 
 	NoteConsonanceModel model,loadedModel;
-	NoteConsonanceFilePersistStrategy fileStrategy;
+	NoteConsonanceFilePersister fileStrategy;
 
 	NoteConsonanceRecordRequest request;
 	FileStrategyConfig config;
@@ -76,7 +76,7 @@ public class NoteConsonanceFilePersistStrategyTest {
 		request = NoteConsonanceRecordRequest.allPossibleRecords();
 		config = new FileStrategyConfig(testFile);
 		
-		fileStrategy = new NoteConsonanceFilePersistStrategy(config, request);
+		fileStrategy = new NoteConsonanceFilePersister(config, request);
 		
 		fileStrategy.save(model);
 		

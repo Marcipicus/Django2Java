@@ -30,8 +30,6 @@ import chord.gui.MainChordRatingsPopulationFrame;
 import chord.ident.ChordSignature;
 import chord.ident.ScaleSignature;
 import chord.maps.ChordLibrary;
-import chord.rating.ChordRatingGUI;
-import chord.rating.PracticeGUI;
 import chord.relations.record.ChordChangeConsonanceRecord;
 import chord.relations.record.NoteConsonanceRecord;
 import chord.relations.record.ScaleConsonanceRecord;
@@ -224,10 +222,6 @@ public class Main {
 		System.out.println("Number of Combinations for Scales            :" + (ScaleSignature.values().length * ChordSignature.values().length));
 		System.out.println("Number of Combinations for Note Consonance   :" + ChordSignature.values().length * 12);
 	}
-	private static void tryChordChangeRatingGUI() {
-		ChordRatingGUI ratingGui = new ChordRatingGUI(ChordSignature.MAJOR);
-
-	}
 
 	//TODO: DOES NOT WORK YET. FOR SOME REASON EVERYTHING SOUNDS 
 	//LIKE A MINOR CHORD AT A LOW REGISTER
@@ -285,10 +279,6 @@ public class Main {
 		
 		sequencer.stop();
 		sequencer.close();
-	}
-
-	private static void tryPracticeGui() {
-		PracticeGUI prGUI = new PracticeGUI();
 	}
 
 	private static void tryMIDIPlayer() {

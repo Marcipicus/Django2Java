@@ -33,12 +33,12 @@ ScaleConsonanceModel>{
 				ScaleConsonanceRecordRequest.allPossibleRecords();
 		FileStrategyConfig fileConfig = new FileStrategyConfig(destinationFile);
 		
-		ScaleConsonanceFilePersister saveStrategy = 
+		ScaleConsonanceFilePersister scaleConsonancePersister = 
 				new ScaleConsonanceFilePersister(
 						fileConfig, 
 						request);
 
-		saveStrategy.save(model);
+		scaleConsonancePersister.save(model);
 	}
 
 	@Override

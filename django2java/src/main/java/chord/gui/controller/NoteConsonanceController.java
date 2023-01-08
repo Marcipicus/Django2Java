@@ -52,12 +52,12 @@ NoteConsonanceModel> {
 				NoteConsonanceRecordRequest.allPossibleRecords();
 		FileStrategyConfig fileConfig = new FileStrategyConfig(destinationFile);
 		
-		NoteConsonanceFilePersister saveStrategy = 
+		NoteConsonanceFilePersister noteConsonancePersister = 
 				new NoteConsonanceFilePersister(
 						fileConfig, 
 						request);
 
-		saveStrategy.save(model);
+		noteConsonancePersister.save(model);
 	}
 
 	@Override

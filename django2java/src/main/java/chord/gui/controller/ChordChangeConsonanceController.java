@@ -33,12 +33,12 @@ ChordChangeConsonanceModel>{
 				ChordChangeConsonanceRecordRequest.allPossibleRecords();
 		FileStrategyConfig fileConfig = new FileStrategyConfig(destinationFile);
 		
-		ChordChangeConsonanceFilePersister saveStrategy = 
+		ChordChangeConsonanceFilePersister chordChangeConsonancePersister = 
 				new ChordChangeConsonanceFilePersister(
 						fileConfig, 
 						request);
 
-		saveStrategy.save(model);
+		chordChangeConsonancePersister.save(model);
 	}
 
 	@Override

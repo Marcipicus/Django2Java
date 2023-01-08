@@ -52,7 +52,7 @@ public class NoteConsonanceFilePersisterTest {
 	File testFile;
 
 	NoteConsonanceModel model,loadedModel;
-	NoteConsonanceFilePersister fileStrategy;
+	NoteConsonanceFilePersister filePersister;
 
 	NoteConsonanceRecordRequest request;
 	FileStrategyConfig config;
@@ -76,11 +76,11 @@ public class NoteConsonanceFilePersisterTest {
 		request = NoteConsonanceRecordRequest.allPossibleRecords();
 		config = new FileStrategyConfig(testFile);
 		
-		fileStrategy = new NoteConsonanceFilePersister(config, request);
+		filePersister = new NoteConsonanceFilePersister(config, request);
 		
-		fileStrategy.save(model);
+		filePersister.save(model);
 		
-		loadedModel = fileStrategy.load();
+		loadedModel = filePersister.load();
 		
 		assertEquals(model,loadedModel);
 	}

@@ -62,7 +62,7 @@ public class ChordChangeConsonanceFilePersisterTest {
 	File testFile;
 
 	ChordChangeConsonanceModel model,loadedModel;
-	ChordChangeConsonanceFilePersister fileStrategy;
+	ChordChangeConsonanceFilePersister filePersister;
 
 	ChordChangeConsonanceRecordRequest request;
 	FileStrategyConfig config;
@@ -86,11 +86,11 @@ public class ChordChangeConsonanceFilePersisterTest {
 		request = ChordChangeConsonanceRecordRequest.allPossibleRecords();
 		config = new FileStrategyConfig(testFile);
 		
-		fileStrategy = new ChordChangeConsonanceFilePersister(config, request);
+		filePersister = new ChordChangeConsonanceFilePersister(config, request);
 		
-		fileStrategy.save(model);
+		filePersister.save(model);
 		
-		loadedModel = fileStrategy.load();
+		loadedModel = filePersister.load();
 		
 		assertEquals(model,loadedModel);
 	}

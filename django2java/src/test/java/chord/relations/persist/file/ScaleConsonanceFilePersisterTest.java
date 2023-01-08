@@ -49,7 +49,7 @@ public class ScaleConsonanceFilePersisterTest {
 	File testFile;
 
 	ScaleConsonanceModel model,loadedModel;
-	ScaleConsonanceFilePersister fileStrategy;
+	ScaleConsonanceFilePersister filePersister;
 
 	ScaleConsonanceRecordRequest request;
 	FileStrategyConfig config;
@@ -73,11 +73,11 @@ public class ScaleConsonanceFilePersisterTest {
 		request = ScaleConsonanceRecordRequest.allPossibleRecords();
 		config = new FileStrategyConfig(testFile);
 		
-		fileStrategy = new ScaleConsonanceFilePersister(config, request);
+		filePersister = new ScaleConsonanceFilePersister(config, request);
 		
-		fileStrategy.save(model);
+		filePersister.save(model);
 		
-		loadedModel = fileStrategy.load();
+		loadedModel = filePersister.load();
 		
 		assertEquals(model,loadedModel);
 	}

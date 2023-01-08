@@ -175,11 +175,11 @@ public class MainChordRatingsPopulationFrame extends JFrame implements ActionLis
 		if(fileStrategyConfig == null) {
 			cccModel = new ChordChangeConsonanceModel();
 		}else {
-			ChordChangeConsonanceFilePersister chordChangePersistStrategy = 
+			ChordChangeConsonanceFilePersister chordChangePersister = 
 					new ChordChangeConsonanceFilePersister(
 							fileStrategyConfig, 
 							ChordChangeConsonanceRecordRequest.allPossibleRecords());
-			cccModel = chordChangePersistStrategy.load();
+			cccModel = chordChangePersister.load();
 		}
 
 		cccController = new ChordChangeConsonanceController(cccModel);
@@ -200,11 +200,11 @@ public class MainChordRatingsPopulationFrame extends JFrame implements ActionLis
 		if(fileStrategyConfig == null) {
 			scModel = new ScaleConsonanceModel();
 		}else {
-			ScaleConsonanceFilePersister scaleConsonancePersistStrategy = 
+			ScaleConsonanceFilePersister scaleConsonancePersister = 
 					new ScaleConsonanceFilePersister(
 							fileStrategyConfig, 
 							ScaleConsonanceRecordRequest.allPossibleRecords());
-			scModel = scaleConsonancePersistStrategy.load();
+			scModel = scaleConsonancePersister.load();
 		}
 
 		scController = new ScaleConsonanceController(scModel);
@@ -225,11 +225,11 @@ public class MainChordRatingsPopulationFrame extends JFrame implements ActionLis
 		if(fileStrategyConfig == null) {
 			ncModel = new NoteConsonanceModel();
 		}else {
-			NoteConsonanceFilePersister noteConsonancePersistStrategy = 
+			NoteConsonanceFilePersister noteConsonancePersister = 
 					new NoteConsonanceFilePersister(
 							fileStrategyConfig, 
 							NoteConsonanceRecordRequest.allPossibleRecords());
-			ncModel = noteConsonancePersistStrategy.load();
+			ncModel = noteConsonancePersister.load();
 		}
 
 		ncController = new NoteConsonanceController(ncModel);

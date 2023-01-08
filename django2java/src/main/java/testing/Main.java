@@ -4,6 +4,7 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.EnumMap;
 import java.util.concurrent.CountDownLatch;
 
 import javax.sound.midi.InvalidMidiDataException;
@@ -55,6 +56,7 @@ public class Main {
 		//printTotalCombinationsForAllDataStructures();
 		//printRecords();
 		//printNumberCombinationsForConsonanceModels();
+		EnumMap<ChordSignature,EnumMap<ChordSignature,EnumMap<Interval,ConsonanceRating>>> k = new EnumMap<>(ChordSignature.class);
 	}
 	
 	static final void printNumberCombinationsForConsonanceModels() {

@@ -1,6 +1,6 @@
 package chord.relations;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -31,7 +31,7 @@ public class NoteConsonanceModel implements RatingModel<NoteConsonanceRecord,Not
 	 * Create an empty NoteConsonanceModel.
 	 */
 	public NoteConsonanceModel() {
-		this.chordToIntervalRatingMap = new HashMap<>();
+		this.chordToIntervalRatingMap = new EnumMap<>(ChordSignature.class);
 	}
 
 	/**

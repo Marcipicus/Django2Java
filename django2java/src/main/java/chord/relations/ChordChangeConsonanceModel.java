@@ -1,7 +1,7 @@
 package chord.relations;
 
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -27,7 +27,7 @@ public class ChordChangeConsonanceModel implements RatingModel<ChordChangeConson
 	 * Create a new ChordChangeConsonanceModel.
 	 */
 	public ChordChangeConsonanceModel() {
-		this.chordChangeConsonanceMap = new HashMap<>();
+		this.chordChangeConsonanceMap = new EnumMap<>(ChordSignature.class);
 	}
 
 	/**
@@ -70,7 +70,7 @@ public class ChordChangeConsonanceModel implements RatingModel<ChordChangeConson
 				chordChangeConsonanceMap.get(startChordSig);
 
 		if(startChordToEndChordRatingMap == null) {
-			startChordToEndChordRatingMap = new HashMap<>();
+			startChordToEndChordRatingMap = new EnumMap<>(ChordSignature.class);
 			chordChangeConsonanceMap.put(startChordSig, startChordToEndChordRatingMap);
 		}
 

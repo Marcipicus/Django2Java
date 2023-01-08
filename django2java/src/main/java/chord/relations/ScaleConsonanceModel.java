@@ -1,6 +1,6 @@
 package chord.relations;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -26,7 +26,7 @@ public class ScaleConsonanceModel implements RatingModel<ScaleConsonanceRecord,S
 	 * Create an empty ScaleConsonanceModel.
 	 */
 	public ScaleConsonanceModel() {
-		this.chordToScaleRatingMap = new HashMap<>();
+		this.chordToScaleRatingMap = new EnumMap<>(ChordSignature.class);
 	}
 	
 	/**
@@ -52,7 +52,7 @@ public class ScaleConsonanceModel implements RatingModel<ScaleConsonanceRecord,S
 				chordToScaleRatingMap.get(chordSig);
 
 		if(ratingMapForChordSignature == null) {
-			ratingMapForChordSignature = new HashMap<>();
+			ratingMapForChordSignature = new EnumMap<>(ScaleSignature.class);
 			chordToScaleRatingMap.put(chordSig, ratingMapForChordSignature);
 		}
 		

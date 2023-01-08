@@ -1,11 +1,15 @@
 package chord.relations;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 
 import chord.ConsonanceRating;
 import chord.Interval;
 
-public class IntervalRatingMap extends HashMap<Interval, ConsonanceRating> {
+public class IntervalRatingMap extends EnumMap<Interval, ConsonanceRating> {
+	
+	public IntervalRatingMap() {
+		super(Interval.class);
+	}
 	
 	public ConsonanceRating put(Interval interval,ConsonanceRating rating) {
 		if(interval == null) {

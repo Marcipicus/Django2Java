@@ -17,6 +17,7 @@ import chord.relations.persist.PersistenceException;
  * @author DAD
  *
  * @param <RECORD> the type of record we are using
+ * @param <REQUEST> type used for record requests
  * @param <MODEL> the model we are using
  */
 public abstract class RatingModelController<RECORD, REQUEST, MODEL extends RatingModel<RECORD,REQUEST>> {

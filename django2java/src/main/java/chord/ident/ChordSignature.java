@@ -1,15 +1,16 @@
 package chord.ident;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
 import chord.Interval;
-import chord.NoteName;
 import chord.exceptions.DuplicateIntervalException;
 
 public enum ChordSignature {
@@ -785,12 +786,38 @@ public enum ChordSignature {
 		return allChordSignatures;
 	}
 	
+	private static List<ChordSignature> valuesAsList;
+	
+	/**
+	 * Get a list of all chord signatures sorted by ordinal.
+	 * Completely equivalent to ChordSingature.values
+	 * 
+	 * USE THIS INSTEAD OF ChordSignature.values().
+	 * 
+	 * enum.values() creates a new array every time it is called
+	 * so there is a massive increase in performance in nested
+	 * for loops.
+	 * 
+	 * @return an unmodifiable list that contains all
+	 * ChordSignatures ordered by ordinal.
+	 */
+	public static List<ChordSignature> valuesAsList(){
+		if(valuesAsList == null) {
+			valuesAsList = new ArrayList<>(Arrays.asList(ChordSignature.values()));
+
+			Collections.sort(valuesAsList);
+			
+			valuesAsList = Collections.unmodifiableList(valuesAsList);
+		}
+		return valuesAsList;
+	}
+	
 	public static ChordSignature firstSignature() {
-		return values()[0];
+		return valuesAsList().get(0);
 	}
 	
 	public static ChordSignature lastSignature() {
-		return values()[getLargestOrdinal()];
+		return valuesAsList().get(getLargestOrdinal());
 	}
 	
 	/**
@@ -798,12 +825,11 @@ public enum ChordSignature {
 	 * @return
 	 */
 	private static int getLargestOrdinal() {
-		return ChordSignature.values().length-1;
+		return valuesAsList.size() - 1;
 	}
 	
 	private final String signatureText;
 	private final List<Interval> intervals;
-	private Set<Interval> consonantIntervals;
 
 	/**
 	 * Create a chord signature using the given list of intervals.
@@ -871,30 +897,6 @@ public enum ChordSignature {
 	 */
 	public List<Interval> getIntervals(){
 		return intervals;
-	}
-
-	public void populateConsonantIntervals(Collection<Interval> givenIntervals) {
-		if(givenIntervals == null) {
-			throw new NullPointerException("GivenIntervals may not be null");
-		}
-		if(consonantIntervals != null) {
-			throw new IllegalStateException("ConsonantIntervals already populated.");
-		}
-
-		consonantIntervals = new HashSet<Interval>();
-		consonantIntervals.addAll(givenIntervals);
-
-		if( consonantIntervals.size() != givenIntervals.size() ){
-			throw new IllegalArgumentException("Given Intervals contains duplicate intervals");
-		}
-		consonantIntervals = Collections.unmodifiableSet(this.consonantIntervals);
-	}
-
-	public Set<Interval> getConsonantIntervals(){
-		if(consonantIntervals == null) {
-			throw new IllegalStateException("Consonant intervals have not been initialized, call populateConsonantIntervals before invoking this method.");
-		}
-		return consonantIntervals;
 	}
 
 	public String displayText() {

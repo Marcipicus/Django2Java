@@ -193,8 +193,8 @@ public class ScaleConsonanceModel implements RatingModel<ScaleConsonanceRecord,S
 		if(isFull()) {
 			return null;
 		}
-		for(ChordSignature chordSig : ChordSignature.values()) {
-			for(ScaleSignature scaleSig : ScaleSignature.values()) {
+		for(ChordSignature chordSig : ChordSignature.valuesAsList()) {
+			for(ScaleSignature scaleSig : ScaleSignature.valuesAsList()) {
 				ConsonanceRating rating = getRating(chordSig,scaleSig);
 				if(rating == null) {
 					return new ScaleConsonanceRecord(chordSig, scaleSig, null);
@@ -217,8 +217,8 @@ public class ScaleConsonanceModel implements RatingModel<ScaleConsonanceRecord,S
 		ScaleSignature scaleSigOfPreviousRecord;
 		ConsonanceRating ratingOfPreviousRecord;
 		
-		for(ChordSignature chordSig : ChordSignature.values()) {
-			for(ScaleSignature scaleSig : ScaleSignature.values()) {
+		for(ChordSignature chordSig : ChordSignature.valuesAsList()) {
+			for(ScaleSignature scaleSig : ScaleSignature.valuesAsList()) {
 				ConsonanceRating rating = getRating(chordSig,scaleSig);
 				if(rating == null) {
 					if(chordSig.isFirstSignature() && scaleSig.isFirstSignature()) {
@@ -255,8 +255,8 @@ public class ScaleConsonanceModel implements RatingModel<ScaleConsonanceRecord,S
 
 	@Override
 	public boolean isFull() {
-		for(ChordSignature chordSig : ChordSignature.values()) {
-			for(ScaleSignature scaleSig : ScaleSignature.values()) {
+		for(ChordSignature chordSig : ChordSignature.valuesAsList()) {
+			for(ScaleSignature scaleSig : ScaleSignature.valuesAsList()) {
 				ConsonanceRating rating = this.getRating(chordSig, scaleSig);
 				if(rating == null) {
 					return false;

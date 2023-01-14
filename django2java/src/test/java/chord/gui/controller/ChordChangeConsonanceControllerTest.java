@@ -67,8 +67,8 @@ public class ChordChangeConsonanceControllerTest {
 	 */
 	@Test
 	void testSaveRating() {
-		for(ChordSignature startChordBeingRated : ChordSignature.values()) {
-			for(ChordSignature endChordBeingRated : ChordSignature.values()) {
+		for(ChordSignature startChordBeingRated : ChordSignature.valuesAsList()) {
+			for(ChordSignature endChordBeingRated : ChordSignature.valuesAsList()) {
 				for(Interval intervalBeingRated : Interval.valuesInFirstOctave()){
 					//skip any ratings that represent the same start and end chord
 					//if the end and start chords are the same type, and the
@@ -108,8 +108,8 @@ public class ChordChangeConsonanceControllerTest {
 		ChordChangeConsonanceRecord previousRecord, previousRecordAfterSavingAndRemoving;
 		
 		//iterate through all possible chord combinations.
-		for(ChordSignature startChordSig : ChordSignature.values()) {
-			for(ChordSignature endChordSig : ChordSignature.values()) {
+		for(ChordSignature startChordSig : ChordSignature.valuesAsList()) {
+			for(ChordSignature endChordSig : ChordSignature.valuesAsList()) {
 				for(Interval intervalBetweenRoots: Interval.valuesInFirstOctave()) {
 					if(startChordSig.equals(endChordSig) && 
 							intervalBetweenRoots.equals(Interval.UNISON)) {

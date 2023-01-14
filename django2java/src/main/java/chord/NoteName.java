@@ -1,5 +1,10 @@
 package chord;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * The Note class models a musical note without octave information. Plain notes and that is it.
  * @author DAD
@@ -26,6 +31,33 @@ public enum NoteName{
 	public static final String INTERVAL_MAY_NOT_BE_NULL_MESSAGE  =  "Interval may not be null";
 	public static final String GIVEN_STRING_DOES_NOT_CORRESPOND_TO_NOTE  =  "The given string does not correspond to any note.";
 
+	
+	private static List<NoteName> valuesAsList;
+	
+	/**
+	 * Get a list of all NoteNames sorted by ordinal.
+	 * Completely equivalent to NoteName.values
+	 * 
+	 * USE THIS INSTEAD OF NoteName.values().
+	 * 
+	 * enum.values() creates a new array every time it is called
+	 * so there is a massive increase in performance in nested
+	 * for loops.
+	 * 
+	 * @return an unmodifiable list that contains all
+	 * NoteNames ordered by ordinal.
+	 */
+	public static List<NoteName> valuesAsList(){
+		if(valuesAsList == null) {
+			valuesAsList = new ArrayList<>(Arrays.asList(NoteName.values()));
+
+			Collections.sort(valuesAsList);
+			
+			valuesAsList = Collections.unmodifiableList(valuesAsList);
+		}
+		return valuesAsList;
+	}
+	
 	/**
 	 * Get the largest possible ordinal value for a note.
 	 * @return

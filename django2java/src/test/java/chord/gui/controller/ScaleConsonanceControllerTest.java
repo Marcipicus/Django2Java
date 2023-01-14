@@ -54,8 +54,8 @@ public class ScaleConsonanceControllerTest {
 	 */
 	@Test
 	void testSaveRating() {
-		for(ChordSignature chordSigBeingRated : ChordSignature.values()) {
-			for(ScaleSignature scaleSigBeingRated : ScaleSignature.values()) {
+		for(ChordSignature chordSigBeingRated : ChordSignature.valuesAsList()) {
+			for(ScaleSignature scaleSigBeingRated : ScaleSignature.valuesAsList()) {
 				assertEquals(chordSigBeingRated,currentRecordBeingRated.chordSignature());
 				assertEquals(scaleSigBeingRated,currentRecordBeingRated.scaleSignature());
 				
@@ -83,8 +83,8 @@ public class ScaleConsonanceControllerTest {
 		
 		//Iterate through all ChordSignature and ScaleSignature
 		//combinations
-		for(ChordSignature referenceChordSid : ChordSignature.values()) {
-			for(ScaleSignature scaleSig : ScaleSignature.values()) {
+		for(ChordSignature referenceChordSid : ChordSignature.valuesAsList()) {
+			for(ScaleSignature scaleSig : ScaleSignature.valuesAsList()) {
 				previousRecord = scController.getCurrentRecord();
 				
 				//save the rating then turn the controller back one

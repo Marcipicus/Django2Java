@@ -60,7 +60,7 @@ public class NoteConsonanceControllerTest {
 	 */
 	@Test
 	void testSaveRating() {
-		for(ChordSignature chordSigBeingRated : ChordSignature.values()) {
+		for(ChordSignature chordSigBeingRated : ChordSignature.valuesAsList()) {
 			for(Interval intervalBeingRated : Interval.valuesInFirstOctave()){
 				
 				assertEquals(chordSigBeingRated,currentRecordBeingRated.chordSignature());
@@ -91,7 +91,7 @@ public class NoteConsonanceControllerTest {
 	void testPreviousRating() {
 		NoteConsonanceRecord previousRecord, previousRecordAfterSavingAndRemoving;
 		
-		for(ChordSignature referenceChordSid : ChordSignature.values()) {
+		for(ChordSignature referenceChordSid : ChordSignature.valuesAsList()) {
 			for(Interval intervalBeingRated : Interval.valuesInFirstOctave()) {
 				previousRecord = ncController.getCurrentRecord();
 				

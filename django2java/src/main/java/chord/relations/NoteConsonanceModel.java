@@ -229,7 +229,7 @@ public class NoteConsonanceModel implements RatingModel<NoteConsonanceRecord,Not
 		//that does not have a rating...we cannot use the keyset since
 		//the ordering of the chord signatures is not guaranteed
 
-		for(ChordSignature chordSig : ChordSignature.values()) {
+		for(ChordSignature chordSig : ChordSignature.valuesAsList()) {
 			IntervalRatingMap intervalMapForChordSig = 
 					this.chordToIntervalRatingMap.get(chordSig);
 
@@ -239,7 +239,7 @@ public class NoteConsonanceModel implements RatingModel<NoteConsonanceRecord,Not
 						Interval.UNISON, 
 						null);
 			}
-			for(Interval interval : Interval.values()) {
+			for(Interval interval : Interval.valuesAsList()) {
 				//make sure that we aren't duplicating
 				//interval chord relations by going to
 				//the second octave

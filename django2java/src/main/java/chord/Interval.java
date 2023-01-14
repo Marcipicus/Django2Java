@@ -1,6 +1,11 @@
 package chord;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+import chord.ident.ScaleSignature;
 
 /**
  * Enumeration used to define chord signatures, scale signatures,
@@ -38,6 +43,32 @@ public enum Interval {
 	MINOR14(UsefulUnicodeCharacters.flatSign + 14),
 	MAJOR14("14"),
 	PERFECT15("P15");
+	
+	private static List<Interval> valuesAsList;
+	
+	/**
+	 * Get a list of all intervals sorted by ordinal.
+	 * Completely equivalent to Inteval.values
+	 * 
+	 * USE THIS INSTEAD OF Interval.values().
+	 * 
+	 * enum.values() creates a new array every time it is called
+	 * so there is a massive increase in performance in nested
+	 * for loops.
+	 * 
+	 * @return an unmodifiable list that contains all
+	 * Intervals ordered by ordinal.
+	 */
+	public static List<Interval> valuesAsList(){
+		if(valuesAsList == null) {
+			valuesAsList = new ArrayList<>(Arrays.asList(Interval.values()));
+
+			Collections.sort(valuesAsList);
+			
+			valuesAsList = Collections.unmodifiableList(valuesAsList);
+		}
+		return valuesAsList;
+	}
 
 	/**
 	 * Populate the array with all of the Intervals in the first

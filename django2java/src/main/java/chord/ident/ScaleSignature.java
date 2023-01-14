@@ -1,5 +1,6 @@
 package chord.ident;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -787,12 +788,38 @@ public enum ScaleSignature {
 			Interval.MAJOR6,
 			Interval.MINOR7);
 	
+	private static List<ScaleSignature> valuesAsList;
+	
+	/**
+	 * Get a list of all scale signatures sorted by ordinal.
+	 * Completely equivalent to ScaleSingature.values
+	 * 
+	 * USE THIS INSTEAD OF ScaleSignature.values().
+	 * 
+	 * enum.values() creates a new array every time it is called
+	 * so there is a massive increase in performance in nested
+	 * for loops.
+	 * 
+	 * @return an unmodifiable list that contains all
+	 * ScaleSignatures ordered by ordinal.
+	 */
+	public static List<ScaleSignature> valuesAsList(){
+		if(valuesAsList == null) {
+			valuesAsList = new ArrayList<>(Arrays.asList(ScaleSignature.values()));
+
+			Collections.sort(valuesAsList);
+			
+			valuesAsList = Collections.unmodifiableList(valuesAsList);
+		}
+		return valuesAsList;
+	}
+	
 	/**
 	 * Get the largest possible ordinal value for a note.
 	 * @return
 	 */
 	public static int getLargestOrdinal() {
-		return ScaleSignature.values().length-1;
+		return valuesAsList().size() - 1;
 	}
 	
 	/**
@@ -800,7 +827,7 @@ public enum ScaleSignature {
 	 * @return scale signature with ordinal 0
 	 */
 	public static ScaleSignature firstSignature() {
-		return ScaleSignature.values()[0];
+		return valuesAsList().get(0);
 	}
 	
 	/**
@@ -808,7 +835,7 @@ public enum ScaleSignature {
 	 * @return scale signature with largest ordinal.
 	 */
 	public static ScaleSignature lastSignature() {
-		return ScaleSignature.values()[ScaleSignature.getLargestOrdinal()];
+		return valuesAsList().get(getLargestOrdinal());
 	}
 
 	private final String signatureText;

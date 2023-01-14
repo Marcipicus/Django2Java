@@ -339,9 +339,9 @@ public class ChordChangeConsonanceModel implements RatingModel<ChordChangeConson
 			return null;
 		}
 
-		for(ChordSignature startChordSig : ChordSignature.values()) {
-			for(ChordSignature endChordSig : ChordSignature.values()) {
-				for(Interval interval : Interval.values()) {
+		for(ChordSignature startChordSig : ChordSignature.valuesAsList()) {
+			for(ChordSignature endChordSig : ChordSignature.valuesAsList()) {
+				for(Interval interval : Interval.valuesAsList()) {
 					//Make sure we aren't duplicating ratings
 					//PERFECT8 refers to the same note as UNISON
 					if( !interval.inFirstOctave() ) {
@@ -378,9 +378,9 @@ public class ChordChangeConsonanceModel implements RatingModel<ChordChangeConson
 		ChordChangeConsonanceRecord lastRecordRated = null;
 
 		OUTER_LOOP:
-			for(ChordSignature startChord : ChordSignature.values()) {
-				for(ChordSignature endChord : ChordSignature.values()) {
-					for(Interval interval : Interval.values()) {
+			for(ChordSignature startChord : ChordSignature.valuesAsList()) {
+				for(ChordSignature endChord : ChordSignature.valuesAsList()) {
+					for(Interval interval : Interval.valuesAsList()) {
 						//Make sure we aren't duplicating ratings
 						//PERFECT8 refers to the same note as UNISON
 						if( !interval.inFirstOctave() ) {
@@ -411,9 +411,9 @@ public class ChordChangeConsonanceModel implements RatingModel<ChordChangeConson
 		//TODO: These loops are pretty much the same
 		//we might need to parameterize this later with
 		//delegates or lambda expressions....works for now
-		for(ChordSignature startChord : ChordSignature.values()) {
-			for(ChordSignature endChord : ChordSignature.values()) {
-				for(Interval interval : Interval.values()) {
+		for(ChordSignature startChord : ChordSignature.valuesAsList()) {
+			for(ChordSignature endChord : ChordSignature.valuesAsList()) {
+				for(Interval interval : Interval.valuesAsList()) {
 					//Make sure we aren't duplicating ratings
 					//PERFECT8 refers to the same note as UNISON
 					if( !interval.inFirstOctave() ) {

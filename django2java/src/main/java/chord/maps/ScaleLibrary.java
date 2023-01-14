@@ -28,7 +28,7 @@ public class ScaleLibrary {
 
 			Map<NoteName,Scale> noteToConcreteScaleMap = new EnumMap<>(NoteName.class);
 			for(NoteName noteName : NoteName.values()) {
-				Scale concreteScale = new Scale(noteName,scaleSig);
+				ConcreteScale concreteScale = new ConcreteScale(noteName,scaleSig);
 				
 				noteToConcreteScaleMap.put(noteName, concreteScale);
 			}

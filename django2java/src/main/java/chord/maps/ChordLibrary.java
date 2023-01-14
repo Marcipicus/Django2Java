@@ -124,7 +124,7 @@ public class ChordLibrary {
 			Map<NoteName,Chord> noteToChordMap = new EnumMap<>(NoteName.class);
 
 			for(NoteName note : NoteName.values()) {
-				Chord nChord = new Chord(note, sig);
+				ConcreteChord nChord = new ConcreteChord(note, sig);
 
 				noteToChordMap.put(note, nChord);
 			}

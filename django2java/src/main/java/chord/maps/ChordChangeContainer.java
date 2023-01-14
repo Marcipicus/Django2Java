@@ -3,11 +3,10 @@ package chord.maps;
 import java.util.Map;
 
 import chord.ConsonanceRating;
-import chord.Chord;
 
 public class ChordChangeContainer {
 	
-	private Map<ConsonanceRating,Chord> ratingToChordsMap;
+	private Map<ConsonanceRating,ConcreteChord> ratingToChordsMap;
 
 	public ChordChangeContainer() {
 

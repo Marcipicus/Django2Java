@@ -2,12 +2,18 @@ package chord;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import chord.exceptions.ChordToneBuildingException;
 import chord.exceptions.InvalidMIDIValueException;
 import chord.exceptions.InvalidNoteRegisterException;
 import chord.ident.ChordSignature;
+import chord.maps.ChordLibrary;
 import chord.maps.MIDINoteLibrary;
+import chord.relations.request.AbstractRecordRequest;
+import chord.relations.request.ChordChangeConsonanceRecordRequest;
+import chord.relations.request.NoteConsonanceRecordRequest;
+import chord.relations.request.ScaleConsonanceRecordRequest;
 
 public class Chord {
 	public static final String MSG_ROOT_NOTE_MAY_NOT_BE_NULL = "The root note may not be null";
@@ -15,9 +21,6 @@ public class Chord {
 
 	private final ChordSignature sig;
 	private final NoteName root;
-	
-	//TODO:implement the chord changes
-	//private final ChordChangeContainer cc_container;
 	
 	/**
 	 * Create a chord using the given root note and signature.
@@ -50,6 +53,65 @@ public class Chord {
 	 */
 	public ChordSignature getSignature() {
 		return sig;
+	}
+
+
+	public Set<Chord> getRelatedChords(ChordChangeConsonanceRecordRequest relatedChordsRequest){
+		validateAbstractRecordRequest(relatedChordsRequest);
+		ChordLibrary chordLibrary = ChordLibrary.getInstance();
+		
+		Set<Chord> relatedChords  = 
+				chordLibrary.getRelatedChords(getRoot(), relatedChordsRequest);
+		
+		return relatedChords;
+	}
+	
+	public Set<Scale> getRelatedScales(ScaleConsonanceRecordRequest relatedScalesRequest){
+		validateAbstractRecordRequest(relatedScalesRequest);
+		
+		ChordLibrary chordLibrary = ChordLibrary.getInstance();
+		
+		Set<Scale> relatedScales =
+				chordLibrary.getRelatedScales(root, relatedScalesRequest);
+		
+		return relatedScales;
+	}
+	
+	public Set<NoteName> getRelatedNotes(NoteConsonanceRecordRequest relatedNotesRequest){
+		validateAbstractRecordRequest(relatedNotesRequest);
+		
+		ChordLibrary chordLibrary = ChordLibrary.getInstance();
+		
+		Set<NoteName> relatedNotes = 
+				chordLibrary.getRelatedNotes(root, relatedNotesRequest);
+		
+		return relatedNotes;
+	}
+	
+	public Set<Interval> getRelatedIntervals(NoteConsonanceRecordRequest relatedNotesRequest){
+		validateAbstractRecordRequest(relatedNotesRequest);
+		
+		ChordLibrary chordLibrary = ChordLibrary.getInstance();
+		
+		Set<Interval> relatedIntervals = 
+				chordLibrary.getRelatedIntervals(relatedNotesRequest);
+		
+		return relatedIntervals;
+	}
+	
+	private void validateAbstractRecordRequest(AbstractRecordRequest request) {
+		if(request == null) {
+			throw new NullPointerException("request may not be null");
+		}
+		if( !request.isInitialized()) {
+			throw new IllegalArgumentException("request must be initialized.");
+		}
+		if( !request.containsReferenceChord(sig)) {
+			throw new IllegalArgumentException("request must contain reference chord.");
+		}
+		if( request.numReferenceChordsRequested() != 1) {
+			throw new IllegalArgumentException("request must contain only one reference chord signature.");
+		}
 	}
 	
 	/**

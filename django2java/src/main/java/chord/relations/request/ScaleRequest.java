@@ -69,6 +69,11 @@ public class ScaleRequest implements SimpleRequest<ScaleSignature>{
 		//method parameter for it.
 		return this.scalesRequested.contains(scaleSignature);
 	}
+	
+	@Override
+	public int numberRequested() {
+		return this.scalesRequested.size();
+	}
 
 	@Override
 	public boolean isInitialized() {

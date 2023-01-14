@@ -73,6 +73,18 @@ public class ChordChangeConsonanceRecordRequest extends AbstractRecordRequest {
 		this.targetChordRequest = request;
 	}
 	
+	public int getNumberOfTargetChordsRequested() {
+		return this.targetChordRequest.numberRequested();
+	}
+	
+	public boolean containsTargetChord(ChordSignature targetChord) {
+		if(targetChord == null) {
+			throw new NullPointerException("targetChord may not be null");
+		}
+		
+		return targetChordRequest.contains(targetChord);
+	}
+	
 	public void addIntervalsBetweenRootsRequest(IntervalRequest request) {
 		if(request == null) {
 			throw new NullPointerException("request may not be null");
@@ -84,12 +96,8 @@ public class ChordChangeConsonanceRecordRequest extends AbstractRecordRequest {
 		this.intervalsBetweenRootsRequest = request;
 	}
 	
-	public boolean containsTargetChord(ChordSignature targetChord) {
-		if(targetChord == null) {
-			throw new NullPointerException("targetChord may not be null");
-		}
-		
-		return targetChordRequest.contains(targetChord);
+	public int getNumberOfIntervalsRequested() {
+		return this.intervalsBetweenRootsRequest.numberRequested();
 	}
 	
 	public boolean containsIntervalBetweenRoots(Interval interval) {

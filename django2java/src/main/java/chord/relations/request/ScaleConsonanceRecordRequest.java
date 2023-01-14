@@ -73,6 +73,14 @@ public class ScaleConsonanceRecordRequest extends AbstractRecordRequest{
 		}
 		this.scaleRequest = request;
 	}
+	
+	/**
+	 * Get the number of scales requested.
+	 * @return integer containing the number of scales that have been requested.
+	 */
+	public int getNumberOfScalesRequested() {
+		return this.scaleRequest.numberRequested();
+	}
 
 	/**
 	 * Test to see if the request is looking for the interval.

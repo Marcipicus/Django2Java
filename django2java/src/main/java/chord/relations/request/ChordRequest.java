@@ -75,4 +75,9 @@ public class ChordRequest implements SimpleRequest<ChordSignature>{
 	public boolean isInitialized() {
 		return this.chordsRequested.size() > 0;
 	}
+
+	@Override
+	public int numberRequested() {
+		return this.chordsRequested.size();
+	}
 }

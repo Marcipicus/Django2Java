@@ -34,6 +34,12 @@ public interface SimpleRequest<DATA_TYPE> {
 	boolean contains(DATA_TYPE value);
 	
 	/**
+	 * Get the number of entities requested.
+	 * @return integer representing the number of entities requested
+	 */
+	int numberRequested();
+	
+	/**
 	 * Test to see if the request is properly initialized.
 	 * Specifically we test to see if the request contains
 	 * at least one value to look for.

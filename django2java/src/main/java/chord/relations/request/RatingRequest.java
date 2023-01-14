@@ -90,4 +90,9 @@ public class RatingRequest implements SimpleRequest<ConsonanceRating>{
 	public boolean isInitialized() {
 		return	this.ratingsRequested.size() > 0 ;
 	}
+
+	@Override
+	public int numberRequested() {
+		return this.ratingsRequested.size();
+	}
 }

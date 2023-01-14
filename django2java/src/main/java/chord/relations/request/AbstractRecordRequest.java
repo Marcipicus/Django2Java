@@ -80,6 +80,22 @@ public abstract class AbstractRecordRequest {
 	}
 	
 	/**
+	 * Get the number of reference chords requested.
+	 * @return integer containing the number of chords requested.
+	 */
+	public final int numReferenceChordsRequested() {
+		return this.referenceChordRequest.numberRequested();
+	}
+	
+	/**
+	 * Get the number of ratings requested.
+	 * @return integer containing the number of ratings requested
+	 */
+	public final int numRatingsRequested() {
+		return this.ratingRequest.numberRequested();
+	}
+	
+	/**
 	 * Check to see if all of the parameters in subclasses have
 	 * been initialized.
 	 * @return true if additional parameters have been initialized

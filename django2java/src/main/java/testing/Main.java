@@ -240,7 +240,7 @@ public class Main {
 		final long quarterTicks = PPQN;
 		long tick = 0;
 		
-		Chord cMajor = ChordLibrary.getInstance().get(NoteName.C, ChordSignature.P5);
+		Chord cMajor = ChordLibrary.getInstance().getChord(NoteName.C, ChordSignature.P5);
 		for(MIDINote midiNote : cMajor.getChordTones(4)) {
 			final int channel = 0;
 			final byte noteValue = midiNote.getMidiNoteNumber();

@@ -83,6 +83,12 @@ public class NoteConsonanceRecordRequest extends AbstractRecordRequest{
 		addRatingRequest(ratingsRequest);
 	}
 	
+	/**
+	 * Add the given interval request.
+	 * This will overwrite any previous requests added.
+	 * @param request IntervalRequest containing all intervals
+	 * that are to be returned by NoteConsonanceModel
+	 */
 	public void addIntervalRequest(IntervalRequest request) {
 		if(request == null) {
 			throw new NullPointerException("request may not be null");
@@ -92,6 +98,15 @@ public class NoteConsonanceRecordRequest extends AbstractRecordRequest{
 		}
 		
 		this.intervalRequest = request;
+	}
+	
+	/**
+	 * Get the number of intervals requested.
+	 * @return integer containing the number of intervals
+	 * in the request.
+	 */
+	public int getNumberOfIntervalsRequested() {
+		return this.intervalRequest.numberRequested();
 	}
 
 	/**

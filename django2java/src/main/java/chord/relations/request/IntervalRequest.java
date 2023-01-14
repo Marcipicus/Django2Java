@@ -80,4 +80,9 @@ public class IntervalRequest implements SimpleRequest<Interval>{
 		return this.intervalsRequested.contains(value);
 	}
 
+	@Override
+	public int numberRequested() {
+		return this.intervalsRequested.size();
+	}
+
 }

@@ -4,7 +4,7 @@ import chord.NoteName;
 import chord.Scale;
 import chord.ident.ScaleSignature;
 
-public class ConcreteScale implements Scale {
+class ConcreteScale implements Scale {
 	
 	private final NoteName rootNote;
 	private final ScaleSignature scaleSig;

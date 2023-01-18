@@ -2,7 +2,15 @@ package chord.gui.controller;
 
 import java.io.File;
 
+import javax.sound.midi.InvalidMidiDataException;
+import javax.sound.midi.MidiUnavailableException;
+
 import chord.ConsonanceRating;
+import chord.MIDIPlayer;
+import chord.exceptions.ChordToneBuildingException;
+import chord.exceptions.GenericMIDIException;
+import chord.exceptions.InvalidMIDIValueException;
+import chord.exceptions.InvalidNoteRegisterException;
 import chord.relations.ChordChangeConsonanceModel;
 import chord.relations.persist.PersistenceException;
 import chord.relations.persist.file.ChordChangeConsonanceFilePersister;
@@ -22,9 +30,10 @@ ChordChangeConsonanceModel>{
 	}
 
 	@Override
-	public void play() {
-		// TODO Auto-generated method stub
+	public void play() throws GenericMIDIException{
+		MIDIPlayer midiPlayer = MIDIPlayer.getInstance();
 		
+		midiPlayer.playChordChangeConsonanceRecord(currentRecord);
 	}
 
 	@Override

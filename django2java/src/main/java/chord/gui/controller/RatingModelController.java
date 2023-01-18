@@ -4,7 +4,14 @@ import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.sound.midi.InvalidMidiDataException;
+import javax.sound.midi.MidiUnavailableException;
+
 import chord.ConsonanceRating;
+import chord.exceptions.ChordToneBuildingException;
+import chord.exceptions.GenericMIDIException;
+import chord.exceptions.InvalidMIDIValueException;
+import chord.exceptions.InvalidNoteRegisterException;
 import chord.relations.RatingModel;
 import chord.relations.persist.PersistenceException;
 
@@ -142,8 +149,7 @@ public abstract class RatingModelController<RECORD, REQUEST, MODEL extends Ratin
 		updateCurrentRecordBeingRated(nextRecordToBeRated);
 	}
 	
-	public abstract void play();
-
+	public abstract void play() throws GenericMIDIException;
 	/**
 	 * Take the model and save it to file.
 	 */

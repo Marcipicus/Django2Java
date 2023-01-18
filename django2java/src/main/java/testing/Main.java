@@ -4,7 +4,6 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.util.EnumMap;
 import java.util.concurrent.CountDownLatch;
 
 import javax.sound.midi.InvalidMidiDataException;
@@ -31,6 +30,9 @@ import chord.gui.MainChordRatingsPopulationFrame;
 import chord.ident.ChordSignature;
 import chord.ident.ScaleSignature;
 import chord.maps.ChordLibrary;
+import chord.relations.ChordChangeConsonanceModel;
+import chord.relations.NoteConsonanceModel;
+import chord.relations.ScaleConsonanceModel;
 import chord.relations.record.ChordChangeConsonanceRecord;
 import chord.relations.record.NoteConsonanceRecord;
 import chord.relations.record.ScaleConsonanceRecord;
@@ -43,7 +45,7 @@ import chord.relations.record.ScaleConsonanceRecord;
  */
 public class Main {
 
-	public static void main(String[] args) throws InvalidMidiDataException, MidiUnavailableException, InvalidMIDIValueException, InvalidNoteRegisterException, ChordToneBuildingException, InterruptedException {
+	public static void main(String[] args) throws Exception {
 		//tryPracticeGui();
 		//tryMarshallingAndUnMarshalling();
 		//tryChordChangeRatingGUI();
@@ -56,7 +58,6 @@ public class Main {
 		//printTotalCombinationsForAllDataStructures();
 		//printRecords();
 		//printNumberCombinationsForConsonanceModels();
-		EnumMap<ChordSignature,EnumMap<ChordSignature,EnumMap<Interval,ConsonanceRating>>> k = new EnumMap<>(ChordSignature.class);
 	}
 	
 	static final void printNumberCombinationsForConsonanceModels() {
@@ -210,6 +211,11 @@ public class Main {
 	}
 
 	private static void tryMainConsonanceFileBuildingGUI() {
+		ChordLibrary.initializeChordLibraryInstance(
+				new ChordChangeConsonanceModel(), 
+				new ScaleConsonanceModel(), 
+				new NoteConsonanceModel());
+		
 		new MainChordRatingsPopulationFrame();
 	}
 	

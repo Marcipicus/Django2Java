@@ -10,6 +10,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 
+import javax.sound.midi.InvalidMidiDataException;
+import javax.sound.midi.MidiUnavailableException;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
@@ -17,7 +19,14 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import chord.ConsonanceRating;
+import chord.exceptions.ChordToneBuildingException;
+import chord.exceptions.GenericMIDIException;
+import chord.exceptions.InvalidMIDIValueException;
+import chord.exceptions.InvalidNoteRegisterException;
 import chord.gui.components.CustomGridBagConstraints;
 import chord.gui.components.RatingRadioPanel;
 import chord.gui.components.RecordPanel;
@@ -48,6 +57,7 @@ CONTROLLER extends RatingModelController<RECORD,REQUEST,MODEL>,
 RECORDPANEL extends RecordPanel<RECORD>> extends JDialog 
 implements ActionListener,KeyListener,StateChangeListener<RECORD>,RatingDialogActions{
 
+	private static final Logger logger = LogManager.getLogger();
 
 	//button hotkeys
 	private static final char PREVIOUS_RATING_CHAR = 's';
@@ -276,7 +286,13 @@ implements ActionListener,KeyListener,StateChangeListener<RECORD>,RatingDialogAc
 
 	@Override
 	public void play() {
-		controller.play();
+		try {
+			controller.play();
+		} catch (GenericMIDIException e) {
+			logger.error("Error Playing MIDI", e);
+			JOptionPane.showMessageDialog(this, e.getMessage(),
+		               "Error Playing MIDI", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 
 	@Override
@@ -293,24 +309,24 @@ implements ActionListener,KeyListener,StateChangeListener<RECORD>,RatingDialogAc
 	public void saveFile() {
 		JFileChooser jfc = new JFileChooser() {
 			public void approveSelection(){
-		        File f = getSelectedFile();
-		        if(f.exists() && getDialogType() == SAVE_DIALOG){
-		            int result = JOptionPane.showConfirmDialog(this,"The file exists, overwrite?","Existing file",JOptionPane.YES_NO_CANCEL_OPTION);
-		            switch(result){
-		                case JOptionPane.YES_OPTION:
-		                    super.approveSelection();
-		                    return;
-		                case JOptionPane.NO_OPTION:
-		                    return;
-		                case JOptionPane.CLOSED_OPTION:
-		                    return;
-		                case JOptionPane.CANCEL_OPTION:
-		                    cancelSelection();
-		                    return;
-		            }
-		        }
-		        super.approveSelection();
-		    }
+				File f = getSelectedFile();
+				if(f.exists() && getDialogType() == SAVE_DIALOG){
+					int result = JOptionPane.showConfirmDialog(this,"The file exists, overwrite?","Existing file",JOptionPane.YES_NO_CANCEL_OPTION);
+					switch(result){
+					case JOptionPane.YES_OPTION:
+						super.approveSelection();
+						return;
+					case JOptionPane.NO_OPTION:
+						return;
+					case JOptionPane.CLOSED_OPTION:
+						return;
+					case JOptionPane.CANCEL_OPTION:
+						cancelSelection();
+						return;
+					}
+				}
+				super.approveSelection();
+			}
 		};
 		jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		int returnVal = jfc.showSaveDialog(this);

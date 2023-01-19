@@ -150,6 +150,7 @@ public abstract class RatingModelController<RECORD, REQUEST, MODEL extends Ratin
 	}
 	
 	public abstract void play() throws GenericMIDIException;
+	
 	/**
 	 * Take the model and save it to file.
 	 */

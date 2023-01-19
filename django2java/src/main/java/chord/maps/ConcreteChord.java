@@ -115,7 +115,7 @@ class ConcreteChord implements Chord{
 	}
 	
 	@Override
-	public List<MIDINote> getChordTones(int register) 
+	public List<MIDINote> getTones(int register) 
 			throws InvalidMIDIValueException, 
 			InvalidNoteRegisterException, 
 			ChordToneBuildingException {
@@ -136,8 +136,8 @@ class ConcreteChord implements Chord{
 	}
 	
 	@Override
-	public byte[] getChordTonesInBytes(int register) throws InvalidMIDIValueException, InvalidNoteRegisterException, ChordToneBuildingException {
-		List<MIDINote> chordTones = getChordTones(register);
+	public byte[] getTonesInBytes(int register) throws InvalidMIDIValueException, InvalidNoteRegisterException, ChordToneBuildingException {
+		List<MIDINote> chordTones = getTones(register);
 		
 		byte[] chordBytes = new byte[chordTones.size()];
 		

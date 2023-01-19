@@ -11,7 +11,7 @@ import chord.relations.request.ChordChangeConsonanceRecordRequest;
 import chord.relations.request.NoteConsonanceRecordRequest;
 import chord.relations.request.ScaleConsonanceRecordRequest;
 
-public interface Chord {
+public interface Chord extends ToneCollection{
 	
 	/**
 	 * Get the rootNote
@@ -69,7 +69,7 @@ public interface Chord {
 	 * @throws InvalidNoteRegisterException
 	 * @throws ChordToneBuildingException
 	 */
-	List<MIDINote> getChordTones(int register) 
+	List<MIDINote> getTones(int register) 
 			throws InvalidMIDIValueException, 
 			InvalidNoteRegisterException, 
 			ChordToneBuildingException;
@@ -84,7 +84,7 @@ public interface Chord {
 	 * @throws InvalidNoteRegisterException
 	 * @throws ChordToneBuildingException
 	 */
-	byte[] getChordTonesInBytes(int register) 
+	byte[] getTonesInBytes(int register) 
 			throws InvalidMIDIValueException, 
 			InvalidNoteRegisterException, 
 			ChordToneBuildingException;

@@ -22,8 +22,10 @@ import chord.Chord;
 import chord.ConsonanceRating;
 import chord.Interval;
 import chord.MIDINote;
+import chord.MIDIPlayer;
 import chord.NoteName;
 import chord.exceptions.ChordToneBuildingException;
+import chord.exceptions.GenericMIDIException;
 import chord.exceptions.InvalidMIDIValueException;
 import chord.exceptions.InvalidNoteRegisterException;
 import chord.gui.MainChordRatingsPopulationFrame;
@@ -52,37 +54,37 @@ public class Main {
 		//displayConsonanceCombinations();
 		tryMainConsonanceFileBuildingGUI();
 		//tryJFileChooser();
-		
+
 		//createAndPlayMidiSequence();
-		
+
 		//printTotalCombinationsForAllDataStructures();
 		//printRecords();
 		//printNumberCombinationsForConsonanceModels();
 	}
-	
+
 	static final void printNumberCombinationsForConsonanceModels() {
 		final int numIntervals,numScales,numChords;
 		final int noteConsModelCombs,scaleConsModelCombs,chordChangeConsModelCombs;
 		final int numChordsInConcreteDataModel,numScalesInConcreteDataModel;
 		final int numRootNotes = 12;
-		
+
 		numIntervals = Interval.valuesInFirstOctave().length;
 		numScales = ScaleSignature.values().length;
 		numChords = ChordSignature.values().length;
-		
+
 		noteConsModelCombs = numChords * numIntervals;
 		scaleConsModelCombs = numChords * numScales;
 		chordChangeConsModelCombs = numChords * numChords * numIntervals;
 		numChordsInConcreteDataModel = numRootNotes * numChords;
 		numScalesInConcreteDataModel = numRootNotes * numScales;
-		
+
 		System.out.println("NoteConsonanceModel Combinations       :" + noteConsModelCombs);
 		System.out.println("ScaleConsonanceModel Combinations      :" + scaleConsModelCombs);
 		System.out.println("ChordChangeConsonanceModel Combinations:" + chordChangeConsModelCombs);
 		System.out.println("Number of Chords in ChordLibrary       :" + numChordsInConcreteDataModel);
 		System.out.println("Number of Scales in ChordLibrary       :" + numScalesInConcreteDataModel);
 	}
-	
+
 	static final void printRecords() {
 		ChordChangeConsonanceRecord cccRecordNonNull =
 				new ChordChangeConsonanceRecord(
@@ -90,52 +92,52 @@ public class Main {
 						ChordSignature.MINOR, 
 						Interval.MINOR2, 
 						ConsonanceRating.BAD);
-		
+
 		ChordChangeConsonanceRecord cccRecordNull =
 				new ChordChangeConsonanceRecord(
 						ChordSignature.MAJOR, 
 						ChordSignature.MINOR, 
 						Interval.MINOR2, 
 						null);
-		
+
 		NoteConsonanceRecord ncRecordNonNull = 
 				new NoteConsonanceRecord(
 						ChordSignature.MAJOR, 
 						Interval.MINOR2, 
 						ConsonanceRating.GOOD);
-		
+
 		NoteConsonanceRecord ncRecordNull = 
 				new NoteConsonanceRecord(
 						ChordSignature.MAJOR, 
 						Interval.MINOR2, 
 						null);
-		
+
 		ScaleConsonanceRecord scRecordNonNull =
 				new ScaleConsonanceRecord(
 						ChordSignature.MAJOR,
 						ScaleSignature.AEOLIAN,
 						ConsonanceRating.VERY_BAD);
-		
+
 		ScaleConsonanceRecord scRecordNull =
 				new ScaleConsonanceRecord(
 						ChordSignature.MAJOR,
 						ScaleSignature.AEOLIAN,
 						null);
-		
+
 		System.out.println(cccRecordNonNull);
 		System.out.println(cccRecordNull);
 		System.out.println(ncRecordNonNull);
 		System.out.println(ncRecordNull);
 		System.out.println(scRecordNonNull);
 		System.out.println(scRecordNull);
-		
+
 		ConsonanceRating rating = ConsonanceRating.valueOf("null");
-		
+
 		System.out.println(rating);
-		
+
 	}
-	
-	
+
+
 	/**
 	 * List the total number of combinations for each of the data structures
 	 * so we know if the maps are within a reasonable value of entries.
@@ -146,14 +148,14 @@ public class Main {
 		final int numChordChangeCombinations = (int) Math.pow(ChordSignature.values().length, 2);
 		System.out.println("Total number of Combinations between, Chord/Scale");
 		System.out.println(numChordScaleCombinations);
-		
+
 
 		System.out.println("Total number of Combinations between, Chord/Scale at all intervals.");
 		System.out.println(numChordScaleCombinations*12);
-		
+
 		System.out.println("Total number of Combinations of chord changes");
 		System.out.println(numChordChangeCombinations);
-		
+
 		System.out.println("Total number of note chord relations.");
 		System.out.println(ChordSignature.values().length * 12);
 	}
@@ -171,14 +173,14 @@ public class Main {
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser jfc = new JFileChooser();
 				int returnVal = jfc.showOpenDialog(parentFrame);
-				
+
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
 					File file = jfc.getSelectedFile();
 					//This is where a real application would open the file.
 				} else if( returnVal == JFileChooser.CANCEL_OPTION){
 					return;
 				} else if (returnVal == JFileChooser.ERROR_OPTION) {
-					
+
 				}
 			}
 		});
@@ -201,7 +203,7 @@ public class Main {
 				} else if( returnVal == JFileChooser.CANCEL_OPTION){
 					return;
 				} else if (returnVal == JFileChooser.ERROR_OPTION) {
-					
+
 				}
 			}
 		});
@@ -210,15 +212,19 @@ public class Main {
 		parentFrame.setVisible(true);
 	}
 
-	private static void tryMainConsonanceFileBuildingGUI() {
+	private static void tryMainConsonanceFileBuildingGUI() throws Exception {
 		ChordLibrary.initializeChordLibraryInstance(
 				new ChordChangeConsonanceModel(), 
 				new ScaleConsonanceModel(), 
 				new NoteConsonanceModel());
-		
-		new MainChordRatingsPopulationFrame();
+
+		try {
+			new MainChordRatingsPopulationFrame();
+		}catch (Exception e){
+			MIDIPlayer.getInstance().dispose();
+		}
 	}
-	
+
 	private static void displayConsonanceCombinations() {
 
 		System.out.println("Number of Chord Signatures                   :" + ChordSignature.values().length);
@@ -237,27 +243,27 @@ public class Main {
 		final int PPQN = 8;//use eigth notes
 		Sequence sequence;
 		final Track harmonyTrack,melodyTrack;
-		
+
 		sequence = new Sequence(Sequence.PPQ,PPQN);
 		harmonyTrack = sequence.createTrack();
 		melodyTrack = sequence.createTrack();
-		
+
 		//Add messages and add to tracks
 		final long quarterTicks = PPQN;
 		long tick = 0;
-		
+
 		Chord cMajor = ChordLibrary.getInstance().getChord(NoteName.C, ChordSignature.P5);
-		for(MIDINote midiNote : cMajor.getChordTones(4)) {
+		for(MIDINote midiNote : cMajor.getTones(4)) {
 			final int channel = 0;
 			final byte noteValue = midiNote.getMidiNoteNumber();
-			
+
 			final ShortMessage noteOn = 
 					new ShortMessage(
 							ShortMessage.NOTE_ON,
 							channel, 
 							noteValue);
 			harmonyTrack.add(new MidiEvent(noteOn,tick));
-			
+
 			//turn the chord off
 			long oneWholeNote = tick + 4*PPQN;
 			final ShortMessage noteOff = new 
@@ -265,26 +271,26 @@ public class Main {
 							ShortMessage.NOTE_OFF,
 							channel,
 							noteValue);
-			
+
 			harmonyTrack.add(new MidiEvent(noteOff, oneWholeNote));
-			
+
 		}
-		
-		
+
+
 		final Sequencer sequencer = MidiSystem.getSequencer();
 		sequencer.setSequence(sequence);
 		final CountDownLatch waitForEnd = new CountDownLatch(1);
-		
+
 		sequencer.addMetaEventListener(e->{
 			if(e.getType() == 47) {
 				waitForEnd.countDown();
 			}
 		});
-		
+
 		sequencer.open();
 		sequencer.start();
 		waitForEnd.await();
-		
+
 		sequencer.stop();
 		sequencer.close();
 	}

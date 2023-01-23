@@ -3,6 +3,8 @@ package chord.gui.controller;
 import java.io.File;
 
 import chord.ConsonanceRating;
+import chord.MIDIPlayer;
+import chord.exceptions.GenericMIDIException;
 import chord.relations.NoteConsonanceModel;
 import chord.relations.persist.PersistenceException;
 import chord.relations.persist.file.FileStrategyConfig;
@@ -61,8 +63,9 @@ NoteConsonanceModel> {
 	}
 
 	@Override
-	public void play() {
-		// TODO Auto-generated method stub
+	public void play() throws GenericMIDIException {
+		MIDIPlayer midiPlayer = MIDIPlayer.getInstance();
 		
+		midiPlayer.playNoteConsonanceRecord(currentRecord);
 	}
 }

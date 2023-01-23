@@ -6,13 +6,17 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.concurrent.CountDownLatch;
 
+import javax.sound.midi.Instrument;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiEvent;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
+import javax.sound.midi.Patch;
 import javax.sound.midi.Sequence;
 import javax.sound.midi.Sequencer;
 import javax.sound.midi.ShortMessage;
+import javax.sound.midi.Soundbank;
+import javax.sound.midi.Synthesizer;
 import javax.sound.midi.Track;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -25,7 +29,6 @@ import chord.MIDINote;
 import chord.MIDIPlayer;
 import chord.NoteName;
 import chord.exceptions.ChordToneBuildingException;
-import chord.exceptions.GenericMIDIException;
 import chord.exceptions.InvalidMIDIValueException;
 import chord.exceptions.InvalidNoteRegisterException;
 import chord.gui.MainChordRatingsPopulationFrame;
@@ -60,6 +63,30 @@ public class Main {
 		//printTotalCombinationsForAllDataStructures();
 		//printRecords();
 		//printNumberCombinationsForConsonanceModels();
+		
+		//printAllMidiInstrumentData();
+	}
+	
+	static void printAllMidiInstrumentData() throws MidiUnavailableException {
+		Synthesizer synth;
+		Soundbank soundBank;
+		
+		synth = MidiSystem.getSynthesizer();
+		synth.open();
+		
+		soundBank = synth.getDefaultSoundbank();
+		
+		Instrument[] instruments = soundBank.getInstruments();
+
+		int index = 0;
+		for(Instrument instrument : instruments) {
+			System.out.print(index + ":"+instrument.getName()+":");
+			Patch patch = instrument.getPatch();
+			
+			System.out.print("Bank:" + patch.getBank()+" ");
+			System.out.println("Prog:" + patch.getProgram());
+			index++;
+		}
 	}
 
 	static final void printNumberCombinationsForConsonanceModels() {

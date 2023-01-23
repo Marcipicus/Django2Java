@@ -127,7 +127,6 @@ class ConcreteChord implements Chord{
 		
 		m_rootNote = noteLibrary.getNote(getRoot(), register);
 
-		chordTones.add(m_rootNote);
 		for(Interval interval : getSignature().getIntervals()) {
 			chordTones.add(m_rootNote.getRelatedNote(interval));
 		}

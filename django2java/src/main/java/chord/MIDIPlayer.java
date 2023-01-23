@@ -16,8 +16,6 @@ import chord.exceptions.ChordToneBuildingException;
 import chord.exceptions.GenericMIDIException;
 import chord.exceptions.InvalidMIDIValueException;
 import chord.exceptions.InvalidNoteRegisterException;
-import chord.ident.ChordSignature;
-import chord.ident.ScaleSignature;
 import chord.maps.ChordLibrary;
 import chord.maps.MIDINoteLibrary;
 import chord.maps.ScaleLibrary;
@@ -28,6 +26,9 @@ import chord.relations.record.ScaleConsonanceRecord;
 public class MIDIPlayer {
 
 	private static final Logger logger = LogManager.getLogger();
+
+	//The default instrument on the chord track is Organ 1
+	private static final int DEFAULT_CHORD_TRACK_INSTRUMENT = 16;
 
 	private static final int DEFAULT_CHORD_REGISTER = 4;
 	private static final int DEFAULT_MELODY_REGISTER = DEFAULT_CHORD_REGISTER + 1;
@@ -49,6 +50,7 @@ public class MIDIPlayer {
 	private final ChordLibrary cLib;
 	private final ScaleLibrary sLib;
 	private final Sequencer sequencer;
+	private int chordTrackInstrument = DEFAULT_CHORD_TRACK_INSTRUMENT;
 
 	/**
 	 * Create a basic MIDIPlayer that only produces sequences
@@ -73,12 +75,23 @@ public class MIDIPlayer {
 			sequencer.close();
 		}
 	}
-	
+
+	public int getChordTrackInstrument() {
+		return this.chordTrackInstrument;
+	}
+
+	public void setChordTrackInstrument(int programNumber) {
+		if(programNumber < 0 || programNumber > 127) {
+			throw new IllegalArgumentException("program number must be between 0 and 127 inclusive.");
+		}
+		this.chordTrackInstrument = programNumber;
+	}
+
 	private void playSequence(Sequence sequence) throws GenericMIDIException {
 		if(sequence == null) {
 			throw new NullPointerException("sequence may not be null");
 		}
-		
+
 		if(sequencer.isRunning()) {
 			sequencer.stop();
 		}
@@ -91,24 +104,46 @@ public class MIDIPlayer {
 		sequencer.start();
 	}
 
+	private void changeInstrumentOfTrack(Track track, int channelNumber, int instrument) throws GenericMIDIException {
+		ShortMessage changeInstrumentMessage;
+		try {
+			changeInstrumentMessage = new ShortMessage(ShortMessage.PROGRAM_CHANGE,channelNumber,getChordTrackInstrument(),100);
+		} catch (InvalidMidiDataException e) {
+			throw new GenericMIDIException("Error changing instrument of channel ",e);
+		}
+
+		MidiEvent changeInstrumentEvent = new MidiEvent(changeInstrumentMessage,0);
+		track.add(changeInstrumentEvent);
+	}
+
 	public void playChordChangeConsonanceRecord(ChordChangeConsonanceRecord cccRecord) throws GenericMIDIException {
 		if(cccRecord == null) {
 			throw new NullPointerException("cccRecord may not be null");
 		}
-		
+
 		Sequence chordChangeSequence = createSequenceForChordChangeConsonanceRecord(cccRecord);
-		
+
 		playSequence(chordChangeSequence);
 	}
-	
+
 	public void playScaleConsonanceRecord(ScaleConsonanceRecord scRecord) throws GenericMIDIException{
 		if(scRecord == null) {
 			throw new NullPointerException("scRecord may not be null");
 		}
-		
+
 		Sequence scaleChordSequence = createSequenceForScaleConsonanceRecord(scRecord);
-		
+
 		playSequence(scaleChordSequence);
+	}
+	
+	public void playNoteConsonanceRecord(NoteConsonanceRecord ncRecord) throws GenericMIDIException{
+		if(ncRecord == null) {
+			throw new NullPointerException("scRecord may not be null");
+		}
+
+		Sequence noteChordSequence = createSequenceForNoteConsonanceRecord(ncRecord);
+
+		playSequence(noteChordSequence);
 	}
 
 	/**
@@ -137,6 +172,8 @@ public class MIDIPlayer {
 
 		Track chordChangeTrack = ccSequence.createTrack();
 
+		changeInstrumentOfTrack(chordChangeTrack,channelNumber, getChordTrackInstrument());
+
 		final NoteName startChordRoot,endChordRoot;
 		final Chord startChord,endChord;
 
@@ -151,41 +188,94 @@ public class MIDIPlayer {
 		return ccSequence;
 
 	}
-	
+
+	/**
+	 * Create a sequence for a scale consonance record so that it can be rated.
+	 * @param scRecord record containing the information to be rated.
+	 * @return a sequence playing the chord and scale contained in the record.
+	 * @throws GenericMIDIException if there is any problem playing the program.
+	 */
 	private Sequence createSequenceForScaleConsonanceRecord(ScaleConsonanceRecord scRecord) throws GenericMIDIException {
 		if(scRecord == null) {
 			throw new NullPointerException("scRecord may not be null.");
 		}
-		
+
 		int chordChannelNumber = 0;
 		int scaleChannelNumber = 0;
-		int velocity = 64;
+		int chordVelocity = 80;
 		int scaleVelocity = 80;
 		int chordPulseOffset = 0;
 		int scalePulseOffset = 2;
-		int pulsesForChord = 8;
+		int pulsesForChord ;
 		int pulsesPerNote = 2;
-		
+
 		Sequence scSequence;
 		try {
 			scSequence = new Sequence(Sequence.PPQ, FOUR_PPQ);
 		} catch (InvalidMidiDataException e) {
 			throw new GenericMIDIException("division type is invalid",e);
 		}
-		Track chordTrack,melodyTrack;
-		
-		Chord chord = cLib.getChord(DEFAULT_REFERENCE_NOTE_FOR_SEQUENCES, scRecord.chordSignature());
-		
-		chordTrack = scSequence.createTrack();
-		chordPulseOffset = addChordToTrack(chord,chordTrack,chordChannelNumber,velocity,chordPulseOffset,pulsesForChord);
-		chordPulseOffset = addChordToTrack(chord,chordTrack,chordChannelNumber,velocity,chordPulseOffset,pulsesForChord);
-		
-		
+		Track melodyTrack,chordTrack;
+
+		//Add a track consisting of all of the notes in the scale
+		//and record the pulse offset at the end to be used to
+		//create a chord of the same length
 		Scale scale = sLib.getScale(DEFAULT_REFERENCE_NOTE_FOR_SEQUENCES, scRecord.scaleSignature());
 		melodyTrack = scSequence.createTrack();
-		addScaleToTrack(scale,melodyTrack,scaleChannelNumber,scaleVelocity,scalePulseOffset,pulsesPerNote);
-		
+		pulsesForChord = addScaleToTrack(scale,melodyTrack,scaleChannelNumber,scaleVelocity,scalePulseOffset,pulsesPerNote);
+
+		Chord chord = cLib.getChord(DEFAULT_REFERENCE_NOTE_FOR_SEQUENCES, scRecord.chordSignature());
+		chordTrack = scSequence.createTrack();
+		changeInstrumentOfTrack(chordTrack,chordChannelNumber, getChordTrackInstrument());
+		addChordToTrack(chord,chordTrack,chordChannelNumber,chordVelocity,chordPulseOffset,pulsesForChord);
+
 		return scSequence;
+	}
+
+
+	private Sequence createSequenceForNoteConsonanceRecord(NoteConsonanceRecord ncRecord) throws GenericMIDIException {
+		if(ncRecord == null) {
+			throw new NullPointerException("ncRecord may not be null.");
+		}
+
+		int chordChannelNumber = 0;
+		int scaleChannelNumber = 0;
+		int chordVelocity = 80;
+		int scaleVelocity = 80;
+		int chordPulseOffset = 0;
+		int scalePulseOffset = 4;
+		int numNotes = 1;
+		int pulsesForChord =0;
+		int pulsesPerNote = 6;
+
+		Sequence ncSequence;
+		try {
+			ncSequence = new Sequence(Sequence.PPQ, FOUR_PPQ);
+		} catch (InvalidMidiDataException e) {
+			throw new GenericMIDIException("division type is invalid",e);
+		}
+		Track noteTrack,chordTrack;
+
+		//Add a track consisting of multiple soundings of note
+		//and record the pulse offset at the end to be used to
+		//create a chord of the same length
+		NoteName note = DEFAULT_REFERENCE_NOTE_FOR_SEQUENCES.getNoteByInterval(ncRecord.interval());
+		noteTrack = ncSequence.createTrack();
+		pulsesForChord = addNoteToTrack(
+				note,
+				noteTrack,
+				scaleChannelNumber,
+				scaleVelocity,
+				numNotes,
+				scalePulseOffset,
+				pulsesPerNote);
+
+		Chord chord = cLib.getChord(DEFAULT_REFERENCE_NOTE_FOR_SEQUENCES, ncRecord.chordSignature());
+		chordTrack = ncSequence.createTrack();
+		changeInstrumentOfTrack(chordTrack,chordChannelNumber, getChordTrackInstrument());
+		addChordToTrack(chord,chordTrack,chordChannelNumber,chordVelocity,chordPulseOffset,pulsesForChord);
+
+		return ncSequence;
 	}
 
 	/**
@@ -223,7 +313,7 @@ public class MIDIPlayer {
 				noteOnMessage = new ShortMessage(ShortMessage.NOTE_ON,channelNumber,midiNoteByte,velocity);
 				track.add(new MidiEvent(noteOnMessage,pulseOffset));
 			}
-			
+
 			pulseOffset += pulses;
 
 			//create all the note off messages for the start chord
@@ -233,7 +323,7 @@ public class MIDIPlayer {
 				noteOffMessage = new ShortMessage(ShortMessage.NOTE_OFF,channelNumber,midiNoteByte,velocity);
 				track.add(new MidiEvent(noteOffMessage,pulseOffset));
 			}
-			
+
 			return pulseOffset;
 		}catch(ChordToneBuildingException e) {
 			//TODO:this might be a throw back to old code
@@ -290,7 +380,7 @@ public class MIDIPlayer {
 				noteOffMessage = new ShortMessage(ShortMessage.NOTE_OFF,channelNumber,midiScaleByte,velocity);
 				track.add(new MidiEvent(noteOffMessage,pulseOffset));
 			}
-			
+
 			return pulseOffset;
 		}catch(ChordToneBuildingException e) {
 			//TODO:this might be a throw back to old code
@@ -304,25 +394,54 @@ public class MIDIPlayer {
 			throw new GenericMIDIException("The register used to generate scale tones is too high.",e);
 		}
 	}
-	
-	private Sequence createSequenceForNoteConsonanceRecord(NoteConsonanceRecord ncRecord) {
-		return null;
+
+
+	private int addNoteToTrack(
+			NoteName noteName, 
+			Track track,
+			final int channelNumber, 
+			final int velocity, 
+			final int numNotes,
+			int pulseOffset,
+			final int pulsesBetweenNotes ) throws GenericMIDIException {
+
+		if(noteName == null) {
+			throw new NullPointerException("noteName may not be null.");
+		}
+		if(track == null) {
+			throw new NullPointerException("track may not be null.");
+		}
+		if(numNotes < 1) {
+			throw new IllegalArgumentException("Must play at least one ");
+		}
+
+		try {
+
+			MIDINote midiNote = MIDINoteLibrary.getInstance().getNote(noteName, DEFAULT_MELODY_REGISTER);
+			byte noteByte = midiNote.getMidiNoteNumber();
+
+			for(int i=0 ; i<numNotes; i++) {
+				ShortMessage noteOnMessage;
+
+				noteOnMessage = new ShortMessage(ShortMessage.NOTE_ON,channelNumber,noteByte,velocity);
+				track.add(new MidiEvent(noteOnMessage,pulseOffset));
+
+				pulseOffset += pulsesBetweenNotes;
+
+				ShortMessage noteOffMessage;
+
+				noteOffMessage = new ShortMessage(ShortMessage.NOTE_OFF,channelNumber,noteByte,velocity);
+				track.add(new MidiEvent(noteOffMessage,pulseOffset));
+			}
+
+			return pulseOffset;
+		}catch(InvalidNoteRegisterException e) {
+			throw new GenericMIDIException("invalid register for note",e);
+		}catch(InvalidMidiDataException e) {
+			throw new GenericMIDIException("Invalid MIDI data.", e);
+		}
 	}
 
-	private Track createTrackForChordChange(ChordSignature startSig, ChordSignature endSig, Interval intervalBetweenRoots) {
-		return null;
-	}
 
-	private Track createTrackForChord(ChordSignature chordSig, int numBars) {
-		return null;
-	}
-
-	private Track createTrackForScale(ScaleSignature scaleSig,int numBars) {
-		return null;
-	}
-
-	private Track createTrackForNote(NoteName note, int numBars) {
-		return null;
-	}
 
 }

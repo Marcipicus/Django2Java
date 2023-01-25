@@ -39,6 +39,10 @@ class ConcreteScale implements Scale {
 		return scaleSig;
 	}
 	
+	/**
+	 * Get a list of all tones in the scale and end it 
+	 * with a perfect octave.
+	 */
 	@Override
 	public List<MIDINote> getTones(int register) 
 			throws InvalidMIDIValueException, 
@@ -55,23 +59,30 @@ class ConcreteScale implements Scale {
 		for(Interval interval : getScaleSignature().getIntervals()) {
 			scaleTones.add(m_rootNote.getRelatedNote(interval));
 		}
+		
+		
+		scaleTones.add(m_rootNote.getRelatedNote(Interval.PERFECT8));
 			
 		return scaleTones;
 	}
 	
+	/**
+	 * Get a list of all tones in the scale and end it 
+	 * with a perfect octave.
+	 */
 	@Override
 	public byte[] getTonesInBytes(int register) throws InvalidMIDIValueException, InvalidNoteRegisterException, ChordToneBuildingException {
 		List<MIDINote> scaleTones = getTones(register);
 		
-		byte[] chordBytes = new byte[scaleTones.size()];
+		byte[] scaleBytes = new byte[scaleTones.size()+1];
 		
 		int i = 0;
 		for(MIDINote note : scaleTones) {
-			chordBytes[i] = note.getMidiNoteNumber();
+			scaleBytes[i] = note.getMidiNoteNumber();
 			i++;
 		}
 		
-		return chordBytes;
+		return scaleBytes;
 	}
 	
 	/**

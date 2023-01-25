@@ -13,6 +13,7 @@ import chord.exceptions.ChordToneBuildingException;
 import chord.exceptions.InvalidMIDIValueException;
 import chord.exceptions.InvalidNoteRegisterException;
 import chord.ident.ChordSignature;
+import chord.progression.CircularLinkedList;
 import chord.relations.request.AbstractRecordRequest;
 import chord.relations.request.ChordChangeConsonanceRecordRequest;
 import chord.relations.request.NoteConsonanceRecordRequest;
@@ -185,5 +186,12 @@ class ConcreteChord implements Chord{
 		result = prime*result + getSignature().hashCode();
 		
 		return result;
+	}
+
+	@Override
+	public List<List<Chord>> getPathToChord(Chord destinationChord, ChordChangeConsonanceRecordRequest request,
+			int changeDepth) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

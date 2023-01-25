@@ -208,7 +208,7 @@ public class CircularLinkedList<T> {
 		final int prime = 53;
 		
 		int result = prime;
-
+ 
 		if(this.head == null) {
 			return result;
 		}

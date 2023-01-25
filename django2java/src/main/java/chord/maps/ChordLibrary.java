@@ -15,6 +15,7 @@ import chord.NoteName;
 import chord.Scale;
 import chord.ident.ChordSignature;
 import chord.ident.ScaleSignature;
+import chord.progression.CircularLinkedList;
 import chord.relations.ChordChangeConsonanceModel;
 import chord.relations.NoteConsonanceModel;
 import chord.relations.ScaleConsonanceModel;
@@ -281,6 +282,49 @@ public class ChordLibrary {
 		}
 
 		return relatedIntervals;
+	}
+	
+	/**
+	 * Get a set of chord progressions represented by a circular linked list.
+	 * The chord progressions will not contain any repeated chords.
+	 * 
+	 * These progressions are referred to as primitive progressions since there
+	 * are no progressions(cycles) contained within.
+	 * 
+	 * @param startChord the chord that will be used as the start of the chord
+	 * progression
+	 * @param request request used to filter the progression to the desired chord types,
+	 * intervals, and ratings
+	 * @param depth the depth of the recursive search algorithm
+	 * @return a set of unique chord progressions based on the 
+	 */
+	public Set<CircularLinkedList<Chord>> getChordProgressions(
+			Chord startChord, 
+			ChordChangeConsonanceRecordRequest request, 
+			int depth){
+
+		//TODO:IMPLEMENT METHOD
+		
+		return null;
+	}
+	
+	/**
+	 * Get a list of all generic chord progressions based on the given start signature.
+	 * 
+	 * @param startChordSignature chord signature used as the base for the progression
+	 * @param request restrictions on the types of chords,intervals,and ratings used to generate
+	 * the progression.
+	 * @param depth recursive depth of the algorithm
+ 	 * @return a set of unique chord progressions matching the parameters stored in a circular
+ 	 * linked list.
+	 */
+	public Set<CircularLinkedList<ChordSignature>> getGenericChordProgressions( 
+			ChordSignature startChordSignature, 
+			ChordChangeConsonanceRecordRequest request,
+			int depth){
+
+		//TODO:IMPLEMENT METHOD
+		return null;
 	}
 
 	/**

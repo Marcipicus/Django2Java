@@ -3,10 +3,8 @@ package chord;
 import java.util.List;
 import java.util.Set;
 
-import chord.exceptions.ChordToneBuildingException;
-import chord.exceptions.InvalidMIDIValueException;
-import chord.exceptions.InvalidNoteRegisterException;
 import chord.ident.ChordSignature;
+import chord.progression.CircularLinkedList;
 import chord.relations.request.ChordChangeConsonanceRecordRequest;
 import chord.relations.request.NoteConsonanceRecordRequest;
 import chord.relations.request.ScaleConsonanceRecordRequest;
@@ -62,30 +60,13 @@ public interface Chord extends ToneCollection{
 	Set<Interval> getRelatedIntervals(NoteConsonanceRecordRequest relatedNotesRequest);
 	
 	/**
-	 * Get a list of the notes for the chord in MIDI form.
-	 * @param register
-	 * @return
-	 * @throws InvalidMIDIValueException
-	 * @throws InvalidNoteRegisterException
-	 * @throws ChordToneBuildingException
+	 * Get a list of chords between the current chord and the destination chord
+	 * using only chord types in the request and limit the number of chords between to
+	 * changeDepth or lower
+	 * @param destinationChord the chord that we are targeting
+	 * @param request request to filter the chordTypes and ratings we desire
+	 * @param depth the depth of the recursive algorithm to limit the number of results
+	 * @return a list of chord sequences fitting the request
 	 */
-	List<MIDINote> getTones(int register) 
-			throws InvalidMIDIValueException, 
-			InvalidNoteRegisterException, 
-			ChordToneBuildingException;
-	
-	/**
-	 * Get an array of bytes representing midi notes that will
-	 * be consumed by the MIDIPlayer
-	 * @param register register which will be used to create the notes
-	 * (A register is basically a numbered octave) 
-	 * @return array of bytes that can be consumed by the MIDIPlayer
-	 * @throws InvalidMIDIValueException
-	 * @throws InvalidNoteRegisterException
-	 * @throws ChordToneBuildingException
-	 */
-	byte[] getTonesInBytes(int register) 
-			throws InvalidMIDIValueException, 
-			InvalidNoteRegisterException, 
-			ChordToneBuildingException;
+	List<List<Chord>> getPathToChord(Chord destinationChord,ChordChangeConsonanceRecordRequest request, int depth);
 }

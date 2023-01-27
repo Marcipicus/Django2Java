@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Set;
 
 import chord.ident.ChordSignature;
-import chord.progression.CircularLinkedList;
 import chord.relations.request.ChordChangeConsonanceRecordRequest;
 import chord.relations.request.NoteConsonanceRecordRequest;
 import chord.relations.request.ScaleConsonanceRecordRequest;

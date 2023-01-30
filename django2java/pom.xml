@@ -24,6 +24,7 @@
     		<groupId>org.junit.platform</groupId>
     		<artifactId>junit-platform-suite-engine</artifactId>
     		<version>1.8.1</version>
+    		<scope>test</scope>
 		</dependency>
 		<!-- Compile time checking of inputs -->
 		<dependency>
@@ -67,6 +68,23 @@
 							</manifest>
 						</archive>
 					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-dependency-plugin</artifactId>
+					<version>3.5.0</version>
+					<executions>
+						<execution>
+							<id>copy-dependencies</id>
+							<phase>package</phase>
+							<goals>
+								<goal>copy-dependencies</goal>
+							</goals>
+							<configuration>
+								<outputDirectory>${project.build.directory}/lib/</outputDirectory>
+							</configuration>
+						</execution>
+					</executions>
 				</plugin>
 			</plugins>
 		</pluginManagement>
